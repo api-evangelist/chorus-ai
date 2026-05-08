@@ -1,0 +1,29 @@
+aid: chorus-ai
+url: https://raw.githubusercontent.com/api-evangelist/chorus-ai/refs/heads/main/apis.yml
+name: Chorus.ai
+x-type: company
+description: >-
+  Chorus.ai is a conversation intelligence platform (acquired by ZoomInfo) that records, transcribes, and analyzes customer-facing calls and meetings to surface deal insights and coach reps.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Sales
+  - Revenue Intelligence
+  - Conversation
+  - Analytics
+  - ZoomInfo
+created: '2026-05-08'
+modified: '2026-05-08'
+specificationVersion: '0.19'
+apis: []
+common:
+  - type: Website
+    url: https://www.chorus.ai/
+  - type: Plans
+    url: plans/chorus-ai-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/chorus-ai-rate-limits.yml
+  - type: FinOps
+    url: finops/chorus-ai-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
