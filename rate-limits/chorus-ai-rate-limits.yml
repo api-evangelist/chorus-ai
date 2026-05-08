@@ -16,9 +16,11 @@ tags:
 - Quotas
 - Throttling
 description: Placeholder rate-limit artifact for Chorus.ai. Replace with real limits once researched.
-notes: Initial scaffold — limits have not yet been reconciled.
+notes: "Initial scaffold \u2014 limits have not yet been reconciled."
 sources:
 - https://www.chorus.ai/
+- https://docs.chorus.ai/
+- https://docs.chorus.ai/reference
 responseCodes:
   throttled: 429
 limits:

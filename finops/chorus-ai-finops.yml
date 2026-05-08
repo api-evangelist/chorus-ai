@@ -16,9 +16,11 @@ tags:
 - Cost Management
 - FOCUS
 description: FOCUS-aligned FinOps placeholder for Chorus.ai. Pipeline will replace with real billing details.
-notes: Initial scaffold — billing model has not yet been reconciled.
+notes: "Initial scaffold \u2014 billing model has not yet been reconciled."
 sources:
 - https://www.chorus.ai/
+- https://docs.chorus.ai/
+- https://docs.chorus.ai/reference
 - https://focus.finops.org/focus-specification/v1-3/
 alignedWith:
   framework: FinOps Foundation Framework
