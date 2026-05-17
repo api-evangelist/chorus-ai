@@ -1,7 +1,7 @@
 aid: chorus-ai
 url: https://raw.githubusercontent.com/api-evangelist/chorus-ai/refs/heads/main/apis.yml
 name: Chorus.ai
-x-type: company
+kind: company
 description: Chorus.ai is a conversation intelligence platform (acquired by ZoomInfo) that records, transcribes, and analyzes
   customer-facing calls and meetings to surface deal insights and coach reps.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
