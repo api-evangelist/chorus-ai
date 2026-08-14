@@ -2,20 +2,34 @@ aid: chorus-ai
 url: https://raw.githubusercontent.com/api-evangelist/chorus-ai/refs/heads/main/apis.yml
 name: Chorus.ai
 kind: company
-description: Chorus.ai is a conversation intelligence platform (acquired by ZoomInfo) that records, transcribes, and analyzes
-  customer-facing calls and meetings to surface deal insights and coach reps.
+description: >-
+  Chorus.ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold as
+  "Chorus by ZoomInfo", that records, transcribes and analyzes customer-facing calls, meetings
+  and emails to surface deal insights and coach sales reps. It publishes a single public REST
+  contract — the Chorus API, an OpenAPI 3.0.3 document with 81 operations served unauthenticated
+  at https://chorus.ai/api/openapi.json — covering engagement search, recording upload and media
+  retrieval, coaching moments and playlists, scorecards, AI sales-qualification analysis with CRM
+  writeback, and webhook registration. The API is JSON:API shaped on its /api/v1 surface with an
+  older flat /v3 surface alongside it. Notably, the chorus.ai marketing site has been retired to
+  a redirect shell pointing at zoominfo.com, but the API and both of its documentation surfaces
+  remain live on the original domain.
 accessModel:
-  pricing: unknown
-  onboarding: unknown
+  pricing: enterprise
+  onboarding: sales-gated
   trial: false
   try_now: false
   public: false
-  label: Unknown
-  confidence: low
+  label: Enterprise / Contact Sales
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
-  method: derived
+  - openapi
+  - pricing-page
+  note: >-
+    No public pricing and no self-serve signup. The published API documentation states that an
+    API token must be obtained through a Chorus customer success manager.
+  generated: '2026-08-13'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/chorus-ai.png
 tags:
 - Sales
@@ -23,23 +37,51 @@ tags:
 - Conversation
 - Analytics
 - ZoomInfo
+- Conversation Intelligence
+- Sales Enablement
+- Call Recording
+- Transcription
+- Speech Analytics
+- CRM
+- Coaching
 created: '2026-05-08'
-modified: '2026-05-08'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
 - name: Chorus Engagements API
-  description: Read calls, meetings, emails and engagement metadata.
-  humanURL: https://docs.chorus.ai/
+  description: >-
+    Search and retrieve calls, meetings, emails and engagement metadata. A capability area of the
+    single published Chorus API contract, served at /v3/engagements and /api/v1/conversations.
+  humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
   - Engagements
   - Conversation Intelligence
   properties:
   - type: Documentation
-    url: https://docs.chorus.ai/
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: OpenAPI
+    url: openapi/chorus-ai-openapi.yml
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Overlay
+    url: overlays/chorus-ai-openapi-overlay.yaml
 - name: Chorus Recordings & Transcripts API
-  description: Retrieve recordings, transcripts and AI-generated insights.
-  humanURL: https://docs.chorus.ai/
+  description: >-
+    Upload recordings, retrieve media files, transcripts and AI-generated insights, and build
+    coaching moments, playlists and scorecards. A capability area of the single published Chorus
+    API contract.
+  humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
   - Recordings
@@ -47,18 +89,39 @@ apis:
   - AI
   properties:
   - type: Documentation
-    url: https://docs.chorus.ai/
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: OpenAPI
+    url: openapi/chorus-ai-openapi.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
 - name: Chorus CRM Sync API
-  description: Push and pull contacts, accounts and opportunities for CRM enrichment.
-  humanURL: https://docs.chorus.ai/
+  description: >-
+    Run AI sales-qualification analysis on a recording and write the extracted framework fields
+    back to a CRM opportunity. A capability area of the single published Chorus API contract,
+    served at /api/v1/sales-qualifications.
+  humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
   - CRM
   - Integration
   properties:
   - type: Documentation
-    url: https://docs.chorus.ai/
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: OpenAPI
+    url: openapi/chorus-ai-openapi.yml
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
 common:
+- type: Authentication
+  url: authentication/chorus-ai-authentication.yml
 - type: DomainSecurity
   url: security/chorus-ai-domain-security.yml
 - type: Website
@@ -69,6 +132,76 @@ common:
   url: rate-limits/chorus-ai-rate-limits.yml
 - type: FinOps
   url: finops/chorus-ai-finops.yml
+- type: OpenAPI
+  url: openapi/chorus-ai-openapi.yml
+- type: Documentation
+  url: https://chorus.ai/api-docs/index.html
+- type: APIReference
+  url: https://api-docs.chorus.ai/
+- type: Postman
+  url: https://api-docs.chorus.ai/
+- type: Conventions
+  url: conventions/chorus-ai-conventions.yml
+- type: ErrorCatalog
+  url: errors/chorus-ai-problem-types.yml
+- type: DataModel
+  url: data-model/chorus-ai-data-model.yml
+- type: Conformance
+  url: conformance/chorus-ai-conformance.yml
+- type: Compliance
+  url: conformance/chorus-ai-conformance.yml
+- type: Lifecycle
+  url: lifecycle/chorus-ai-lifecycle.yml
+- type: StatusPage
+  url: https://status.zoominfo.com/
+- type: Webhooks
+  url: asyncapi/chorus-ai-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/chorus-ai-llms.txt
+- type: Overlay
+  url: overlays/chorus-ai-openapi-overlay.yaml
+- type: Packages
+  url: packages/chorus-ai-packages.yml
+- type: Security
+  url: security/chorus-ai-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/chorus-ai-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/chorus-ai-trust-center.yml
+- type: Support
+  url: https://www.zoominfo.com/about/help-center
+- type: Pricing
+  url: https://www.zoominfo.com/products/chorus/pricing
+- type: TermsOfService
+  url: https://www.zoominfo.com/legal/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.zoominfo.com/legal/privacy-policy
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1
+x-coverage:
+  state: covered
+  reason: public-machine-readable-contract
+  detail: >-
+    A live public OpenAPI 3.0.3 with 81 operations was recovered from the API host root at
+    https://chorus.ai/api/openapi.json, discovered via the spec URL hardcoded in the self-hosted
+    Swagger UI at https://chorus.ai/api-docs, along with the provider's public Postman collection
+    at https://api-docs.chorus.ai/ — even though the chorus.ai marketing site is now a redirect
+    shell to zoominfo.com and the docs.chorus.ai host in the old profile fails its TLS handshake.
+  evidence:
+  - url: https://chorus.ai/api/openapi.json
+    status: 200
+  - url: https://chorus.ai/api-docs/index.html
+    status: 200
+  - url: https://api-docs.chorus.ai/
+    status: 200
+  - url: https://docs.chorus.ai/
+    status: 0
+  checked: '2026-08-13'
