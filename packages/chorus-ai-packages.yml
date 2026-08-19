@@ -1,0 +1,100 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  registry.npmjs.org search + pypi.org/pypi/*/json + https://chorus.ai/api-docs/index.html +
+  https://api-docs.chorus.ai/
+result: none
+package_count: 0
+official_count: 0
+summary: >-
+  Chorus publishes NO first-party client libraries in any public package registry. The only
+  machine-consumable client artifacts Chorus ships are the OpenAPI document itself and the public
+  Postman collection — an integrator is expected to generate or hand-write a client. No SDKs
+  pointer is emitted in apis.yml, because there is no official SDK to point at.
+packages: []
+registries_searched:
+- registry: npm
+  endpoint: https://registry.npmjs.org/-/v1/search
+  queries:
+  - chorus.ai
+  - chorus-ai
+  - chorusai
+  - zoominfo
+  official_hits: 0
+  status: 200
+- registry: pypi
+  endpoint: https://pypi.org/pypi/<name>/json
+  queries:
+  - chorus-ai (200 — third party, see rejected below)
+  - chorusai (404)
+  - zoominfo (404)
+  official_hits: 0
+- registry: rubygems
+  searched: false
+  reason: No Ruby client is referenced anywhere in the provider's docs or contract.
+- registry: maven-central
+  searched: false
+  reason: No JVM client is referenced anywhere in the provider's docs or contract.
+- registry: nuget
+  searched: false
+  reason: No .NET client is referenced anywhere in the provider's docs or contract.
+- registry: pkg.go.dev
+  searched: false
+  reason: No Go client is referenced anywhere in the provider's docs or contract.
+rejected_candidates:
+- name: chorus-ai
+  registry: pypi
+  version: 1.0.0
+  url: https://pypi.org/project/chorus-ai/
+  official: false
+  reason: >-
+    Name collision only. Summary is "Query multiple AI platforms simultaneously" and the source
+    is github.com/Kabi10/chorus — unrelated to Chorus.ai conversation intelligence.
+- name: '@opensourceops/chorus-mcp'
+  registry: npm
+  version: 0.1.1
+  url: https://www.npmjs.com/package/@opensourceops/chorus-mcp
+  official: false
+  reason: >-
+    Describes itself as an MCP server for the Chorus.ai conversation intelligence API, but is
+    published by a third party (github.com/opensourceops/chorus-mcp-server), not by Chorus or
+    ZoomInfo. Community wrapper, not a first-party SDK.
+- name: '@chorus-aidlc/chorus'
+  registry: npm
+  official: false
+  reason: Different company — Chorus AI-DLC agent harness (github.com/Chorus-AIDLC/Chorus).
+- name: '@chorus-one/signer'
+  registry: npm
+  official: false
+  reason: Different company — Chorus One (blockchain staking).
+- name: '@tryghost/mg-chorus'
+  registry: npm
+  official: false
+  reason: Different Chorus — Vox Media's Chorus CMS migration tool.
+- name: zoominfo-api-auth-client
+  registry: npm
+  version: 1.0.1
+  url: https://www.npmjs.com/package/zoominfo-api-auth-client
+  official: unverified
+  reason: >-
+    Targets the ZoomInfo (parent) authentication API, not the Chorus API, and its provenance as
+    a ZoomInfo-published package could not be confirmed from the registry metadata. Excluded on
+    both counts.
+- name: '@agentic/zoominfo, @microfox/zoominfo, @deepagent/zoominfo, @keystrokehq/zoominfo'
+  registry: npm
+  official: false
+  reason: Third-party agentic SDK wrappers around ZoomInfo, not Chorus, not first-party.
+alternative_client_artifacts:
+- type: OpenAPI
+  url: https://chorus.ai/api/openapi.json
+  status: 200
+  note: >-
+    OpenAPI 3.0.3, 81 operations. Usable directly with any OpenAPI generator, which is the
+    de-facto client story for this API.
+  file: openapi/_original/chorus-ai-openapi.json
+- type: Postman Collection
+  url: https://api-docs.chorus.ai/
+  status: 200
+  note: Public collection "Chorus API", 77 requests, served from the provider's own documenter host.
+  file: collections/chorus-ai.postman_collection.json
+probed: '2026-08-13'

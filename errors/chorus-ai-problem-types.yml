@@ -1,0 +1,113 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/chorus-ai-openapi.json (components.responses + components.schemas.Error)
+format: jsonapi
+rfc9457: false
+summary: >-
+  Chorus returns a JSON:API error document, not RFC 9457 problem+json. Every 4xx in the contract
+  resolves to one of three shared component responses (BadRequest, NotFound, Conflict), all of
+  which carry the same components.schemas.Error body under media type application/vnd.api+json.
+  There is no published error-code registry, so the `code` field is present in the schema but
+  unenumerated — an agent cannot branch on it from the contract alone.
+envelope:
+  media_type: application/vnd.api+json
+  root_field: errors
+  cardinality: array (one or more error objects per response)
+  schema: components.schemas.Error
+  fields:
+  - name: id
+    type: string
+    nullable: true
+    description: Per-occurrence identifier; the only correlation handle the API exposes.
+  - name: code
+    type: string
+    nullable: true
+    description: >-
+      Application error code. Present in the schema but NOT enumerated anywhere in the spec or
+      the published docs. Observed live value from the ZoomInfo edge: "ZI0001".
+  - name: status
+    type: string
+    nullable: true
+    description: HTTP status as a string (JSON:API convention), e.g. "404".
+  - name: title
+    type: string
+    nullable: true
+    description: Short human-readable summary, e.g. "Not found".
+  - name: detail
+    type: string
+    nullable: true
+    description: Longer human-readable explanation of this occurrence.
+  - name: source
+    type: object
+    nullable: true
+    description: Pointer to the offending part of the request.
+    properties:
+    - pointer
+    - parameter
+    - header
+    - cookie
+  required:
+  - errors
+problem_types:
+- status: 400
+  component: BadRequest
+  title: Bad request
+  operations: 71
+  meaning: >-
+    Request failed validation — malformed JSON:API document, bad filter/page parameter, or an
+    invalid attribute value. Inspect errors[].source.pointer / source.parameter to locate it.
+  remediation: >-
+    Fix the field named by errors[].source and retry. Not retryable unchanged; this is the most
+    widely declared failure in the contract (71 of 81 operations).
+  retryable: false
+- status: 404
+  component: NotFound
+  title: Not found
+  operations: 25
+  meaning: >-
+    The addressed resource does not exist, OR the authenticated user's data-access-control
+    settings exclude it. Chorus documents that private recordings are simply not returned, so a
+    404 is not proof of absence — it may be an authorization outcome presented as absence.
+  remediation: >-
+    Verify the id, then verify the token user's roles & permissions and recording access scope
+    before concluding the resource is gone.
+  retryable: false
+- status: 409
+  component: Conflict
+  title: Conflict
+  operations: 24
+  meaning: >-
+    The request conflicts with current server state — typically a duplicate create or a
+    concurrent modification of the same resource.
+  remediation: >-
+    Re-read the resource and reconcile before retrying. Because no idempotency key is supported,
+    a blind retry of a create is a plausible source of 409s.
+  retryable: conditional
+gaps:
+  - id: no-401-403-declared
+    note: >-
+      Not one operation declares a 401 or 403 response, even though every operation is protected
+      by the document-level security requirement and the docs describe role-based denial. The
+      live host does return 401 (observed from the ZoomInfo edge with code ZI0001), so the
+      contract under-describes its own auth failures.
+  - id: no-429-declared
+    note: No operation declares 429; rate limiting is entirely undocumented.
+  - id: no-5xx-declared
+    note: No operation declares any 5xx response.
+  - id: code-not-enumerated
+    note: >-
+      errors[].code exists in the schema but has no enumeration and no published registry, so
+      programmatic error handling has to fall back to HTTP status plus prose matching.
+  - id: no-response-descriptions
+    note: >-
+      The three shared component responses carry one-word descriptions ("Bad request",
+      "Not found", "Conflict") and none of the 120 operation-level 4xx references adds any
+      operation-specific description.
+observed_live:
+- url: https://chorus.ai/api/v1
+  status: 404
+  body: '{"errors":[{"detail":"The server has not found anything matching the Request-URI.","status":"404","title":"Not found"}]}'
+  fetched: '2026-08-13'
+cross_links:
+  conventions: conventions/chorus-ai-conventions.yml
+  conformance: conformance/chorus-ai-conformance.yml

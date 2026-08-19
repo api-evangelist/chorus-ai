@@ -3,9 +3,14 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Chorus.ai
 providerId: chorus-ai
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://chorus.ai/api/openapi.json + https://chorus.ai/api-docs/index.html +
+  https://api-docs.chorus.ai/
 created: '2026-05-08'
-modified: '2026-05-08'
-reconciled: false
+modified: '2026-08-13'
+reconciled: true
 tags:
 - Sales
 - Revenue Intelligence
@@ -15,23 +20,63 @@ tags:
 - Rate Limiting
 - Quotas
 - Throttling
-description: Placeholder rate-limit artifact for Chorus.ai. Replace with real limits once researched.
-notes: "Initial scaffold \u2014 limits have not yet been reconciled."
-sources:
-- https://www.chorus.ai/
-- https://docs.chorus.ai/
-- https://docs.chorus.ai/reference
+limit_count: 0
+description: >-
+  Chorus documents NO rate limits. This is a verified zero, not an unresearched gap — the earlier
+  placeholder in this file has been replaced with the researched result.
+notes: >-
+  Every published Chorus surface was checked: the live OpenAPI 3.0.3 (81 operations), the
+  self-hosted Swagger UI at chorus.ai/api-docs, and the public Postman collection at
+  api-docs.chorus.ai. None of them declares a 429 response, names a quota, or documents any
+  rate-limit response header. The strongest evidence is structural: across all 81 operations the
+  contract declares only 200/201/202/204/302/307/400/404/409 — there is no 429 anywhere in the
+  document, and no 401 or 403 either. An agent integrating with Chorus has no published signal
+  telling it when it is being throttled or how long to wait, and would have to discover
+  throttling behaviour empirically in production.
+limits: []
+headers:
+  published: []
+  checked:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - Retry-After
+  result: none documented
 responseCodes:
-  throttled: 429
-limits:
-- name: Default
-  scope: account
-  metric: varies
-  limit: see provider documentation
-  notes: Pending reconciliation.
+  throttled: not documented
+  declared_4xx:
+  - 400
+  - 404
+  - 409
+  note: 429 is not declared on any operation in the contract.
+quotas:
+  published: false
+  note: >-
+    No per-key, per-account or per-endpoint quota is published. Pricing is sales-gated
+    (see plans/chorus-ai-plans-pricing.yml, plan_count 0), so any negotiated limits would sit in
+    the enterprise contract rather than in public documentation.
 policies:
 - name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
+  description: >-
+    RECOMMENDATION, not provider policy. Because Chorus publishes no throttling contract,
+    clients should implement conservative exponential backoff with jitter and treat any
+    unexpected 4xx/5xx as potentially rate-related. Chorus does not document a Retry-After header
+    to honour.
+sources:
+- url: https://chorus.ai/api/openapi.json
+  status: 200
+  note: 81 operations, no 429 declared, no rate-limit header documented
+- url: https://chorus.ai/api-docs/index.html
+  status: 200
+  note: Swagger UI over the same spec; no rate-limit prose
+- url: https://api-docs.chorus.ai/
+  status: 200
+  note: public Postman collection (77 requests); no rate-limit prose
+probed: '2026-08-13'
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

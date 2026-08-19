@@ -1,0 +1,87 @@
+generated: '2026-08-13'
+method: searched
+source: https://chorus.ai/api/openapi.json (info.description) + https://chorus.ai/api-docs/index.html
+docs: https://chorus.ai/api-docs/index.html
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+  primary: api_token_authorization_header
+  oauth2: false
+  notes: >-
+    The Chorus API authenticates with a per-user API token sent in the Authorization header.
+    Note the divergence between the published spec and the published prose: the OpenAPI declares
+    an http/bearer scheme, but info.description demonstrates a RAW token with no "Bearer " prefix
+    (curl -H "Authorization:<token>"). Clients written from the spec alone may send the wrong shape.
+schemes:
+- name: basic
+  type: http
+  scheme: basic
+  description: HTTP basic authentication (for those APIs that support it).
+  applies_to: subset of operations; the spec does not enumerate which
+  sources:
+  - openapi/chorus-ai-openapi.yml
+- name: bearer-token
+  type: http
+  scheme: bearer
+  description: A Chorus token or a signed JWT.
+  sources:
+  - openapi/chorus-ai-openapi.yml
+- name: x-ziaccesstoken
+  type: apiKey
+  in: header
+  parameter: x-ziaccesstoken
+  description: A ZoomInfo access token.
+  note: >-
+    Post-acquisition path — a ZoomInfo-issued access token is accepted as an alternative to a
+    native Chorus API token. Chorus.ai was acquired by ZoomInfo in 2021 and now ships as
+    "Chorus by ZoomInfo".
+  sources:
+  - openapi/chorus-ai-openapi.yml
+applied:
+  global_security:
+  - basic
+  - bearer-token
+  - x-ziaccesstoken
+  note: All three schemes are declared at the document root as alternatives (OR).
+token_lifecycle:
+  issuance: >-
+    API tokens are generated per Chorus user from the Personal Settings page inside the Chorus
+    application. The user's role must be permitted API access via roles & permissions settings.
+  self_serve: false
+  gate: >-
+    The published docs state that during the early access period a personal API token must be
+    obtained by contacting your Chorus customer success manager.
+  rotation: not documented
+  expiry: not documented
+authorization_model:
+  style: user-scoped, inherits application permissions
+  rules:
+  - Recordings marked private are never returned through the API.
+  - >-
+    Data access control settings configured for the token's user apply to API access — to read all
+    recordings the token's user must themselves have access to all recordings.
+  - Roles & permissions that gate actions in the Chorus UI equally gate them through the API.
+  source: https://chorus.ai/api/openapi.json (info.description, "Privacy and Data Access Control")
+session_endpoints:
+  note: >-
+    The spec also exposes interactive session management (POST /login, GET|DELETE
+    /api/v1/sessions/current, POST /api/v1/sessions/exchange, POST /api/auth/signed_request).
+    These back the Chorus web application rather than server-to-server API token use.
+  operations:
+  - post-login
+  - get-api-v1-sessions-current
+  - delete-api-v1-sessions-current
+  - post-api-v1-sessions-exchange
+  - post-api-auth-signed_request
+scopes:
+  published: false
+  note: >-
+    No oauth2 securityScheme is declared and no scope reference is published, so there is no
+    scopes/ artifact for this provider. Authorization is role-based inside the Chorus product.
+cross_links:
+  conventions: conventions/chorus-ai-conventions.yml
+  errors: errors/chorus-ai-problem-types.yml
+  conformance: conformance/chorus-ai-conformance.yml

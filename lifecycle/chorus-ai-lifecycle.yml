@@ -1,0 +1,117 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  openapi/_original/chorus-ai-openapi.json + https://chorus.ai/api-docs/index.html +
+  https://status.chorus.ai/ + https://status.zoominfo.com/
+summary: >-
+  Chorus publishes a versioned API but no versioning policy, no deprecation policy and no
+  changelog. Two non-aligned path versions (/api/v1 and /v3) are served concurrently with no
+  statement about which supersedes which. Post-acquisition, the operational surfaces have moved
+  to ZoomInfo: status.chorus.ai no longer serves a status page, it meta-refreshes to
+  zoominfo.com/products/chorus, and the real status page is status.zoominfo.com.
+versioning:
+  style: uri path
+  versions:
+  - path: /api/v1
+    operations: 60
+    shape: JSON:API (application/vnd.api+json, page[]/filter[]/fields[])
+    status: current
+  - path: /v3
+    operations: 8
+    shape: flat query parameters, continuation_key cursor
+    status: current
+    note: >-
+      Despite the higher number, /v3 is the older, flatter surface — it carries the original
+      engagements/users/upload/webhook endpoints and is the one demonstrated in the published
+      authentication example.
+  - path: /login, /api/auth/*
+    operations: 2
+    shape: session/web
+    status: current
+  document_version: 26.33.08
+  document_version_scheme: >-
+    Calendar/build-shaped (YY.WW.BB), not semantic. It is not referenced by any published policy
+    and there is no way for a consumer to map it to a change.
+  policy_published: false
+  policy_url: null
+  note: >-
+    No statement anywhere in the contract or docs explains the relationship between /api/v1 and
+    /v3, which one new integrations should target, or whether either is frozen.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  schema_level_deprecations:
+    present: true
+    note: >-
+      A number of component schema properties carry `deprecated` flags, but no operation is
+      marked deprecated and no removal timeline is published for any of them.
+  evidence: >-
+    Zero of 81 operations carry `deprecated: true`; no Sunset or Deprecation response header is
+    declared on any operation.
+status_page:
+  published: true
+  url: https://status.zoominfo.com/
+  status: 200
+  scope: ZoomInfo platform (Chorus is a ZoomInfo product line)
+  chorus_subdomain:
+    url: https://status.chorus.ai/
+    status: 200
+    is_status_page: false
+    note: >-
+      status.chorus.ai returns HTTP 200 but the body is a 10-line meta-refresh shell that
+      redirects to https://www.zoominfo.com/products/chorus — a marketing page, not a status
+      page. Recorded here so the 200 is not mistaken for a served status surface. The pointer
+      in apis.yml therefore targets status.zoominfo.com.
+  probed: '2026-08-13'
+changelog:
+  published: false
+  url: null
+  evidence: >-
+    No changelog, release-notes or what's-new page was found on chorus.ai, api-docs.chorus.ai or
+    the ZoomInfo Chorus product pages. The Swagger UI at /api-docs renders the current spec only,
+    with no version history. No changelog/ artifact is emitted and no ChangeLog pointer is wired.
+sla:
+  published: false
+  url: null
+  note: Not published publicly; presumed to be a contractual term of the enterprise agreement.
+support:
+  channel: https://www.zoominfo.com/about/help-center
+  status: 200
+  api_token_gate: >-
+    The published docs state that during the early access period an API token must be obtained
+    by contacting your Chorus customer success manager — support is the provisioning path.
+company_lifecycle:
+  event: acquisition
+  acquirer: ZoomInfo
+  year: 2021
+  brand_status: >-
+    Chorus is sold as "Chorus by ZoomInfo". The chorus.ai marketing site has been fully retired —
+    https://www.chorus.ai/ returns a meta-refresh shell to
+    https://www.zoominfo.com/products/chorus, as do /pricing and every other marketing path.
+  surviving_chorus_ai_surfaces:
+  - https://chorus.ai/api/openapi.json (the live OpenAPI, HTTP 200)
+  - https://chorus.ai/api-docs/index.html (self-hosted Swagger UI, HTTP 200)
+  - https://api-docs.chorus.ai/ (Postman documenter, HTTP 200)
+  - https://chorus.ai/api/* and https://chorus.ai/v3/* (the API itself)
+  note: >-
+    This is the notable finding for this provider: the brand's website is gone but the API and
+    both of its documentation surfaces are still live and publicly readable on the original
+    chorus.ai domain.
+decay_signals:
+- signal: dead terms-of-service link in the contract
+  detail: info.termsOfService is https://www.chorus.ai/terms, which returns HTTP 404.
+- signal: no first-party SDK in any registry
+  detail: See packages/chorus-ai-packages.yml — zero official client libraries published.
+- signal: '"early access period" language still in the published contract'
+  detail: >-
+    info.description still describes token issuance as an early-access, CSM-mediated process
+    years after the product's acquisition.
+- signal: no changelog
+  detail: No dated record of change exists for a contract whose version string implies weekly builds.
+cross_links:
+  conventions: conventions/chorus-ai-conventions.yml
+  conformance: conformance/chorus-ai-conformance.yml

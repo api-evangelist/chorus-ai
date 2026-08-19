@@ -1,0 +1,267 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Chorus API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: openapi/_original/chorus-ai-openapi.json
+  extends: openapi/chorus-ai-openapi.yml
+  target_spec:
+    title: Chorus API
+    version: 26.33.08
+    fetched_from: https://chorus.ai/api/openapi.json
+    fetched: '2026-08-13'
+  note: >-
+    This overlay records API Evangelist's enhancements to the Chorus API contract without
+    mutating the original document. Every action below fills a gap that was verified absent in
+    the published spec on 2026-08-13. Nothing here changes Chorus behaviour — it documents what
+    Chorus omitted, sourced from Chorus's own prose, live probes, or explicit absence.
+actions:
+
+# ---- Contact / license / legal ----------------------------------------------------------
+- target: $.info
+  description: >-
+    Add the support contact. The published spec declares no info.contact, so a consumer has no
+    machine-readable route to help. Sourced from the ZoomInfo help center.
+  update:
+    contact:
+      name: ZoomInfo Support (Chorus)
+      url: https://www.zoominfo.com/about/help-center
+
+- target: $.info
+  description: >-
+    Correct the terms-of-service link. The spec points at https://www.chorus.ai/terms, which
+    returns HTTP 404 — the chorus.ai marketing site is retired. The governing terms are
+    ZoomInfo's, since Chorus ships as "Chorus by ZoomInfo".
+  update:
+    termsOfService: https://www.zoominfo.com/legal/terms-of-use
+    x-original-termsOfService: https://www.chorus.ai/terms
+    x-original-termsOfService-status: 404
+
+- target: $.info
+  description: >-
+    Record the acquisition and the divergence between the retired marketing site and the live
+    API, so an agent does not conclude from www.chorus.ai that the API is dead.
+  update:
+    x-provider-status:
+      acquired_by: ZoomInfo
+      acquired: 2021
+      brand: Chorus by ZoomInfo
+      marketing_site: >-
+        https://www.chorus.ai/ returns HTTP 200 but serves only a meta-refresh redirect to
+        https://www.zoominfo.com/products/chorus. The API host chorus.ai remains live.
+      live_api_surfaces:
+      - https://chorus.ai/api/openapi.json
+      - https://chorus.ai/api-docs/index.html
+      - https://api-docs.chorus.ai/
+      dead_surfaces:
+      - host: docs.chorus.ai
+        reason: TLS handshake failure — serves nothing
+      - host: status.chorus.ai
+        reason: meta-refresh shell to a marketing page, not a status page
+
+# ---- Servers ----------------------------------------------------------------------------
+- target: $.servers
+  description: >-
+    Annotate the declared servers. The spec ships a relative "/" entry alongside the absolute
+    host, which is unusable for a client that did not fetch the document from chorus.ai.
+  update:
+    x-api-evangelist-servers:
+      canonical: https://chorus.ai
+      note: >-
+        servers[0] is the relative "/" — resolve against https://chorus.ai. Both the /api/v1 and
+        /v3 path families are served from this single host.
+
+# ---- Tags -------------------------------------------------------------------------------
+- target: $
+  description: >-
+    Add the root-level tags[] block. 22 tags are used on operations but none is declared or
+    described at the document root, so tooling renders them bare.
+  update:
+    tags:
+    - name: Conversations
+      description: Recorded calls and meetings — search, retrieve, upload, export and delete.
+    - name: Emails
+      description: Captured email engagements and email threads.
+    - name: Users
+      description: Chorus users, the current user, and per-user settings.
+    - name: Teams
+      description: Team groupings used for rollup and access control.
+    - name: Playlists
+      description: Coaching playlists, smart playlists and playlist moments.
+    - name: External Moments
+      description: Marked, shareable segments of a conversation.
+    - name: Public External Moments
+      description: Publicly addressable moment create/update operations.
+    - name: Public Playlist Moments
+      description: Publicly addressable playlist-moment operations.
+    - name: Engagement filter
+      description: Saved filter definitions over engagements.
+    - name: Saved Search
+      description: Persisted searches, including the user default.
+    - name: Scorecards
+      description: Coaching evaluations of reps on conversations.
+    - name: Sales Qualifications
+      description: AI qualification framework analysis and CRM writeback.
+    - name: Video Conferences
+      description: Chorus-hosted video conferences addressed by go_link.
+    - name: Webhook
+      description: Registration, listing and deletion of event callbacks.
+    - name: Session management
+      description: Web-application session lifecycle (not server-to-server token auth).
+    - name: Auth
+      description: Signed-request authentication flow.
+    - name: Event
+      description: Inbound event ingestion.
+    - name: Reports
+      description: Report export operations.
+    - name: Integrations Calendar
+      description: Google and Office 365 calendar service-account connect and verify.
+    - name: Integrations Email
+      description: Google and Office 365 email service-account connect.
+    - name: Integrations Meet
+      description: Google Meet, Microsoft Teams and Webex/Zoom conferencing connect.
+    - name: Integrations CRM
+      description: CRM connector.
+
+# ---- Undeclared error responses ---------------------------------------------------------
+- target: $.components.responses
+  description: >-
+    Add the auth and throttling responses the API can return but never declares. Zero of 81
+    operations declare 401, 403, 429 or any 5xx, yet the live host demonstrably returns 401.
+    These are documented as x- prefixed additions so they are clearly API Evangelist annotations
+    rather than provider commitments.
+  update:
+    x-Unauthorized:
+      description: >-
+        Missing or invalid API token. NOT declared by the provider on any operation, but observed
+        live from the ZoomInfo edge with body
+        {"errors":[{"code":"ZI0001","title":"Unauthorized access", ...}]}.
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    x-Forbidden:
+      description: >-
+        The token's user lacks the role/permission for this action, or data-access-control
+        settings exclude the resource. NOT declared by the provider. Note that Chorus may instead
+        answer 404 for out-of-scope recordings.
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    x-TooManyRequests:
+      description: >-
+        UNDOCUMENTED. Chorus publishes no rate limits and declares no 429 anywhere in the
+        contract. Included so that clients are prompted to handle throttling defensively; no
+        Retry-After header is documented to honour.
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+# ---- Error semantics --------------------------------------------------------------------
+- target: $.components.schemas.Error
+  description: >-
+    Annotate the error envelope with the facts a consumer needs: it is JSON:API, not RFC 9457,
+    and errors[].code is never enumerated.
+  update:
+    x-error-format: jsonapi
+    x-rfc9457: false
+    x-code-registry-published: false
+    x-observed-codes:
+    - ZI0001
+    x-api-evangelist-catalog: errors/chorus-ai-problem-types.yml
+
+# ---- Runtime semantics the spec omits ---------------------------------------------------
+- target: $
+  description: >-
+    Record the absent runtime contracts explicitly. An agent reading only the spec would
+    otherwise assume industry defaults that Chorus does not provide.
+  update:
+    x-runtime-semantics:
+      idempotency:
+        supported: false
+        header: null
+        note: >-
+          No Idempotency-Key support across 81 operations, including POST /v3/upload and
+          POST /api/v1/conversations:bulk. Retrying a timed-out create risks a duplicate.
+      rate_limits:
+        documented: false
+        headers: []
+        status_on_exhaustion: not documented
+      request_id:
+        header: null
+        note: The per-error `id` field is the only correlation handle exposed.
+      deprecation:
+        policy: null
+        sunset_header: false
+        note: >-
+          /api/v1 and /v3 are served concurrently with no statement of which supersedes which
+          and no operation marked deprecated.
+      pagination:
+        styles:
+        - surface: /api/v1
+          params:
+          - 'page[number]'
+          - 'page[size]'
+          - 'page[after]'
+        - surface: /v3/engagements
+          params:
+          - continuation_key
+        response_envelope: not documented
+
+# ---- Webhook payload gap ----------------------------------------------------------------
+- target: $.paths['/v3/webhook'].post
+  description: >-
+    Flag that the callback payload is undocumented. The registration request is fully specified,
+    but the body Chorus POSTs to hook_url is not, and no signing mechanism is published.
+  update:
+    x-callback-contract:
+      payload_schema_published: false
+      signing_published: false
+      retries_documented: false
+      events:
+      - recording_done
+      note: >-
+        A receiver cannot validate authenticity or shape from the published contract. See
+        asyncapi/chorus-ai-webhooks.yml.
+
+# ---- Auth clarification -----------------------------------------------------------------
+- target: $.components.securitySchemes['bearer-token']
+  description: >-
+    Flag the spec/prose divergence on the Authorization header. The scheme declares http/bearer,
+    but the provider's own published example sends a raw token with no "Bearer " prefix.
+  update:
+    x-prefix-divergence:
+      spec_declares: 'Authorization: Bearer <token>'
+      docs_demonstrate: 'Authorization: <token>'
+      docs_source: https://chorus.ai/api/openapi.json (info.description)
+      note: >-
+        A client generated from this scheme alone may send the wrong header shape. See
+        authentication/chorus-ai-authentication.yml.
+
+- target: $.components.securitySchemes['x-ziaccesstoken']
+  description: Record why a ZoomInfo token appears in a Chorus contract.
+  update:
+    x-parent-company-auth:
+      parent: ZoomInfo
+      note: >-
+        Post-acquisition path — a ZoomInfo-issued access token is accepted as an alternative to a
+        native Chorus API token.
+
+# ---- Provisioning gate ------------------------------------------------------------------
+- target: $.info
+  description: >-
+    Record that API access is sales-gated, which is not discoverable from the operations
+    themselves.
+  update:
+    x-access-model:
+      self_serve_signup: false
+      token_issuance: >-
+        Generated per user in the Chorus application's Personal Settings page; the user's role
+        must permit API access. The published description states that during the early access
+        period a token must be obtained via your Chorus customer success manager.
+      public_pricing: false
+      see: plans/chorus-ai-plans-pricing.yml

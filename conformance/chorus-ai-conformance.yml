@@ -1,0 +1,149 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  openapi/_original/chorus-ai-openapi.json + https://chorus.ai/api-docs/index.html +
+  https://www.zoominfo.com/legal/security-overview
+summary: >-
+  Cross-cutting standards posture for the Chorus API. The API is a genuine JSON:API
+  implementation at the media-type and error-envelope level, but publishes no RFC 9457, no OAuth
+  2.0/OIDC, no idempotency and no rate-limit standard. Compliance certifications are held at the
+  ZoomInfo parent level (Chorus.ai was acquired by ZoomInfo in 2021 and chorus.ai now redirects
+  to zoominfo.com/products/chorus), and are verified below against ZoomInfo's own security page.
+standards:
+- id: jsonapi
+  name: JSON:API
+  conforms: true
+  confidence: high
+  evidence: >-
+    Media type application/vnd.api+json is used for every request and response on the /api/v1
+    surface and for the shared error component. Resource documents follow the data/attributes
+    shape (85 schemas paired as <Entity> / <Entity>Doc), the error envelope matches the JSON:API
+    error object exactly (errors[] with id/code/status/title/detail/source.pointer), and the
+    pagination and filtering families use page[number]/page[size]/page[after],
+    filter[...] and fields[...] sparse fieldsets.
+  deviations:
+  - No `relationships` objects are published; association is by scalar *_id fields only.
+  - No top-level `links` or `meta` members are declared anywhere in the contract.
+  - The older /v3 surface does not follow JSON:API — it uses flat query parameters and a
+    `continuation_key` cursor instead.
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    No application/problem+json media type and no type/title/status/detail/instance problem
+    object anywhere in the spec. Errors are JSON:API-shaped instead.
+  see: errors/chorus-ai-problem-types.yml
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme is declared. The three declared schemes are http/basic,
+    http/bearer and an apiKey header (x-ziaccesstoken). Tokens are minted per-user from the
+    Chorus Personal Settings page, not through an authorization server.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: >-
+    /.well-known/openid-configuration returns 403 on chorus.ai and 404 on www.chorus.ai; no
+    openIdConnect securityScheme is declared.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 403 on chorus.ai, 404 on www.chorus.ai.
+- id: rfc9116
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt returns 403 on chorus.ai and 404 on www.chorus.ai. A security
+    contact is published in prose (security@zoominfo.com) but not as a machine-readable file.
+  see: well-known/chorus-ai-well-known.yml
+- id: idempotency
+  name: Idempotency-Key (draft-ietf-httpapi-idempotency-key-header)
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header, no idempotency language and no replay semantics appear in the
+    spec or the published description, across 81 operations including media upload and bulk
+    conversation ingest.
+- id: rfc6585-ratelimit
+  name: Rate limit signalling (RFC 6585 429 / draft RateLimit headers)
+  conforms: false
+  evidence: >-
+    No operation declares a 429 response and no X-RateLimit-*, RateLimit-* or Retry-After header
+    is documented.
+  see: rate-limits/chorus-ai-rate-limits.yml
+- id: rfc8594
+  name: RFC 8594 Sunset header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header is declared and no operation carries `deprecated: true`,
+    despite two concurrent path versions (/api/v1 and /v3).
+- id: pagination
+  name: Documented pagination
+  conforms: partial
+  evidence: >-
+    Two different pagination grammars coexist — JSON:API page[number]/page[size]/page[after] on
+    /api/v1 and a `continuation_key` cursor on /v3/engagements — and neither documents its
+    response envelope fields.
+- id: openapi
+  name: OpenAPI Specification
+  conforms: true
+  version: 3.0.3
+  evidence: >-
+    A valid OpenAPI 3.0.3 document is served publicly and unauthenticated at
+    https://chorus.ai/api/openapi.json (HTTP 200, application/json, 265 KB), rendered by a
+    self-hosted Swagger UI at https://chorus.ai/api-docs/index.html. 81 operations, 100%
+    with unique operationIds, 100% with summaries, 22 tags, 85 component schemas.
+  gaps:
+  - No `info.contact`.
+  - No `info.license`.
+  - info.termsOfService points at https://www.chorus.ai/terms, which returns 404.
+  - No top-level `tags[]` declaration block (tags are used on operations but never described).
+  - No response examples anywhere in the document.
+  - No 401/403/429/5xx responses declared on any operation.
+- id: postman
+  name: Postman Collection v2
+  conforms: true
+  evidence: >-
+    A public Postman collection ("Chorus API", 77 requests) is published and served through the
+    provider's own documenter host at https://api-docs.chorus.ai/ (collection 19674985/2sBXcDGLvE).
+  file: collections/chorus-ai.postman_collection.json
+compliance:
+  scope_note: >-
+    Chorus.ai has no independent compliance program. The certifications below are ZoomInfo's,
+    verified on ZoomInfo's own security page; Chorus is a ZoomInfo product line, so they are the
+    governing attestations for the Chorus service.
+  source: https://www.zoominfo.com/legal/security-overview
+  source_status: 200
+  verified: '2026-08-13'
+  certifications:
+  - name: SOC 2 Type II
+    holder: ZoomInfo
+    scope: security, availability and confidentiality controls (AICPA attestation)
+  - name: ISO/IEC 27001
+    holder: ZoomInfo
+    scope: Information Security Management System
+  - name: ISO/IEC 27701
+    holder: ZoomInfo
+    scope: Privacy Information Management
+  - name: TRUSTe
+    holder: ZoomInfo
+    scope: enterprise privacy certification
+  frameworks:
+  - name: ISO 31000
+    holder: ZoomInfo
+    scope: risk management framework underpinning the ISMS (framework, not a certification)
+  not_held:
+    note: >-
+      ZoomInfo's security page names PCI DSS, HIPAA and CSA-STAR only as certifications it may
+      REQUIRE OF ITS OWN SERVICE PROVIDERS during third-party risk review. They are explicitly
+      NOT ZoomInfo or Chorus certifications and must not be recorded as such.
+    excluded:
+    - PCI DSS
+    - HIPAA
+    - CSA-STAR
+cross_links:
+  authentication: authentication/chorus-ai-authentication.yml
+  errors: errors/chorus-ai-problem-types.yml
+  conventions: conventions/chorus-ai-conventions.yml
+  trust_center: security/chorus-ai-trust-center.yml
+  well_known: well-known/chorus-ai-well-known.yml

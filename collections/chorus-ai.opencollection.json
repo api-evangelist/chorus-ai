@@ -1,0 +1,1884 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Chorus API",
+    "version": "26.33.08"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Signed request authentication flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/auth/signed_request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API returns a signed request authentication response based on the HMAC authentication flow"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Event",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "PagerDuty webhook for incoming CI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/pagerduty/event",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "PagerDuty webhook for incoming CI"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Conversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch a LIVE conversation using meeting uuid or user id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/conversations/live",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "The list of fields to populate. Value must be a comma-delimited list. Each item must be one of the following: account, company_name, _created_at, _modified_at, deal, disposition, language, metrics, meeting.id, name, owner, owner.email, participants, private, recording, recording.audio_only, recording.autojoin, recording.autojoin_reason, recording.clusters, recording.duration, recording.end_reason, recording.recordable, recording.schedule_end_time, recording.schedule_start_time, recording.start_time, recording.thumbnails, recording.trackers, recording.utterances, source, status, user_company_name"
+              },
+              {
+                "name": "fields[conversations]",
+                "value": "",
+                "type": "query",
+                "description": "The list of conversation fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list."
+              },
+              {
+                "name": "fields[recordings]",
+                "value": "",
+                "type": "query",
+                "description": "The recording-related fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list."
+              }
+            ]
+          },
+          "docs": "Get details about a live conversation."
+        },
+        {
+          "info": {
+            "name": "Fetch a specific conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/conversations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "The list of fields to populate. Value must be a comma-delimited list. Each item must be one of the following: account, company_name, _created_at, _modified_at, deal, disposition, language, metrics, meeting.id, name, owner, owner.email, participants, private, recording, recording.audio_only, recording.autojoin, recording.autojoin_reason, recording.clusters, recording.duration, recording.end_reason, recording.recordable, recording.schedule_end_time, recording.schedule_start_time, recording.start_time, recording.thumbnails, recording.trackers, recording.utterances, source, status, user_company_name"
+              },
+              {
+                "name": "fields[conversations]",
+                "value": "",
+                "type": "query",
+                "description": "The list of conversation fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list."
+              },
+              {
+                "name": "fields[recordings]",
+                "value": "",
+                "type": "query",
+                "description": "The recording-related fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list."
+              },
+              {
+                "name": "force_regeneration",
+                "value": "",
+                "type": "query",
+                "description": "Specify true to force the conversation to be regenerated based on the latest information."
+              },
+              {
+                "name": "skip_summary_generation",
+                "value": "",
+                "type": "query",
+                "description": "Specify true to skip summary generation."
+              },
+              {
+                "name": "include_meeting_metadata",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include meeting metadata including provider calendar id and meeting url"
+              }
+            ]
+          },
+          "docs": "This API fetches the conversation with the given ID."
+        },
+        {
+          "info": {
+            "name": "Delete a conversation record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/conversations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "force_delete",
+                "value": "",
+                "type": "query",
+                "description": "Applicable to recordings only; delete associated playlist moments with the recording"
+              }
+            ]
+          },
+          "docs": "Makes an asynchronous request to delete a conversation record such as an e-mail or recording."
+        },
+        {
+          "info": {
+            "name": "Disconnect a live conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/conversations/:id/actions/disconnect",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API disconnects a live call."
+        },
+        {
+          "info": {
+            "name": "Download media file or metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/conversations/:id/media",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "info",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Download conversation media file (video or audio). If both video and audio files exist, the video file is returned by default. If video does not exist, will use the audio file. The API supports two response modes: direct redirect to the media file or a JSON response containing metadata and a download link."
+        },
+        {
+          "info": {
+            "name": "Bulk process conversations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/conversations:bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk-upload and/or delete conversations."
+        },
+        {
+          "info": {
+            "name": "Export recordings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/conversations:export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule a task to have conversations matching the specified criteria emailed to you. Exports include downloadable links to audio/video of recordings plus metadata."
+        },
+        {
+          "info": {
+            "name": "Create a new conversations:validate$",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/conversations:validate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validates if an upcoming meeting, which has not been saved in any way, will be automatically recorded."
+        },
+        {
+          "info": {
+            "name": "Join a live call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/join"
+          },
+          "docs": "This API may be used to join a live call by posting the plain text you would otherwise use to invite someone to join a call."
+        },
+        {
+          "info": {
+            "name": "Get conversations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v3/engagements",
+            "params": [
+              {
+                "name": "compliance",
+                "value": "",
+                "type": "query",
+                "description": "Call recording compliance flag"
+              },
+              {
+                "name": "continuation_key",
+                "value": "",
+                "type": "query",
+                "description": "Continuation key for pagination"
+              },
+              {
+                "name": "disposition_connected",
+                "value": "",
+                "type": "query",
+                "description": "Chorus disposition - connected"
+              },
+              {
+                "name": "disposition_gatekeeper",
+                "value": "",
+                "type": "query",
+                "description": "Chorus disposition - gatekeeper"
+              },
+              {
+                "name": "disposition_tree",
+                "value": "",
+                "type": "query",
+                "description": "Chorus disposition - phone tree"
+              },
+              {
+                "name": "disposition_voicemail",
+                "value": "",
+                "type": "query",
+                "description": "Chorus disposition - voicemail"
+              },
+              {
+                "name": "engagement_id",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of engagement ids"
+              },
+              {
+                "name": "engagement_type",
+                "value": "",
+                "type": "query",
+                "description": "Type of engagement"
+              },
+              {
+                "name": "content_type",
+                "value": "",
+                "type": "query",
+                "description": "Type of engagement"
+              },
+              {
+                "name": "max_date",
+                "value": "",
+                "type": "query",
+                "description": "Max date of engagement"
+              },
+              {
+                "name": "max_duration",
+                "value": "",
+                "type": "query",
+                "description": "Max duration of meeting (in seconds)"
+              },
+              {
+                "name": "min_date",
+                "value": "",
+                "type": "query",
+                "description": "Min date of engagement"
+              },
+              {
+                "name": "min_duration",
+                "value": "",
+                "type": "query",
+                "description": "Min duration of meeting (in seconds)"
+              },
+              {
+                "name": "participants_email",
+                "value": "",
+                "type": "query",
+                "description": "The email address of a participant"
+              },
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of Team ID(s) for engagement owner"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of User ID(s) for engagement owner"
+              },
+              {
+                "name": "with_trackers",
+                "value": "",
+                "type": "query",
+                "description": "Return tracker information with results"
+              },
+              {
+                "name": "additional_parameters",
+                "value": "",
+                "type": "query",
+                "description": "Additional query parameters may be specified here as a JSON object.  Note: while these parameters are specified here as a JSON object, they will end up getting passed to the API as a series of independent query parameters."
+              }
+            ]
+          },
+          "docs": "Get conversations matching the specified criteria."
+        },
+        {
+          "info": {
+            "name": "Delete multiple engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/v3/engagements",
+            "params": [
+              {
+                "name": "engagement_id",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of Engagements ID(s) to delete. Supports up to 100 per API call."
+              }
+            ]
+          },
+          "docs": "This API allows you to delete multiple engagements by ID."
+        },
+        {
+          "info": {
+            "name": "Delete a single engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/v3/engagements/:engagement_id",
+            "params": [
+              {
+                "name": "engagement_id",
+                "value": "",
+                "type": "path",
+                "description": "Engagements ID(s) to delete"
+              }
+            ]
+          },
+          "docs": "This API allows you to delete a single engagement."
+        },
+        {
+          "info": {
+            "name": "Upload a conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v3/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "crm_account_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "crm_opportunity_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "data",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "enforce_unique_meeting_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "meeting_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "user",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload a conversation to Chorus. Support formats: 3GPP, AU, AVI, FLV, HLS, MKV, MP3, MP4, Ogg, WAV, WebM"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Emails",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get email thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/email_threads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Get details about an email thread."
+        },
+        {
+          "info": {
+            "name": "Delete email thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/email_threads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Delete all emails in a thread."
+        },
+        {
+          "info": {
+            "name": "Get emails",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/emails",
+            "params": [
+              {
+                "name": "filter[email.sent]",
+                "value": "",
+                "type": "query",
+                "description": "The date range in which to search for e-mails that were sent. Value must be two ISO 8601-formatted dates separated by a colon (e.g. `2021-01-01T00:00:00Z:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no minimum (e.g. `*:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no maximum (e.g. `2021-01-01T00:00:00Z:*`)."
+              },
+              {
+                "name": "filter[name]",
+                "value": "",
+                "type": "query",
+                "description": "A string used to perform an exact case-insensitive partial match against the e-mails' subjects"
+              },
+              {
+                "name": "filter[thread]",
+                "value": "",
+                "type": "query",
+                "description": "The identifier of the e-mails belonging to the same e-mail thread"
+              },
+              {
+                "name": "filter[ids]",
+                "value": "",
+                "type": "query",
+                "description": "Select specific e-mails using e-mail identifiers. Value must be a comma-delimited list."
+              },
+              {
+                "name": "filter[owner.name]",
+                "value": "",
+                "type": "query",
+                "description": "The case-insensitive name of the sender of an e-mail; examples: \"Julius Caesar\", \"julius\", and \"CAESAR\""
+              },
+              {
+                "name": "filter[owner.email]",
+                "value": "",
+                "type": "query",
+                "description": "The case-insensitive e-mail address of the sender of an e-mail; examples: \"julius.caesar@rome.gov\", \"JULIUS.CAESAR\", and \"@rome.gov\""
+              },
+              {
+                "name": "filter[participants.name]",
+                "value": "",
+                "type": "query",
+                "description": "The case-insensitive names of the participants of an e-mail; adding more participants will broaden the search. Value must be a comma-delimited list."
+              },
+              {
+                "name": "filter[participants.email]",
+                "value": "",
+                "type": "query",
+                "description": "The case-insensitive e-mail addresses of the participants of an e-mail; adding more participants will broaden the search. Value must be a comma-delimited list."
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of e-mails to return per page; if the number of matching e-mails is greater than the page size, the number of results returned is not guaranteed to be equal to the page size. The minimum value that may be specified is `1`. The maximum value that may be specified is `100`."
+              },
+              {
+                "name": "page[after]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get emails matching the specified criteria."
+        },
+        {
+          "info": {
+            "name": "Get email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/emails/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Get an e-mail using the e-mail's identifier."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Engagement filter",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all the customer's engagement_filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/filters",
+            "params": [
+              {
+                "name": "filter[filter_name]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter[filter_type]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter[field_type]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch all the customer's engagement_filter"
+        },
+        {
+          "info": {
+            "name": "Create engagement filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/filters",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is used to create new engagement filter."
+        },
+        {
+          "info": {
+            "name": "Replace all engagement_filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/filters/actions/replace",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all engagement_filters."
+        },
+        {
+          "info": {
+            "name": "Fetch one engagement_filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/filters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Fetch one engagement_filter."
+        },
+        {
+          "info": {
+            "name": "Update one engagement_filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/filters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update one engagement_filter."
+        },
+        {
+          "info": {
+            "name": "Delete an engagement filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/filters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "Deletes an engagement filter permanently"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations Email",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Connect Google",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/google_authms/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the user to Google using auth connectors"
+        },
+        {
+          "info": {
+            "name": "Connect Google Email service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/google_email/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the customer to Google Email service account"
+        },
+        {
+          "info": {
+            "name": "Connect Office365",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/office365_authms/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the user to Office365 using auth connectors"
+        },
+        {
+          "info": {
+            "name": "Connect Office365 Email service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/office365_email/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the customer to Office365 Email service account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations Calendar",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Connect Google Calendar service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/google_calendar/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the customer to Google Calendar service account"
+        },
+        {
+          "info": {
+            "name": "Verify calendar service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/integrations/google_calendar/actions/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is used to verify an email service account.\n- At least two \"accessible\" emails must be provided.\n- A `204 No Content` will be returned if the verification is successful and a `400 Bad Request` will be returned, along withrelevant details, if it is not."
+        },
+        {
+          "info": {
+            "name": "Connect Office365 Calendar service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/office365_calendar/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the customer to Office365 Calendar service account"
+        },
+        {
+          "info": {
+            "name": "Verify calendar service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/integrations/office365_calendar/actions/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is used to verify an email service account.\n- At least two \"accessible\" emails must be provided.\n- A `204 No Content` will be returned if the verification is successful and a `400 Bad Request` will be returned, along withrelevant details, if it is not."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations Meet",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Connect Google Meet service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/google_meet/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the customer to Google Meet service account"
+        },
+        {
+          "info": {
+            "name": "Connect Microsoft Teams Messaging",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/microsoft_teams/actions/connect"
+          },
+          "docs": "Connect to Microsoft Teams Messaging"
+        },
+        {
+          "info": {
+            "name": "Connect MSTeams service account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/microsoft_teams_postcall/actions/connect"
+          },
+          "docs": "This API is used to \"connect\" the customer to MSTeams service account"
+        },
+        {
+          "info": {
+            "name": "Connect AuthMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/msteams_authms/actions/connect"
+          },
+          "docs": "Connect to AuthMS"
+        },
+        {
+          "info": {
+            "name": "Connect AuthMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/webex_authms/actions/connect"
+          },
+          "docs": "Connect to AuthMS"
+        },
+        {
+          "info": {
+            "name": "Connect AuthMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/zoom_authms/actions/connect"
+          },
+          "docs": "Connect to AuthMS"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations CRM",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Connect customer to Unie",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/integrations/unie/actions/connect",
+            "params": [
+              {
+                "name": "resource",
+                "value": "",
+                "type": "query",
+                "description": "The customer's vendor instance URL."
+              },
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "The requested crm provider."
+              }
+            ]
+          },
+          "docs": "This API is used to \"connect\" the customer to OAuth2 Unie CRM login"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "External Moments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch moments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/moments",
+            "params": [
+              {
+                "name": "filter[shared_on]",
+                "value": "",
+                "type": "query",
+                "description": "A date range. Value must be two ISO 8601-formatted dates separated by a colon (e.g. `2021-01-01T00:00:00Z:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no minimum (e.g. `*:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no maximum (e.g. `2021-01-01T00:00:00Z:*`). The maximum range that may be specified is `365 days, 0:00:00`."
+              }
+            ]
+          },
+          "docs": "This API fetches all moments."
+        },
+        {
+          "info": {
+            "name": "Delete a moment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/moments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "This API deletes the moment with the given ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Public External Moments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add a new moment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/moments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a new moment."
+        },
+        {
+          "info": {
+            "name": "Updates a moment by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/moments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a moment with the specified ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Playlists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch playlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/playlists",
+            "params": [
+              {
+                "name": "filter[conversation]",
+                "value": "",
+                "type": "query",
+                "description": "If specified, only playlists containing moments from the specified conversation will be returned."
+              },
+              {
+                "name": "include_parent",
+                "value": "",
+                "type": "query",
+                "description": "Used in conjunction with ``filter[parent]``, specifies whether the playlist referenced by ``filter[parent]`` should also be returned."
+              },
+              {
+                "name": "filter[name]",
+                "value": "",
+                "type": "query",
+                "description": "The name of the playlist."
+              },
+              {
+                "name": "filter[parent]",
+                "value": "",
+                "type": "query",
+                "description": "The playlist parent."
+              },
+              {
+                "name": "recursive",
+                "value": "",
+                "type": "query",
+                "description": "Used in conjunction with ``filter[parent]``, specifies whether all children should be returned (recursively) or only direct children."
+              },
+              {
+                "name": "filter[subscribed]",
+                "value": "",
+                "type": "query",
+                "description": "Specify true to return only playlists you are currently subscribed to."
+              },
+              {
+                "name": "top_level",
+                "value": "",
+                "type": "query",
+                "description": "Specify true to return top-level playlists, only.  Note: a top-level playlist is either a playlist with no parent or a playlist whose parent is not visible to the current user."
+              },
+              {
+                "name": "filter[type]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by type. Value must be a comma-delimited list. Each item must be one of the following: BOOKMARKS, HASHTAG_PLAYLIST, PINNED_MOMENTS, PLAYLIST, SMART_PLAYLIST"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "A comma-delimited list of fields to sort by. Value must be a comma-delimited list. A maximum of `1` values may be specified."
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page of playlists to return."
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The number of playlists to return per page."
+              }
+            ]
+          },
+          "docs": "This API fetches all playlists."
+        },
+        {
+          "info": {
+            "name": "Create a new playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/playlists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a new playlist."
+        },
+        {
+          "info": {
+            "name": "Fetch a specific playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/playlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "This API fetches the playlist with the given ID."
+        },
+        {
+          "info": {
+            "name": "Update a playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/playlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates (completely replaces) the playlist with the given ID."
+        },
+        {
+          "info": {
+            "name": "Delete a playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/playlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "recursive",
+                "value": "",
+                "type": "query",
+                "description": "Force delete of the specified playlist, even if child playlists exist.  If true, deletes all children recursively. If false, or unspecified, the delete will be rejected if children exist."
+              }
+            ]
+          },
+          "docs": "This API deletes the playlist with the given ID."
+        },
+        {
+          "info": {
+            "name": "Create a new smart playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/smart_playlists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a new smart playlist."
+        },
+        {
+          "info": {
+            "name": "Update a smart playlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/smart_playlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates (completely replaces) the smart playlist with the given ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Public Playlist Moments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add a new playlist moment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/playlists/moments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a new playlist."
+        },
+        {
+          "info": {
+            "name": "Partially update a playlist moment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/playlists/moments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API partially updates the playlist moment with the given ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export the data of a report.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/reports/:id/actions/export",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is used to make an asynchronous call to generate a CSV file for the data of a given report. This CSV file will then be uploaded to Amazon S3, and an e-mail will be sent to the user containing a link to the file which will be valid for 7 days."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sales Qualifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Sales qualifications extraction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/sales-qualifications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Extract structured Sales Qualification Framework data from call transcripts, emails and CRM data at the opportunity level."
+        },
+        {
+          "info": {
+            "name": "write-back crm fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/sales-qualifications/actions/writeback-crm",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API write-back a CRM fields base on the meeting_id"
+        },
+        {
+          "info": {
+            "name": "Get Sales qualifications extraction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/sales-qualifications/:recording_id",
+            "params": [
+              {
+                "name": "recording_id",
+                "value": "",
+                "type": "path",
+                "description": "recording_id"
+              }
+            ]
+          },
+          "docs": "Retrieve previously extracted Sales Qualification Framework data by recording ID."
+        },
+        {
+          "info": {
+            "name": "Get Sales qualification configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/sales_qualification_configuration"
+          },
+          "docs": "This API retrieves configurations of different sales qualification frameworks for the tenant"
+        },
+        {
+          "info": {
+            "name": "Update sales qualification configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/sales_qualification_configuration/:framework_id",
+            "params": [
+              {
+                "name": "framework_id",
+                "value": "",
+                "type": "path",
+                "description": "framework_id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates a sales qualification configuration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Saved Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Reset user default saved search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved_searches/default/actions/reset",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API allows a user to reset their default search (view) for Recordings Views."
+        },
+        {
+          "info": {
+            "name": "Sets a user's saved search as their default",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved_searches/:id/actions/set_default",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API allows a user to set a saved search as their default."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Scorecards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch scorecards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scorecards",
+            "params": [
+              {
+                "name": "filter[recipients]",
+                "value": "",
+                "type": "query",
+                "description": "Ids of the users who were scored. Value must be a comma-delimited list."
+              },
+              {
+                "name": "filter[reviewers]",
+                "value": "",
+                "type": "query",
+                "description": "Ids of the users who completed the scorecards. Value must be a comma-delimited list."
+              },
+              {
+                "name": "filter[initiative]",
+                "value": "",
+                "type": "query",
+                "description": "Id of the initiative that the scorecards were completed against."
+              },
+              {
+                "name": "filter[submitted]",
+                "value": "",
+                "type": "query",
+                "description": "The datetime that the scorecard was submitted by the reviewer. Value must be two ISO 8601-formatted dates separated by a colon (e.g. `2021-01-01T00:00:00Z:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no minimum (e.g. `*:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no maximum (e.g. `2021-01-01T00:00:00Z:*`)."
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The number of resources to return per page. The minimum value that may be specified is `1`. The maximum value that may be specified is `100`."
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page of resources to return. The minimum value that may be specified is `1`."
+              }
+            ]
+          },
+          "docs": "This API fetches all scorecards."
+        },
+        {
+          "info": {
+            "name": "Export scorecards",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/scorecards:export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule a task to export the customer scorecards to csv file "
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Session management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns the status of the current session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/sessions/current"
+          },
+          "docs": "Returns the the status of the current session"
+        },
+        {
+          "info": {
+            "name": "Invalidates the current session (if any).",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/sessions/current"
+          },
+          "docs": "Invalidates the current session (if any)."
+        },
+        {
+          "info": {
+            "name": "Create session cookie from JWT token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/sessions/exchange",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchange a x-ziaccesstoken for a Chorus session cookie."
+        },
+        {
+          "info": {
+            "name": "Establishes an authenticated session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/login",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "email",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Establishes an authenticated session."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Teams",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/teams"
+          },
+          "docs": "This API fetches all teams."
+        },
+        {
+          "info": {
+            "name": "Fetch a specific team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/teams/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ]
+          },
+          "docs": "This API fetches the team with the given ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get details about yourself",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/users/me",
+            "headers": [
+              {
+                "name": "X-Timezone-Offset",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Fetch details about yourself."
+        },
+        {
+          "info": {
+            "name": "Deregister mobile device from push notifications service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/users/me/actions/deregister_token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deregister the user's calling device from receiving push notifications."
+        },
+        {
+          "info": {
+            "name": "Register mobile device to push notifications service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/users/me/actions/register_token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register the user's device into 'Zoominfo Notifications Center', so it will be able to receive push notifications."
+        },
+        {
+          "info": {
+            "name": "Get settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/users/me/settings"
+          },
+          "docs": "Get the current user's settings."
+        },
+        {
+          "info": {
+            "name": "Update settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/users/me/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the current user's settings."
+        },
+        {
+          "info": {
+            "name": "Fetch users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v3/users",
+            "headers": [
+              {
+                "name": "x-al-version",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "This API returns all users."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Video Conferences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new video conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/video_conferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a new video conference."
+        },
+        {
+          "info": {
+            "name": "Partially update a video conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/video_conferences/:go_link",
+            "params": [
+              {
+                "name": "go_link",
+                "value": "",
+                "type": "path",
+                "description": "go_link"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API partially updates the video conference with the given ID."
+        },
+        {
+          "info": {
+            "name": "Delete a video conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/video_conferences/:go_link",
+            "params": [
+              {
+                "name": "go_link",
+                "value": "",
+                "type": "path",
+                "description": "go_link"
+              }
+            ]
+          },
+          "docs": "This API deletes the video conference with the given ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhook",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v3/webhook"
+          },
+          "docs": "Retrieve all webhooks configured for the authenticated customer."
+        },
+        {
+          "info": {
+            "name": "Register a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v3/webhook",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register a new webhook that Chorus will post to when a specified event occurs. Webhooks can be filtered based on conversation criteria."
+        },
+        {
+          "info": {
+            "name": "Delete a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/v3/webhook",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete an existing webhook by its URL."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

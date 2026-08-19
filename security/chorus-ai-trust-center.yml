@@ -1,0 +1,67 @@
+generated: '2026-08-13'
+method: searched
+source: https://trust.zoominfo.com/ + https://www.zoominfo.com/legal/security-overview
+scope_note: >-
+  Chorus.ai operates no trust center of its own — trust.chorus.ai does not resolve. Chorus.ai was
+  acquired by ZoomInfo in 2021 and ships as "Chorus by ZoomInfo", so ZoomInfo's trust center is
+  the governing one for the Chorus service. Recorded at the parent level and labelled as such.
+trust_center:
+  published: true
+  holder: ZoomInfo
+  url: https://trust.zoominfo.com/
+  status: 200
+  platform: Vanta
+  platform_evidence: >-
+    The page is a Vanta-hosted trust center (assets.vanta.com asset host, data-slugid
+    m6iv02iadx6n4t1sbxpk6z, canonical https://trust.zoominfo.com).
+  machine_readable: false
+  machine_readable_note: >-
+    The trust center is a client-rendered single-page app. Its HTML shell is 5.9 KB and contains
+    no certification content, and every path under the host (including /api/*, /graphql and
+    invented paths) answers HTTP 200 with the same shell — a catch-all. Certifications therefore
+    could NOT be read from the trust center itself; they were taken instead from ZoomInfo's own
+    security page, which serves them as real text.
+certifications:
+  source: https://www.zoominfo.com/legal/security-overview
+  source_status: 200
+  verified: '2026-08-13'
+  quote: 'ZoomInfo is ISO 27001, ISO 27701, TRUSTe, and SOC 2 Type II certified.'
+  held:
+  - name: SOC 2 Type II
+    body: AICPA
+    scope: security, availability and confidentiality controls around ZoomInfo services
+  - name: ISO/IEC 27001
+    scope: Information Security Management System (ISMS)
+  - name: ISO/IEC 27701
+    scope: Privacy Information Management System
+  - name: TRUSTe
+    scope: enterprise privacy certification
+  frameworks:
+  - name: ISO 31000
+    scope: >-
+      Risk Management Framework the ISMS risk-management program is formally based on. A
+      framework, not a certification.
+  explicitly_not_held:
+    note: >-
+      ZoomInfo's security page names the following only as certifications it may REQUIRE OF ITS
+      SERVICE PROVIDERS during third-party risk review: "we carefully review our service
+      providers' security practices, requiring appropriate certifications which may include SOC 2
+      Type II, ISO 27001, PCI DSS, HIPAA, and CSA-STAR". PCI DSS, HIPAA and CSA-STAR are
+      therefore NOT ZoomInfo or Chorus certifications and are recorded here only to prevent a
+      keyword match from crediting them.
+    items:
+    - PCI DSS
+    - HIPAA
+    - CSA-STAR
+privacy:
+  policy: https://www.zoominfo.com/legal/privacy-policy
+  status: 200
+  positioning: >-
+    ZoomInfo positions itself as a "privacy-first company" dealing exclusively in non-sensitive
+    business-context data.
+security_contact: security@zoominfo.com
+probed: '2026-08-13'
+cross_links:
+  vulnerability_disclosure: security/chorus-ai-vulnerability-disclosure.yml
+  conformance: conformance/chorus-ai-conformance.yml
+  domain_security: security/chorus-ai-domain-security.yml

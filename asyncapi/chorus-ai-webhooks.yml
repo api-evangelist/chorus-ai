@@ -1,0 +1,93 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/chorus-ai-openapi.json (/v3/webhook operations)
+asyncapi_published: false
+summary: >-
+  Chorus ships a real, self-service webhook surface: a customer can register, list and delete
+  HTTP callbacks through the API itself. No AsyncAPI document is published — the event surface is
+  described only as three REST management operations inside the OpenAPI — so this artifact
+  captures the webhook catalog rather than a spec. No AsyncAPI is fabricated.
+management_api:
+  register:
+    operationId: post-v3-webhook
+    method: POST
+    path: /v3/webhook
+    description: Register a new webhook that Chorus will post to when a specified event occurs.
+    request_body:
+      required: true
+      media_type: application/json
+      fields:
+      - name: event
+        type: string
+        required: true
+        enum:
+        - recording_done
+        description: The event type that triggers the webhook.
+      - name: hook_url
+        type: string
+        required: true
+        description: The URL to post to when the event occurs.
+      - name: type
+        type: string
+        required: false
+        nullable: true
+        description: >-
+          Optional webhook type with predefined filters (e.g. 'zapier' for common Zapier use
+          cases).
+  list:
+    operationId: get-v3-webhook
+    method: GET
+    path: /v3/webhook
+    description: Retrieve all webhooks configured for the authenticated customer.
+  delete:
+    operationId: delete-v3-webhook
+    method: DELETE
+    path: /v3/webhook
+    description: Delete an existing webhook by its URL.
+    note: >-
+      Deletion is keyed on the callback URL rather than a webhook id — there is no
+      /v3/webhook/{id} path in the contract.
+events:
+- name: recording_done
+  description: >-
+    Fired when Chorus has finished processing a recording and its transcript/AI output is
+    available. This is the only event value the contract enumerates.
+  payload_schema:
+    published: false
+    note: >-
+      The contract defines the registration request but never describes the callback payload
+      Chorus POSTs to hook_url. A consumer cannot know the delivered shape from the published
+      contract — this is the single largest gap in the event surface.
+filtering:
+  supported: true
+  note: >-
+    The registration description states webhooks "can be filtered based on conversation
+    criteria", but the request body exposes no filter field beyond the opaque `type` shortcut,
+    and the criteria grammar is not documented.
+delivery_semantics:
+  transport: HTTPS POST
+  retries: not documented
+  backoff: not documented
+  ordering: not documented
+  at_least_once: not documented
+  signing:
+    published: false
+    note: >-
+      No signature header, shared secret, or verification procedure is documented. A receiver
+      has no published way to authenticate that a callback genuinely came from Chorus.
+  replay_protection: not documented
+integrations:
+  zapier:
+    note: >-
+      The `type` field names 'zapier' as a preset with predefined filters, indicating a
+      first-class Zapier path built on this same webhook surface.
+gaps:
+- No AsyncAPI (or any event-schema) document is published.
+- The callback payload for recording_done is entirely undocumented.
+- No webhook signing or verification mechanism is documented.
+- No retry/backoff/delivery guarantees are stated.
+- Only one event type exists, so there is no coverage of conversation deletion, user changes,
+  scorecard completion or CRM writeback outcomes.
+cross_links:
+  openapi: openapi/chorus-ai-openapi.yml
+  conventions: conventions/chorus-ai-conventions.yml

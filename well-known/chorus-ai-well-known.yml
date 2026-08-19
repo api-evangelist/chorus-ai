@@ -1,0 +1,102 @@
+generated: '2026-08-13'
+method: probed
+source: live HTTP probes of every Chorus host in apis.yml + OpenAPI servers[]
+result: no_documents
+summary: >-
+  Every /.well-known/ path was probed on every Chorus host and NONE returned a document. No
+  WellKnown, APICatalog, SecurityTxt or AgentCard pointer is emitted for this provider — this
+  file records a verified absence, not a served surface.
+note_on_status_codes: >-
+  chorus.ai and static.chorus.ai answer 403 with an S3-style AccessDenied XML body for every
+  /.well-known/* path (the path is routed to object storage that denies listing), while
+  www.chorus.ai answers 404. Neither is a document. The 403s are storage denials, not gates on
+  content that exists.
+hosts:
+- host: https://chorus.ai
+  role: API host (OpenAPI servers[] + apis.yml baseURL)
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  - path: /llms.txt
+    status: 404
+  - path: /security.txt
+    status: 404
+- host: https://www.chorus.ai
+  role: marketing host (now a meta-refresh shell to zoominfo.com/products/chorus)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /security.txt
+    status: 404
+- host: https://static.chorus.ai
+  role: static asset host referenced by the Swagger UI page
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  - path: /llms.txt
+    status: 403
+- host: https://docs.chorus.ai
+  role: docs host named as humanURL in apis.yml
+  reachable: false
+  error: TLS handshake failure (sslv3 alert handshake failure) — no valid certificate served
+  documents: []
+  note: >-
+    docs.chorus.ai resolves but cannot complete a TLS handshake, so it serves nothing. The
+    apis.yml humanURL entries pointing at it are stale; the live documentation surfaces are
+    https://chorus.ai/api-docs/index.html and https://api-docs.chorus.ai/.
+agent_card:
+  found: false
+  note: >-
+    Probed /.well-known/agent-card.json and the legacy /.well-known/agent.json on all four hosts.
+    No 200, and no JSON body of any kind. Per the pipeline contract, no a2a/ artifact is written
+    and no AgentCard pointer is emitted.
+oauth_metadata:
+  found: false
+  note: >-
+    No RFC 8414 or OIDC discovery document on any Chorus host, consistent with the contract
+    declaring no oauth2 securityScheme.
+probed: '2026-08-13'

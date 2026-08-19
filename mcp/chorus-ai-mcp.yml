@@ -1,0 +1,141 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/_original/chorus-ai-openapi.json
+summary: >-
+  Chorus ships NO MCP server — no hosted endpoint, no stdio package, no listing in any registry
+  under Chorus or ZoomInfo for the Chorus product. The tool list below is a DERIVED CANDIDATE
+  mapped from real Chorus operationIds, offered as a design for a server that does not exist. No
+  MCPServer pointer is wired into apis.yml, because wiring one would assert an agent surface the
+  provider does not serve.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  auth_note: >-
+    If built, it would carry the Chorus API token in the Authorization header (see
+    authentication/chorus-ai-authentication.yml).
+  verified: derived
+search_performed:
+  registries:
+  - npm (queries: chorus.ai, chorus-ai, chorusai, zoominfo) — no first-party server
+  - pypi (chorus-ai, chorusai, zoominfo) — no first-party server
+  docs:
+  - https://chorus.ai/api-docs/index.html — no MCP mention
+  - https://api-docs.chorus.ai/ — no MCP mention
+  third_party_found:
+  - name: '@opensourceops/chorus-mcp'
+    version: 0.1.1
+    url: https://www.npmjs.com/package/@opensourceops/chorus-mcp
+    official: false
+    note: >-
+      A community MCP server for the Chorus.ai API published by an unaffiliated author. Recorded
+      for completeness; it is not a Chorus deliverable and does not earn Chorus an MCP pointer.
+related_parent_server:
+  name: ZoomInfo remote MCP server
+  endpoint: https://mcp.zoominfo.com/mcp
+  holder: ZoomInfo (parent company)
+  probed: '2026-08-13'
+  tools_list_status: 401
+  tools_list_response: >-
+    {"errors":[{"code":"ZI0001","detail":"The Authorization token is required and cannot be left
+    blank...","title":"Unauthorized access"}]}
+  oauth_metadata:
+    oauth_protected_resource:
+      url: https://mcp.zoominfo.com/.well-known/oauth-protected-resource
+      status: 200
+      resource: https://mcp.zoominfo.com
+      scopes_supported:
+      - openid
+      - profile
+      - email
+      - offline_access
+      - zi_api
+      - zi_mcp
+      - api:data:mcp
+      resource_documentation: https://mcp.zoominfo.com/docs
+    oauth_authorization_server:
+      url: https://mcp.zoominfo.com/.well-known/oauth-authorization-server
+      status: 200
+      issuer: https://okta-login.zoominfo.com/oauth2/default
+      authorization_endpoint: https://mcp.zoominfo.com/oauth/authorize
+      registration_endpoint: https://mcp.zoominfo.com/oauth/register
+      grant_types_supported:
+      - authorization_code
+      - refresh_token
+      code_challenge_methods_supported:
+      - S256
+  ownership_ruling: >-
+    NOT recorded as a Chorus MCP server. The endpoint belongs to ZoomInfo, its advertised scopes
+    (zi_api, zi_mcp, api:data:mcp) describe ZoomInfo's B2B contact/company data, and tools/list
+    is auth-gated (401) so it could NOT be confirmed to expose any Chorus conversation-
+    intelligence tool. Recorded here as an honest lead for a future authenticated pass, not as a
+    Chorus agent surface.
+candidate_tools:
+  note: >-
+    DERIVED — none of these exist. Each binds to a real operationId in the Chorus OpenAPI, so the
+    list is a faithful projection of the published contract rather than an invention.
+  tool_count: 12
+  tools:
+  - name: list_conversations
+    category: conversations
+    rest: get-v3-engagements
+    description: >-
+      Search recorded calls and meetings by date range, duration, participant email, owner,
+      team, engagement type and Chorus disposition.
+  - name: get_conversation
+    category: conversations
+    rest: get-api-v1-conversations-id
+    description: Fetch a single conversation by id.
+  - name: get_conversation_media
+    category: conversations
+    rest: get-api-v1-conversations-id-media
+    description: Retrieve the media file or media metadata for a conversation.
+  - name: list_live_conversations
+    category: conversations
+    rest: get-api-v1-conversations-live
+    description: Fetch a live in-progress conversation by meeting uuid or user id.
+  - name: upload_conversation
+    category: conversations
+    rest: post-v3-upload
+    description: Upload a recording (3GPP, AU, AVI, FLV, HLS, MKV, MP3, MP4, Ogg, WAV, WebM) into Chorus.
+    consequence: write
+  - name: export_conversations
+    category: conversations
+    rest: post-conversations-export
+    description: Start an asynchronous export of recordings; returns a task handle.
+    consequence: write
+  - name: list_emails
+    category: engagements
+    rest: get-api-v1-emails
+    description: List captured email engagements.
+  - name: list_users
+    category: directory
+    rest: get-v3-users
+    description: Fetch Chorus users.
+  - name: list_teams
+    category: directory
+    rest: get-api-v1-teams
+    description: Fetch teams.
+  - name: list_scorecards
+    category: coaching
+    rest: get-api-v1-scorecards
+    description: Fetch coaching scorecards.
+  - name: get_sales_qualification
+    category: deal_intelligence
+    rest: get-api-v1-sales-qualifications-recording_id
+    description: Retrieve AI sales-qualification framework analysis for a recording.
+  - name: list_playlists
+    category: enablement
+    rest: get-api-v1-playlists
+    description: Fetch coaching playlists.
+  excluded_from_candidate:
+    note: >-
+      Destructive and integration-connect operations were deliberately left out of the candidate
+      tool list — deleting conversations, engagements, email threads and webhooks, and the 14
+      OAuth connect/verify redirects, are poor fits for an unsupervised agent surface.
+cross_links:
+  openapi: openapi/chorus-ai-openapi.yml
+  authentication: authentication/chorus-ai-authentication.yml

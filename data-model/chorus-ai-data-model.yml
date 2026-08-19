@@ -1,0 +1,270 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/chorus-ai-openapi.json (components.schemas — 85 schemas, id-reference fields)
+summary: >-
+  Entity-relationship graph for the Chorus API, derived from the id-reference fields in the
+  OpenAPI component schemas. Chorus is a JSON:API surface but does not publish JSON:API
+  `relationships` objects — association is expressed entirely through scalar *_id / *_ids
+  attributes, so the graph below is reconstructed from field naming, not from declared links.
+  Resource schemas come in pairs: the bare schema is the resource object, the `*Doc` twin is its
+  JSON:API document wrapper (85 schemas resolve to roughly 30 distinct entities).
+conventions:
+  document_wrapper: '<Entity>Doc'
+  collection_wrapper: '<Entity>sDoc'
+  create_variant: '<Entity>ForCreate / <Entity>ForCreating'
+  patch_variant: '<Entity>ForPatch'
+  relationship_style: scalar foreign keys (no JSON:API relationships/links objects)
+  id_prefixes:
+    published: false
+    note: No typed/prefixed identifier scheme is documented; ids are opaque.
+external_identifiers:
+  fields:
+  - field: zi_person_id
+    system: ZoomInfo person graph
+  - field: zi_company_id
+    system: ZoomInfo company graph
+  - field: sf_record_id
+    system: Salesforce record
+  - field: ext_id
+    system: generic external system id (CRM / dialer / meeting provider)
+  - field: external_id
+    system: caller-supplied id on bulk conversation ingest
+  - field: opportunity_id
+    system: CRM opportunity
+  note: >-
+    The presence of zi_* fields on the core conversation entities is the clearest structural
+    evidence of the ZoomInfo acquisition inside the contract itself — Chorus records are joined
+    to the ZoomInfo person/company graph at the schema level.
+entities:
+- name: Conversation
+  aka: Engagement
+  description: A recorded customer interaction — meeting or dialer call. The central entity.
+  document: ConversationDoc
+  operations:
+  - get-v3-engagements
+  - get-api-v1-conversations-id
+  - delete-api-v1-conversations-id
+  - get-api-v1-conversations-live
+  - post-v3-upload
+- name: Recording
+  description: The media artifact and derived AI output for a conversation.
+  document: RecordingDoc
+  operations:
+  - get-api-v1-conversations-id-media
+- name: Email
+  description: An email engagement captured alongside calls and meetings.
+  document: EmailDoc
+  operations:
+  - get-api-v1-emails
+  - get-api-v1-emails-id
+- name: EmailThread
+  description: A grouping of related emails.
+  document: EmailThreadDoc
+  operations:
+  - get-api-v1-email_threads-id
+  - delete-api-v1-email_threads-id
+- name: User
+  description: A Chorus user; the identity an API token is bound to.
+  document: UserDoc
+  operations:
+  - get-v3-users
+  - get-api-v1-users-me
+- name: Team
+  description: A grouping of users for rollup and access control.
+  document: TeamDoc
+  operations:
+  - get-api-v1-teams
+  - get-api-v1-teams-id
+- name: Moment
+  description: A marked, shareable segment of a conversation.
+  document: MomentDoc
+  operations:
+  - get-api-v1-moments
+  - post-api-v1-moments
+  - put-api-v1-moments-id
+  - delete-api-v1-moments-id
+- name: Playlist
+  description: A curated ordered set of moments, used for coaching and enablement.
+  document: PlaylistDoc
+  operations:
+  - get-api-v1-playlists
+  - post-api-v1-playlists
+  - get-api-v1-playlists-id
+- name: SmartPlaylist
+  description: A rule-driven playlist scoped by users, teams or accounts.
+  document: SmartPlaylistDoc
+  operations:
+  - post-api-v1-smart_playlists
+  - put-api-v1-smart_playlists-id
+- name: PlaylistMoment
+  description: Join entity binding a moment into a playlist at a position.
+  document: PlaylistMomentDoc
+  operations:
+  - post-api-v1-playlists-moments
+  - patch-api-v1-playlists-moments-id
+- name: EngagementFilter
+  description: A saved filter definition over engagements.
+  document: EngagementFilterDoc
+  operations:
+  - get-api-v1-filters
+  - post-api-v1-filters
+  - put-api-v1-filters-id
+- name: SavedSearch
+  description: A persisted search, one of which may be the user's default.
+  document: SavedSearchDoc
+  operations:
+  - post-api-v1-saved_searches-id-actions-set_default
+  - post-api-v1-saved_searches-default-actions-reset
+- name: Scorecard
+  description: A coaching evaluation of a rep on a conversation.
+  document: ScorecardDoc
+  operations:
+  - get-api-v1-scorecards
+  - post-api-v1-scorecards:export
+- name: SalesQualificationAnalysis
+  description: AI qualification output (e.g. MEDDIC-style framework fields) for a recording.
+  document: SalesQualificationAnalysisDoc
+  operations:
+  - post-api-v1-sales-qualifications
+  - get-api-v1-sales-qualifications-recording_id
+  - post-api-v1-sales-qualifications-actions-writeback-crm
+- name: FrameworkConfiguration
+  description: Tenant configuration for the sales-qualification framework.
+  document: FrameworkConfigurationDoc
+  operations:
+  - get-api-v1-sales_qualification_configuration
+  - put-api-v1-sales_qualification_configuration-framework_id
+- name: VideoConference
+  description: A Chorus-hosted video conference addressed by go_link.
+  document: VideoConferenceDoc
+  operations:
+  - post-api-v1-video_conferences
+  - patch-api-v1-video_conferences-go_link
+  - delete-api-v1-video_conferences-go_link
+- name: Session
+  description: An authenticated web session (application-facing, not token auth).
+  document: SessionDoc
+  operations:
+  - get-api-v1-sessions-current
+  - delete-api-v1-sessions-current
+- name: UserSettings
+  description: Per-user preference document.
+  document: UserSettingsDoc
+  operations:
+  - get-api-v1-users-me-settings
+  - put-api-v1-users-me-settings
+- name: Task
+  description: An asynchronous job handle returned by long-running exports and bulk operations.
+  document: TaskDoc
+relationships:
+- from: Conversation
+  to: User
+  type: belongs_to
+  via: user_id
+- from: Conversation
+  to: EmailThread
+  type: belongs_to
+  via: thread_id
+- from: Conversation
+  to: ZoomInfo Person
+  type: belongs_to
+  via: zi_person_id
+  external: true
+- from: Conversation
+  to: ZoomInfo Company
+  type: belongs_to
+  via: zi_company_id
+  external: true
+- from: Recording
+  to: User
+  type: belongs_to
+  via: owner_id
+- from: Recording
+  to: User
+  type: has_many
+  via: speaker_id
+  note: Speaker attribution per media segment.
+- from: Recording
+  to: Team
+  type: has_many
+  via: team_ids
+- from: Email
+  to: EmailThread
+  type: belongs_to
+  via: thread_id
+- from: Email
+  to: User
+  type: belongs_to
+  via: user_id
+- from: EmailThread
+  to: User
+  type: belongs_to
+  via: user_id
+- from: User
+  to: User
+  type: belongs_to
+  via: manager_id
+  note: Self-referential management hierarchy.
+- from: User
+  to: Team
+  type: has_many
+  via: team_ids
+- from: User
+  to: Salesforce Record
+  type: belongs_to
+  via: sf_record_id
+  external: true
+- from: Playlist
+  to: User
+  type: belongs_to
+  via: user_id
+- from: PlaylistMoment
+  to: Conversation
+  type: belongs_to
+  via: call_id
+- from: SmartPlaylist
+  to: User
+  type: has_many
+  via: user_ids
+- from: SmartPlaylist
+  to: Team
+  type: has_many
+  via: team_ids
+- from: SmartPlaylist
+  to: Account
+  type: has_many
+  via: account_ids
+- from: Scorecard
+  to: User
+  type: belongs_to
+  via: user_id
+- from: SalesQualificationAnalysis
+  to: Recording
+  type: belongs_to
+  via: recording_id
+- from: SalesQualificationAnalysis
+  to: CRM Opportunity
+  type: belongs_to
+  via: opportunity_id
+  external: true
+- from: SalesQualificationAnalysis
+  to: User
+  type: belongs_to
+  via: user_id
+- from: Session
+  to: User
+  type: belongs_to
+  via: user_id
+- from: Session
+  to: Customer
+  type: belongs_to
+  via: customer_id
+gaps:
+  - No JSON:API `relationships` objects or `links` are published; all association is inferred
+    from scalar id fields, so an agent cannot traverse the graph without out-of-band knowledge.
+  - Account and Customer are referenced by id (account_ids, customer_id) but no Account or
+    Customer schema or endpoint is exposed in the contract.
+  - No id-prefix or identifier-format documentation exists, so ids cannot be typed on sight.
+cross_links:
+  conventions: conventions/chorus-ai-conventions.yml
+  openapi: openapi/chorus-ai-openapi.yml

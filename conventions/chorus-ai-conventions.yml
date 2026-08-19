@@ -1,0 +1,175 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/chorus-ai-openapi.json + https://chorus.ai/api/openapi.json (info.description)
+summary: >-
+  Cross-cutting request/response semantics for the Chorus API, derived from the live OpenAPI 3.0.3
+  served at https://chorus.ai/api/openapi.json and the prose in its info.description. The API is
+  JSON:API-shaped (application/vnd.api+json, data/attributes documents, errors[] envelope) across
+  the /api/v1 surface, with an older, flatter /v3 surface alongside it. Idempotency, rate-limit
+  signalling and request-id tracing are NOT documented — do not assume them.
+authentication:
+  styles:
+  - api_token_authorization_header
+  - http_basic
+  - apikey_header
+  header: Authorization
+  prefix: >-
+    none — the published curl example sends the raw token (Authorization:<token>), although the
+    spec declares an http/bearer scheme
+  alternate_header: x-ziaccesstoken (ZoomInfo access token)
+  see: authentication/chorus-ai-authentication.yml
+media_types:
+  request:
+  - application/vnd.api+json
+  - application/json
+  - multipart/form-data
+  response:
+  - application/vnd.api+json
+  primary: application/vnd.api+json
+  note: >-
+    The JSON:API media type is used for both success documents and the error envelope on the
+    /api/v1 surface. Even a bare 404 from the host root answers application/vnd.api+json.
+document_shape:
+  style: json:api
+  envelope:
+    single: '{ "data": { "type": ..., "id": ..., "attributes": {...} } }'
+    collection: '{ "data": [ ... ] }'
+  schema_naming: >-
+    Resource schemas are paired with a "*Doc" wrapper (Conversation/ConversationDoc,
+    Playlist/PlaylistDoc, User/UserDoc, ...) — the wrapper is the JSON:API document, the bare
+    schema is the resource object.
+  see: data-model/chorus-ai-data-model.yml
+pagination:
+  styles:
+  - style: json:api page-based
+    surface: /api/v1/*
+    params:
+    - page[number]
+    - page[size]
+    - page[after]
+    note: >-
+      Mixed page-number and cursor (page[after]) parameters appear across the /api/v1 surface;
+      the spec does not state which operations support which.
+  - style: continuation token
+    surface: /v3/engagements
+    params:
+    - continuation_key
+    note: Described in the spec only as "Continuation key for pagination".
+  response_fields: not documented in the spec
+filtering:
+  style: json:api filter family
+  params:
+  - filter[ids]
+  - filter[name]
+  - filter[type]
+  - filter[owner.name]
+  - filter[owner.email]
+  - filter[participants.name]
+  - filter[participants.email]
+  - filter[thread]
+  - filter[conversation]
+  - filter[shared_on]
+  - filter[subscribed]
+  - filter[parent]
+  v3_style: >-
+    The /v3/engagements operation instead takes flat named query parameters (engagement_type,
+    min_date, max_date, min_duration, max_duration, user_id, team_id, participants_email,
+    compliance, disposition_*, with_trackers) plus an additional_parameters JSON-object escape
+    hatch — a different filtering grammar from the /api/v1 surface.
+sparse_fieldsets:
+  supported: true
+  style: json:api
+  params:
+  - fields
+  - fields[conversations]
+  - fields[recordings]
+sorting:
+  supported: partial
+  params:
+  - sort
+  note: A single `sort` query parameter appears on one operation; there is no documented grammar.
+idempotency:
+  documented: false
+  header: null
+  notes: >-
+    No Idempotency-Key header, no idempotent-retry semantics and no idempotency language appear
+    anywhere in the spec or the published description. Mutating operations (POST /v3/upload,
+    POST /api/v1/conversations:bulk, POST /api/v1/moments) carry no replay protection, so a
+    client that retries a timed-out upload risks a duplicate. No Idempotency pointer is emitted
+    for this provider.
+rate_limits:
+  documented: false
+  headers: []
+  exhaustion_status: not documented
+  notes: >-
+    The spec declares no 429 response on any of its 81 operations and publishes no
+    X-RateLimit-*/RateLimit-*/Retry-After headers.
+  see: rate-limits/chorus-ai-rate-limits.yml
+request_tracing:
+  request_id_header: not documented
+  notes: >-
+    The JSON:API error object carries a per-error `id` field, which is the only correlation
+    handle the contract exposes. There is no documented request-id response header.
+errors:
+  style: json:api
+  rfc9457: false
+  envelope_field: errors
+  error_object_fields:
+  - id
+  - code
+  - status
+  - title
+  - detail
+  - source.pointer
+  - source.parameter
+  - source.header
+  - source.cookie
+  observed_statuses:
+  - 400
+  - 404
+  - 409
+  see: errors/chorus-ai-problem-types.yml
+versioning:
+  style: uri path
+  surfaces:
+  - /api/v1
+  - /v3
+  document_version: 26.33.08
+  note: >-
+    Two concurrently-published, non-aligned path versions. The document version string
+    (26.33.08) looks calendar/build-based rather than semantic, and is not referenced by any
+    versioning policy the provider publishes.
+  see: lifecycle/chorus-ai-lifecycle.yml
+webhooks:
+  supported: true
+  registration: POST /v3/webhook
+  events:
+  - recording_done
+  see: asyncapi/chorus-ai-webhooks.yml
+async_operations:
+  pattern: 202 Accepted + redirect
+  notes: >-
+    Eight operations answer 202 (bulk conversation processing, multi-engagement delete, report
+    and scorecard exports); five answer 302 and five 307, so media and export downloads redirect
+    to signed storage URLs rather than streaming inline.
+bulk_operations:
+  supported: true
+  style: colon-suffixed action paths
+  examples:
+  - /api/v1/conversations:bulk
+  - /api/v1/conversations:export
+  - /api/v1/conversations:validate
+  - /api/v1/scorecards:export
+  note: >-
+    Chorus also uses an /actions/<verb> sub-path convention for non-CRUD verbs
+    (/api/v1/conversations/{id}/actions/disconnect, /api/v1/filters/actions/replace,
+    /api/v1/users/me/actions/register_token). Two distinct RPC-over-REST idioms coexist.
+metadata:
+  supported: false
+  note: No user-defined metadata/tags field is exposed on resources.
+cross_links:
+  authentication: authentication/chorus-ai-authentication.yml
+  errors: errors/chorus-ai-problem-types.yml
+  lifecycle: lifecycle/chorus-ai-lifecycle.yml
+  rate_limits: rate-limits/chorus-ai-rate-limits.yml
+  conformance: conformance/chorus-ai-conformance.yml
