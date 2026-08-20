@@ -86,6 +86,10 @@ apis:
   tags:
   - Recordings
   - Transcripts
+  - Artificial Intelligence
+  tags_raw:
+  - Recordings
+  - Transcripts
   - AI
   properties:
   - type: Documentation
