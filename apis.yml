@@ -48,22 +48,20 @@ created: '2026-05-08'
 modified: '2026-08-13'
 specificationVersion: '0.23'
 apis:
-- name: Chorus Engagements API
-  description: >-
-    Search and retrieve calls, meetings, emails and engagement metadata. A capability area of the
-    single published Chorus API contract, served at /v3/engagements and /api/v1/conversations.
+- aid: chorus-ai:chorus-ai-auth-api
+  name: Chorus.ai Auth API
+  description: The Auth API from Chorus.ai — 1 operation(s) for auth.
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
-  - Engagements
-  - Conversation Intelligence
+  - Auth
   properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-auth-api-openapi.yml
   - type: Documentation
     url: https://chorus.ai/api-docs/index.html
   - type: APIReference
     url: https://api-docs.chorus.ai/
-  - type: OpenAPI
-    url: openapi/chorus-ai-openapi.yml
   - type: Postman
     url: https://api-docs.chorus.ai/
   - type: Authentication
@@ -74,55 +72,556 @@ apis:
     url: errors/chorus-ai-problem-types.yml
   - type: DataModel
     url: data-model/chorus-ai-data-model.yml
-  - type: Overlay
-    url: overlays/chorus-ai-openapi-overlay.yaml
-- name: Chorus Recordings & Transcripts API
-  description: >-
-    Upload recordings, retrieve media files, transcripts and AI-generated insights, and build
-    coaching moments, playlists and scorecards. A capability area of the single published Chorus
-    API contract.
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-conversations-api
+  name: Chorus.ai Conversations API
+  description: The Conversations API from Chorus.ai — 11 operation(s) for conversations.
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
-  - Recordings
-  - Transcripts
-  - Artificial Intelligence
-  tags_raw:
-  - Recordings
-  - Transcripts
-  - AI
+  - Conversations
   properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-conversations-api-openapi.yml
   - type: Documentation
     url: https://chorus.ai/api-docs/index.html
   - type: APIReference
     url: https://api-docs.chorus.ai/
-  - type: OpenAPI
-    url: openapi/chorus-ai-openapi.yml
-  - type: Webhooks
-    url: asyncapi/chorus-ai-webhooks.yml
+  - type: Postman
+    url: https://api-docs.chorus.ai/
   - type: Authentication
     url: authentication/chorus-ai-authentication.yml
   - type: Conventions
     url: conventions/chorus-ai-conventions.yml
-- name: Chorus CRM Sync API
-  description: >-
-    Run AI sales-qualification analysis on a recording and write the extracted framework fields
-    back to a CRM opportunity. A capability area of the single published Chorus API contract,
-    served at /api/v1/sales-qualifications.
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-emails-api
+  name: Chorus.ai Emails API
+  description: The Emails API from Chorus.ai — 3 operation(s) for emails.
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
-  - CRM
-  - Integration
+  - Emails
   properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-emails-api-openapi.yml
   - type: Documentation
     url: https://chorus.ai/api-docs/index.html
   - type: APIReference
     url: https://api-docs.chorus.ai/
-  - type: OpenAPI
-    url: openapi/chorus-ai-openapi.yml
+  - type: Postman
+    url: https://api-docs.chorus.ai/
   - type: Authentication
     url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-engagement-filter-api
+  name: Chorus.ai Engagement filter API
+  description: The Engagement filter API from Chorus.ai — 3 operation(s) for engagement filter.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Engagement filter
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-engagement-filter-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-event-api
+  name: Chorus.ai Event API
+  description: The Event API from Chorus.ai — 1 operation(s) for event.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Event
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-event-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-external-moments-api
+  name: Chorus.ai External Moments API
+  description: The External Moments API from Chorus.ai — 2 operation(s) for external moments.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - External Moments
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-external-moments-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-integrations-calendar-api
+  name: Chorus.ai Integrations Calendar API
+  description: The Integrations Calendar API from Chorus.ai — 4 operation(s) for integrations calendar.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Integrations Calendar
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-integrations-calendar-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-integrations-crm-api
+  name: Chorus.ai Integrations CRM API
+  description: The Integrations CRM API from Chorus.ai — 1 operation(s) for integrations crm.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Integrations CRM
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-integrations-crm-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-integrations-email-api
+  name: Chorus.ai Integrations Email API
+  description: The Integrations Email API from Chorus.ai — 4 operation(s) for integrations email.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Integrations Email
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-integrations-email-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-integrations-meet-api
+  name: Chorus.ai Integrations Meet API
+  description: The Integrations Meet API from Chorus.ai — 6 operation(s) for integrations meet.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Integrations Meet
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-integrations-meet-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-playlists-api
+  name: Chorus.ai Playlists API
+  description: The Playlists API from Chorus.ai — 4 operation(s) for playlists.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Playlists
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-playlists-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-public-external-moments-api
+  name: Chorus.ai Public External Moments API
+  description: >-
+    The Public External Moments API from Chorus.ai — 2 operation(s) for public external moments.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Public External Moments
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-public-external-moments-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-public-playlist-moments-api
+  name: Chorus.ai Public Playlist Moments API
+  description: >-
+    The Public Playlist Moments API from Chorus.ai — 2 operation(s) for public playlist moments.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Public Playlist Moments
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-public-playlist-moments-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-reports-api
+  name: Chorus.ai Reports API
+  description: The Reports API from Chorus.ai — 1 operation(s) for reports.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-reports-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-sales-qualifications-api
+  name: Chorus.ai Sales Qualifications API
+  description: The Sales Qualifications API from Chorus.ai — 5 operation(s) for sales qualifications.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Sales Qualifications
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-sales-qualifications-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-saved-search-api
+  name: Chorus.ai Saved Search API
+  description: The Saved Search API from Chorus.ai — 2 operation(s) for saved search.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Saved Search
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-saved-search-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-scorecards-api
+  name: Chorus.ai Scorecards API
+  description: The Scorecards API from Chorus.ai — 2 operation(s) for scorecards.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Scorecards
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-scorecards-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-session-management-api
+  name: Chorus.ai Session management API
+  description: The Session management API from Chorus.ai — 3 operation(s) for session management.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Session management
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-session-management-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-teams-api
+  name: Chorus.ai Teams API
+  description: The Teams API from Chorus.ai — 2 operation(s) for teams.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-teams-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-users-api
+  name: Chorus.ai Users API
+  description: The Users API from Chorus.ai — 5 operation(s) for users.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-users-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-video-conferences-api
+  name: Chorus.ai Video Conferences API
+  description: The Video Conferences API from Chorus.ai — 2 operation(s) for video conferences.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Video Conferences
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-video-conferences-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
+- aid: chorus-ai:chorus-ai-webhook-api
+  name: Chorus.ai Webhook API
+  description: The Webhook API from Chorus.ai — 1 operation(s) for webhook.
+  humanURL: https://chorus.ai/api-docs/index.html
+  baseURL: https://chorus.ai/api/v1
+  tags:
+  - Webhook
+  properties:
+  - type: OpenAPI
+    url: openapi/chorus-ai-webhook-api-openapi.yml
+  - type: Documentation
+    url: https://chorus.ai/api-docs/index.html
+  - type: APIReference
+    url: https://api-docs.chorus.ai/
+  - type: Postman
+    url: https://api-docs.chorus.ai/
+  - type: Authentication
+    url: authentication/chorus-ai-authentication.yml
+  - type: Conventions
+    url: conventions/chorus-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/chorus-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/chorus-ai-data-model.yml
+  - type: Webhooks
+    url: asyncapi/chorus-ai-webhooks.yml
 common:
 - type: Authentication
   url: authentication/chorus-ai-authentication.yml
