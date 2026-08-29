@@ -1,0 +1,25 @@
+slug: chorus-ai
+provider: Chorus.ai
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Education
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Sales Qualifications
+  spec_file: chorus-ai-sales-qualifications-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.72
+  evidence: Create Sales qualifications extraction ... write-back crm fields ... FrameworkConfiguration
+  reason: Operations extract sales qualification framework data (e.g. MEDDIC/BANT) from recordings and
+    write it back to CRM fields, supporting lead/opportunity qualification in the deal lifecycle. Sub-capability
+    choice carries some ambiguity versus sales operations.

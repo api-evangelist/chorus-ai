@@ -635,6 +635,9 @@ apis:
   - type: Webhooks
     url: asyncapi/chorus-ai-webhooks.yml
 common:
+- type: CapabilityMap
+  url: capabilities/chorus-ai-capability-edges.yml
+  name: Chorus.ai Business Capability Map
 - type: Authentication
   url: authentication/chorus-ai-authentication.yml
 - type: DomainSecurity
