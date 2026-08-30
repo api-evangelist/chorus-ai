@@ -66,6 +66,8 @@ apis:
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -510,6 +512,8 @@ apis:
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
+  - Session Management
+  tags_raw:
   - Session management
   properties:
   - type: OpenAPI
@@ -536,6 +540,8 @@ apis:
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
@@ -562,6 +568,8 @@ apis:
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -635,6 +643,11 @@ apis:
   - type: Webhooks
     url: asyncapi/chorus-ai-webhooks.yml
 common:
+- type: ParentCompany
+  url: https://apis.io/providers/zoominfo/
+  name: ZoomInfo
+  x-relationship: acquired
+  x-evidence: "ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold as 'Chorus by ZoomInfo', that records, transcribes and analyzes customer-facing calls, meetings and emails to surface deal insights and coach sales reps."
 - type: CapabilityMap
   url: capabilities/chorus-ai-capability-edges.yml
   name: Chorus.ai Business Capability Map
