@@ -1,0 +1,906 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Playlists API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Playlists
+paths:
+  /api/v1/playlists:
+    get:
+      deprecated: false
+      description: This API fetches all playlists.
+      operationId: get-api-v1-playlists
+      parameters:
+      - description: If specified, only playlists containing moments from the specified conversation will be returned.
+        in: query
+        name: filter[conversation]
+        required: false
+        schema:
+          type: string
+      - description: Used in conjunction with ``filter[parent]``, specifies whether the playlist referenced by ``filter[parent]`` should also be returned.
+        in: query
+        name: include_parent
+        required: false
+        schema:
+          type: boolean
+      - description: The name of the playlist.
+        in: query
+        name: filter[name]
+        required: false
+        schema:
+          type: string
+      - description: The playlist parent.
+        in: query
+        name: filter[parent]
+        required: false
+        schema:
+          type: integer
+      - description: Used in conjunction with ``filter[parent]``, specifies whether all children should be returned (recursively) or only direct children.
+        in: query
+        name: recursive
+        required: false
+        schema:
+          type: boolean
+      - description: Specify true to return only playlists you are currently subscribed to.
+        in: query
+        name: filter[subscribed]
+        required: false
+        schema:
+          type: boolean
+      - description: 'Specify true to return top-level playlists, only.  Note: a top-level playlist is either a playlist with no parent or a playlist whose parent is not visible to the current user.'
+        in: query
+        name: top_level
+        required: false
+        schema:
+          type: boolean
+      - description: 'Filter by type. Value must be a comma-delimited list. Each item must be one of the following: BOOKMARKS, HASHTAG_PLAYLIST, PINNED_MOMENTS, PLAYLIST, SMART_PLAYLIST'
+        in: query
+        name: filter[type]
+        required: false
+        schema:
+          type: string
+      - description: A comma-delimited list of fields to sort by. Value must be a comma-delimited list. A maximum of `1` values may be specified.
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: -_modified_at
+          type: string
+      - description: The page of playlists to return.
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          default: 1
+          minimum: 1
+          type: integer
+      - description: The number of playlists to return per page.
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          default: 20
+          maximum: 1000
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlaylistsDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Fetch playlists
+      tags:
+      - Playlists
+    post:
+      deprecated: false
+      description: This API creates a new playlist.
+      operationId: post-api-v1-playlists
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlaylistForCreatingDoc'
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlaylistDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Create a new playlist
+      tags:
+      - Playlists
+  /api/v1/playlists/{id}:
+    delete:
+      deprecated: false
+      description: This API deletes the playlist with the given ID.
+      operationId: delete-api-v1-playlists-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Force delete of the specified playlist, even if child playlists exist.  If true, deletes all children recursively. If false, or unspecified, the delete will be rejected if children exist.
+        in: query
+        name: recursive
+        required: false
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Delete a playlist
+      tags:
+      - Playlists
+    get:
+      deprecated: false
+      description: This API fetches the playlist with the given ID.
+      operationId: get-api-v1-playlists-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlaylistDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Fetch a specific playlist
+      tags:
+      - Playlists
+    put:
+      deprecated: false
+      description: This API updates (completely replaces) the playlist with the given ID.
+      operationId: put-api-v1-playlists-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlaylistDoc'
+        required: true
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlaylistDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Update a playlist
+      tags:
+      - Playlists
+  /api/v1/smart_playlists:
+    post:
+      deprecated: false
+      description: This API creates a new smart playlist.
+      operationId: post-api-v1-smart_playlists
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.api+json:
+            example:
+              data:
+                attributes:
+                  custom_search:
+                    run:
+                      filters:
+                        account_ids:
+                        - 8464609
+                        extra_data.StageName:
+                        - Meeting Scheduled
+                        - Research
+                        team_ids:
+                        - 21460
+                        user_ids:
+                        - 178377
+                      searches:
+                      - type: topics
+                        value: ace___end_goal_822bda3
+                      - type: topics
+                        value: ae_agenda_end_of_call_1
+                      tracker_operation: or
+                    show:
+                    - account_id: 8464609
+                      disabled: true
+                      exists: true
+                      id: ''
+                      name: Adam Silverman Meetings
+                  description: My first smart playlist description.
+                  name: My first smart playlist
+                  parent: 0
+                type: smart_playlist
+            schema:
+              $ref: '#/components/schemas/SmartPlaylistForCreatingDoc'
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlaylistDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Create a new smart playlist
+      tags:
+      - Playlists
+  /api/v1/smart_playlists/{id}:
+    put:
+      deprecated: false
+      description: This API updates (completely replaces) the smart playlist with the given ID.
+      operationId: put-api-v1-smart_playlists-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SmartPlaylistDoc'
+        required: true
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlaylistDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Update a smart playlist
+      tags:
+      - Playlists
+components:
+  schemas:
+    AnyValue:
+      description: Can be any value.
+    Playlist:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_by:
+              readOnly: true
+              type:
+              - integer
+              - 'null'
+            child_count:
+              readOnly: true
+              type: integer
+            description:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            owner:
+              properties:
+                name:
+                  readOnly: true
+                  type: string
+                person_id:
+                  readOnly: true
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            parent:
+              type:
+              - integer
+              - 'null'
+            path:
+              items:
+                properties:
+                  id:
+                    readOnly: true
+                    type: string
+                  name:
+                    readOnly: true
+                    type: string
+                required:
+                - id
+                - name
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              readOnly: true
+              type: boolean
+            size:
+              readOnly: true
+              type: integer
+          required:
+          - child_count
+          - _created_at
+          - name
+          - private
+          - size
+          type: object
+        id:
+          description: The unique ID of the playlist.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    PlaylistForCreatingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/PlaylistForCreating'
+      required:
+      - data
+      type: object
+    PlaylistDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Playlist'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    PlaylistsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Playlist'
+          type: array
+      required:
+      - data
+      type: object
+    SmartPlaylist:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_by:
+              readOnly: true
+              type:
+              - integer
+              - 'null'
+            child_count:
+              readOnly: true
+              type: integer
+            custom_search:
+              properties:
+                run:
+                  properties:
+                    filters:
+                      properties:
+                        account_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                        extra_data.StageName:
+                          items:
+                            type: string
+                          type:
+                          - array
+                          - 'null'
+                        extra_data.initial_StageName:
+                          items:
+                            type: string
+                          type:
+                          - array
+                          - 'null'
+                        team_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                        user_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                      type: object
+                    searches:
+                      items:
+                        properties:
+                          type:
+                            enum:
+                            - blueprint
+                            - competitor
+                            - text
+                            - topics
+                            - autotopics
+                            - competitors
+                            - facade
+                            example: blueprint
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type:
+                      - array
+                      - 'null'
+                    tracker_operation:
+                      enum:
+                      - and
+                      - or
+                      example: and
+                      type: string
+                  required:
+                  - filters
+                  - tracker_operation
+                  type: object
+                show:
+                  items:
+                    properties:
+                      account_id:
+                        type:
+                        - integer
+                        - 'null'
+                      company:
+                        $ref: '#/components/schemas/AnyValue'
+                      disabled:
+                        type:
+                        - boolean
+                        - 'null'
+                      exists:
+                        type:
+                        - boolean
+                        - 'null'
+                      id:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      type:
+                        type:
+                        - string
+                        - 'null'
+                      url:
+                        type:
+                        - string
+                        - 'null'
+                    type: object
+                  type:
+                  - array
+                  - 'null'
+              required:
+              - run
+              type: object
+            description:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            owner:
+              properties:
+                name:
+                  readOnly: true
+                  type: string
+                person_id:
+                  readOnly: true
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            parent:
+              type:
+              - integer
+              - 'null'
+            path:
+              items:
+                properties:
+                  id:
+                    readOnly: true
+                    type: string
+                  name:
+                    readOnly: true
+                    type: string
+                required:
+                - id
+                - name
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              readOnly: true
+              type: boolean
+            size:
+              readOnly: true
+              type: integer
+          required:
+          - child_count
+          - _created_at
+          - name
+          - private
+          - size
+          - custom_search
+          type: object
+        id:
+          description: The unique ID of the smart playlist.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - smart_playlist
+          example: smart_playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    SmartPlaylistForCreatingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylistForCreating'
+      required:
+      - data
+      type: object
+    PlaylistForCreating:
+      properties:
+        attributes:
+          properties:
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    SmartPlaylistDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylist'
+      required:
+      - data
+      type: object
+    SmartPlaylistForCreating:
+      properties:
+        attributes:
+          properties:
+            custom_search:
+              properties:
+                run:
+                  properties:
+                    filters:
+                      properties:
+                        account_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                        extra_data.StageName:
+                          items:
+                            type: string
+                          type:
+                          - array
+                          - 'null'
+                        extra_data.initial_StageName:
+                          items:
+                            type: string
+                          type:
+                          - array
+                          - 'null'
+                        team_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                        user_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                      type: object
+                    searches:
+                      items:
+                        properties:
+                          type:
+                            enum:
+                            - blueprint
+                            - competitor
+                            - text
+                            - topics
+                            - autotopics
+                            - competitors
+                            - facade
+                            example: blueprint
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type:
+                      - array
+                      - 'null'
+                    tracker_operation:
+                      enum:
+                      - and
+                      - or
+                      example: and
+                      type: string
+                  required:
+                  - filters
+                  - tracker_operation
+                  type: object
+                show:
+                  items:
+                    properties:
+                      account_id:
+                        type:
+                        - integer
+                        - 'null'
+                      company:
+                        $ref: '#/components/schemas/AnyValue'
+                      disabled:
+                        type:
+                        - boolean
+                        - 'null'
+                      exists:
+                        type:
+                        - boolean
+                        - 'null'
+                      id:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      type:
+                        type:
+                        - string
+                        - 'null'
+                      url:
+                        type:
+                        - string
+                        - 'null'
+                    type: object
+                  type:
+                  - array
+                  - 'null'
+              required:
+              - run
+              type: object
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          - custom_search
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - smart_playlist
+          example: smart_playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

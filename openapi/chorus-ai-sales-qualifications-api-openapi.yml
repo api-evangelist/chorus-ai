@@ -1,0 +1,533 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Sales Qualifications API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Sales Qualifications
+paths:
+  /api/v1/sales-qualifications:
+    post:
+      deprecated: false
+      description: Extract structured Sales Qualification Framework data from call transcripts, emails and CRM data at the opportunity level.
+      operationId: post-api-v1-sales-qualifications
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SalesQualificationAnalysisRequestForCreateDoc'
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SalesQualificationAnalysisDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Create Sales qualifications extraction
+      tags:
+      - Sales Qualifications
+  /api/v1/sales-qualifications/actions/writeback-crm:
+    post:
+      deprecated: false
+      description: This API write-back a CRM fields base on the meeting_id
+      operationId: post-api-v1-sales-qualifications-actions-writeback-crm
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SalesQualificationCrmWriteBackRequestForCreateDoc'
+        required: true
+      responses:
+        '201':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: write-back crm fields
+      tags:
+      - Sales Qualifications
+  /api/v1/sales-qualifications/{recording_id}:
+    get:
+      deprecated: false
+      description: Retrieve previously extracted Sales Qualification Framework data by recording ID.
+      operationId: get-api-v1-sales-qualifications-recording_id
+      parameters:
+      - description: recording_id
+        in: path
+        name: recording_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SalesQualificationAnalysisDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Get Sales qualifications extraction
+      tags:
+      - Sales Qualifications
+  /api/v1/sales_qualification_configuration:
+    get:
+      deprecated: false
+      description: This API retrieves configurations of different sales qualification frameworks for the tenant
+      operationId: get-api-v1-sales_qualification_configuration
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/FrameworkConfigurationsDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Get Sales qualification configurations
+      tags:
+      - Sales Qualifications
+  /api/v1/sales_qualification_configuration/{framework_id}:
+    put:
+      deprecated: false
+      description: This API updates a sales qualification configuration.
+      operationId: put-api-v1-sales_qualification_configuration-framework_id
+      parameters:
+      - description: framework_id
+        in: path
+        name: framework_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/FrameworkConfigurationDoc'
+        required: true
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Update sales qualification configuration
+      tags:
+      - Sales Qualifications
+components:
+  schemas:
+    AnyValue:
+      description: Can be any value.
+    SalesQualificationAnalysis:
+      properties:
+        attributes:
+          properties:
+            conversation_duration:
+              type: integer
+            customer_id:
+              type: integer
+            generated_at:
+              type: string
+            meeting_notes:
+              properties:
+                next_steps:
+                  properties:
+                    change_type:
+                      enum:
+                      - ADDED
+                      - UPDATED
+                      - NO_CHANGE
+                      example: ADDED
+                      type: string
+                    field_id:
+                      type: string
+                    field_name:
+                      type: string
+                    new_value:
+                      type:
+                      - string
+                      - 'null'
+                    previous_value:
+                      type:
+                      - string
+                      - 'null'
+                    supporting_quote:
+                      type:
+                      - string
+                      - 'null'
+                  required:
+                  - field_id
+                  - field_name
+                  - change_type
+                  type: object
+                notes:
+                  properties:
+                    change_type:
+                      enum:
+                      - ADDED
+                      - UPDATED
+                      - NO_CHANGE
+                      example: ADDED
+                      type: string
+                    field_id:
+                      type: string
+                    field_name:
+                      type: string
+                    new_value:
+                      type:
+                      - string
+                      - 'null'
+                    previous_value:
+                      type:
+                      - string
+                      - 'null'
+                    supporting_quote:
+                      type:
+                      - string
+                      - 'null'
+                  required:
+                  - field_id
+                  - field_name
+                  - change_type
+                  type: object
+              required:
+              - notes
+              - next_steps
+              type: object
+            opportunity_id:
+              type:
+              - string
+              - 'null'
+            recording_id:
+              type: string
+            sqf_analysis:
+              items:
+                properties:
+                  change_type:
+                    enum:
+                    - ADDED
+                    - UPDATED
+                    - NO_CHANGE
+                    example: ADDED
+                    type: string
+                  field_id:
+                    type: string
+                  field_name:
+                    type: string
+                  new_value:
+                    type:
+                    - string
+                    - 'null'
+                  previous_value:
+                    type:
+                    - string
+                    - 'null'
+                  supporting_quote:
+                    type:
+                    - string
+                    - 'null'
+                required:
+                - field_id
+                - field_name
+                - change_type
+                type: object
+              type: array
+            sqf_name:
+              enum:
+              - MEDDIC
+              - MEDDPICC
+              - BANT
+              - SPIN
+              example: MEDDIC
+              type: string
+            user_id:
+              type: integer
+          required:
+          - generated_at
+          - user_id
+          - customer_id
+          - recording_id
+          - sqf_name
+          - sqf_analysis
+          - conversation_duration
+          - meeting_notes
+          type: object
+        id:
+          description: The unique ID of the sales qualification analysis.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - sales_qualification_analysis
+          example: sales_qualification_analysis
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    FrameworkConfigurationsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/FrameworkConfiguration'
+          type: array
+      required:
+      - data
+      type: object
+    SalesQualificationAnalysisRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SalesQualificationAnalysisRequestForCreate'
+      required:
+      - data
+      type: object
+    SalesQualificationCrmWriteBackRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SalesQualificationCrmWriteBackRequestForCreate'
+      required:
+      - data
+      type: object
+    FrameworkConfigurationDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/FrameworkConfiguration'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    SalesQualificationCrmWriteBackRequestForCreate:
+      properties:
+        attributes:
+          properties:
+            crm_changes:
+              items:
+                properties:
+                  field_name:
+                    type: string
+                  new_value:
+                    $ref: '#/components/schemas/AnyValue'
+                  previous_value:
+                    $ref: '#/components/schemas/AnyValue'
+                required:
+                - field_name
+                type: object
+              type: array
+            meeting_id:
+              type: string
+            object_type:
+              default: Opportunity
+              type:
+              - string
+              - 'null'
+            opportunity_id:
+              type:
+              - string
+              - 'null'
+          required:
+          - meeting_id
+          - crm_changes
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - crm-field-update
+          example: crm-field-update
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    FrameworkConfiguration:
+      properties:
+        attributes:
+          properties:
+            fields:
+              items:
+                properties:
+                  display_name:
+                    type: string
+                  id:
+                    type: string
+                  mapping:
+                    type:
+                    - string
+                    - 'null'
+                  order:
+                    type: integer
+                  write_back:
+                    enum:
+                    - APPEND
+                    - OVERWRITE
+                    example: APPEND
+                    type:
+                    - string
+                    - 'null'
+                required:
+                - display_name
+                - id
+                - order
+                type: object
+              type: array
+            is_active:
+              type: boolean
+          required:
+          - is_active
+          - fields
+          type: object
+        id:
+          description: The unique ID of the sales qualification configuration.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - sales_qualification_configuration
+          example: sales_qualification_configuration
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    SalesQualificationAnalysisRequestForCreate:
+      properties:
+        attributes:
+          properties:
+            recording_id:
+              type: string
+          required:
+          - recording_id
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - sales_qualifications
+          example: sales_qualifications
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    SalesQualificationAnalysisDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SalesQualificationAnalysis'
+      required:
+      - data
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

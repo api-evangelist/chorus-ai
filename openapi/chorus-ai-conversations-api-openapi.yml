@@ -1,0 +1,2081 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Conversations API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Conversations
+paths:
+  /api/v1/conversations/live:
+    get:
+      deprecated: false
+      description: Get details about a live conversation.
+      operationId: get-api-v1-conversations-live
+      parameters:
+      - description: 'The list of fields to populate. Value must be a comma-delimited list. Each item must be one of the following: account, company_name, _created_at, _modified_at, deal, disposition, language, metrics, meeting.id, name, owner, owner.email, participants, private, recording, recording.audio_only, recording.autojoin, recording.autojoin_reason, recording.clusters, recording.duration, recording.end_reason, recording.recordable, recording.schedule_end_time, recording.schedule_start_time, recording.start_time, recording.thumbnails, recording.trackers, recording.utterances, source, status, user_company_name'
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      - description: The list of conversation fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list.
+        in: query
+        name: fields[conversations]
+        required: false
+        schema:
+          type: string
+      - description: The recording-related fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list.
+        in: query
+        name: fields[recordings]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RecordingDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Fetch a LIVE conversation using meeting uuid or user id
+      tags:
+      - Conversations
+  /api/v1/conversations/{id}:
+    delete:
+      deprecated: false
+      description: Makes an asynchronous request to delete a conversation record such as an e-mail or recording.
+      operationId: delete-api-v1-conversations-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Applicable to recordings only; delete associated playlist moments with the recording
+        in: query
+        name: force_delete
+        required: false
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '202':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/TaskDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Delete a conversation record
+      tags:
+      - Conversations
+    get:
+      deprecated: false
+      description: This API fetches the conversation with the given ID.
+      operationId: get-api-v1-conversations-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'The list of fields to populate. Value must be a comma-delimited list. Each item must be one of the following: account, company_name, _created_at, _modified_at, deal, disposition, language, metrics, meeting.id, name, owner, owner.email, participants, private, recording, recording.audio_only, recording.autojoin, recording.autojoin_reason, recording.clusters, recording.duration, recording.end_reason, recording.recordable, recording.schedule_end_time, recording.schedule_start_time, recording.start_time, recording.thumbnails, recording.trackers, recording.utterances, source, status, user_company_name'
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      - description: The list of conversation fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list.
+        in: query
+        name: fields[conversations]
+        required: false
+        schema:
+          type: string
+      - description: The recording-related fields to populate. This parameter is deprecated.  Use `fields`, instead. Value must be a comma-delimited list.
+        in: query
+        name: fields[recordings]
+        required: false
+        schema:
+          type: string
+      - description: Specify true to force the conversation to be regenerated based on the latest information.
+        in: query
+        name: force_regeneration
+        required: false
+        schema:
+          default: false
+          type: boolean
+      - description: Specify true to skip summary generation.
+        in: query
+        name: skip_summary_generation
+        required: false
+        schema:
+          default: false
+          type: boolean
+      - description: Whether to include meeting metadata including provider calendar id and meeting url
+        in: query
+        name: include_meeting_metadata
+        required: false
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RecordingDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Fetch a specific conversation
+      tags:
+      - Conversations
+  /api/v1/conversations/{id}/actions/disconnect:
+    post:
+      deprecated: false
+      description: This API disconnects a live call.
+      operationId: post-api-v1-conversations-id-actions-disconnect
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties: {}
+              type: object
+        required: true
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Disconnect a live conversation
+      tags:
+      - Conversations
+  /api/v1/conversations/{id}/media:
+    get:
+      deprecated: false
+      description: 'Download conversation media file (video or audio). If both video and audio files exist, the video file is returned by default. If video does not exist, will use the audio file. The API supports two response modes: direct redirect to the media file or a JSON response containing metadata and a download link.'
+      operationId: get-api-v1-conversations-id-media
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: info
+        required: false
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnyValue'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Download media file or metadata
+      tags:
+      - Conversations
+  /api/v1/conversations:bulk:
+    post:
+      deprecated: false
+      description: Bulk-upload and/or delete conversations.
+      operationId: post-api-v1-conversations:bulk
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.chorus.bulk+json:
+            schema:
+              $ref: '#/components/schemas/BulkProcessConversationsRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkProcessConversationsResponse'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Bulk process conversations
+      tags:
+      - Conversations
+  /api/v1/conversations:export:
+    post:
+      deprecated: false
+      description: Schedule a task to have conversations matching the specified criteria emailed to you. Exports include downloadable links to audio/video of recordings plus metadata.
+      operationId: post-conversations-export
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                add_usage:
+                  default: false
+                  description: Whether to include usage information in export
+                  type:
+                  - boolean
+                  - 'null'
+                callback_url:
+                  description: URL to which to post the completed link
+                  type:
+                  - string
+                  - 'null'
+                email_on_complete:
+                  default: true
+                  description: Whether to email when export is complete
+                  type:
+                  - boolean
+                  - 'null'
+                end:
+                  description: End timestamp for export range (epoch milliseconds)
+                  example: 1612051200000
+                  format: int64
+                  type:
+                  - integer
+                  - 'null'
+                start:
+                  description: Start timestamp for export range (epoch milliseconds)
+                  example: 1609459200000
+                  format: int64
+                  type:
+                  - integer
+                  - 'null'
+              type: object
+        required: true
+      responses:
+        '202':
+          content:
+            application/json: {}
+          description: Success
+      summary: Export recordings
+      tags:
+      - Conversations
+  /api/v1/conversations:validate:
+    post:
+      deprecated: false
+      description: Validates if an upcoming meeting, which has not been saved in any way, will be automatically recorded.
+      operationId: post-api-v1-conversations:validate
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingValidation'
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/MeetingAutojoinDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Create a new conversations:validate$
+      tags:
+      - Conversations
+  /api/v1/join:
+    post:
+      deprecated: false
+      description: This API may be used to join a live call by posting the plain text you would otherwise use to invite someone to join a call.
+      operationId: post-api-v1-join
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            example: Hi please join me using this link https://chorus.zoom.us/j/12345678901
+            schema:
+              type: string
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ConversationDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Join a live call
+      tags:
+      - Conversations
+  /v3/engagements:
+    delete:
+      deprecated: false
+      description: This API allows you to delete multiple engagements by ID.
+      operationId: delete-v3-engagements
+      parameters:
+      - description: Comma-separated list of Engagements ID(s) to delete. Supports up to 100 per API call.
+        in: query
+        name: engagement_id
+        required: true
+        schema:
+          example: string
+          type: string
+      responses:
+        '202':
+          content:
+            application/json: {}
+          description: Success
+      summary: Delete multiple engagements
+      tags:
+      - Conversations
+    get:
+      deprecated: false
+      description: Get conversations matching the specified criteria.
+      operationId: get-v3-engagements
+      parameters:
+      - description: Call recording compliance flag
+        in: query
+        name: compliance
+        required: false
+        schema:
+          enum:
+          - COMPLIANT
+          - NON-COMPLIANT
+          - UNKNOWN
+          type: string
+      - description: Continuation key for pagination
+        in: query
+        name: continuation_key
+        required: false
+        schema:
+          type: string
+      - description: Chorus disposition - connected
+        in: query
+        name: disposition_connected
+        required: false
+        schema:
+          type: boolean
+      - description: Chorus disposition - gatekeeper
+        in: query
+        name: disposition_gatekeeper
+        required: false
+        schema:
+          type: boolean
+      - description: Chorus disposition - phone tree
+        in: query
+        name: disposition_tree
+        required: false
+        schema:
+          type: boolean
+      - description: Chorus disposition - voicemail
+        in: query
+        name: disposition_voicemail
+        required: false
+        schema:
+          type: boolean
+      - description: Comma-separated list of engagement ids
+        in: query
+        name: engagement_id
+        required: false
+        schema:
+          type: string
+      - description: Type of engagement
+        in: query
+        name: engagement_type
+        required: false
+        schema:
+          enum:
+          - meeting
+          - dialer
+          - email
+          - content_viewed
+          - unrecorded_meeting
+          type: string
+      - description: Type of engagement
+        in: query
+        name: content_type
+        required: false
+        schema:
+          enum:
+          - activity
+          - email_clicked
+          - email_opened
+          - email_unsubscribed
+          - email_failed
+          - form
+          - g2
+          - highspot
+          - loom
+          - seismic
+          - showpad
+          - hellolink_viewed
+          - technology_advice
+          - trustradius
+          - netline
+          - vidyard
+          - websights_visit
+          - zi_chat
+          - unrecorded_dialer_call
+          - missed_dialer_call
+          - navattic
+          - contract_sent
+          - contract_signed
+          - contract_viewed
+          - sourceforge
+          type: string
+      - description: Max date of engagement
+        in: query
+        name: max_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+      - description: Max duration of meeting (in seconds)
+        in: query
+        name: max_duration
+        required: false
+        schema:
+          format: float
+          type: number
+      - description: Min date of engagement
+        in: query
+        name: min_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+      - description: Min duration of meeting (in seconds)
+        in: query
+        name: min_duration
+        required: false
+        schema:
+          format: float
+          type: number
+      - description: The email address of a participant
+        in: query
+        name: participants_email
+        required: false
+        schema:
+          type: string
+      - description: Comma-separated list of Team ID(s) for engagement owner
+        in: query
+        name: team_id
+        required: false
+        schema:
+          type: string
+      - description: Comma-separated list of User ID(s) for engagement owner
+        in: query
+        name: user_id
+        required: false
+        schema:
+          type: string
+      - description: Return tracker information with results
+        in: query
+        name: with_trackers
+        required: false
+        schema:
+          default: false
+          type: boolean
+      - description: 'Additional query parameters may be specified here as a JSON object.  Note: while these parameters are specified here as a JSON object, they will end up getting passed to the API as a series of independent query parameters.'
+        in: query
+        name: additional_parameters
+        required: false
+        schema:
+          additionalProperties: true
+          example:
+            filter[foo]: bar
+          title: Additional parameters
+          type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                continuation_key: 1591110020.0 20C790A0EB9646DBB95725D7951C2506
+                engagements:
+                - account_id: ''
+                  account_name: Mike Gorman Meetings
+                  compliance: non-compliant
+                  date_time: 1632490362
+                  disposition_connected: true
+                  disposition_gatekeeper: false
+                  disposition_tree: false
+                  disposition_voicemail: false
+                  duration: 2872.75
+                  engagement_id: EE8ED5BBBC254177B8201B9D84855949
+                  engagement_type: meeting
+                  initiator: string
+                  language: en
+                  no_show: true
+                  num_cust_questions: 0
+                  num_engaging_questions: 0
+                  opportunity_id: string
+                  opportunity_name: string
+                  participants:
+                  - company_name: ZoomInfo
+                    email: mike.gorman@zoominfo.com
+                    name: Mike Gorman
+                    person_id: 18272271
+                    title: Principal Architect
+                    type: rep
+                    user_id: 305921
+                  processing_state: done
+                  subject: Unscheduled Meeting
+                  tracker_matches:
+                  - name: Authority
+                    num_matches: 1
+                    type: chorus
+                  - name: Objection - Great Question / Feedback
+                    num_matches: 1
+                    type: chorus
+                  - name: Trial / POC
+                    num_matches: 1
+                    type: chorus
+                  - name: Next Steps & To Do's
+                    num_matches: 3
+                    type: chorus
+                  - name: Note to self
+                    num_matches: 1
+                    type: chorus
+                  - name: Coronavirus
+                    num_matches: 2
+                    type: chorus
+                  url: https://chorus.ai/meeting/EE8ED5BBBC254177B8201B9D84855949
+                  user_email: mike.gorman@zoominfo.com
+                  user_id: 305921
+                  user_name: Mike Gorman
+          description: Success
+      summary: Get conversations
+      tags:
+      - Conversations
+  /v3/engagements/{engagement_id}:
+    delete:
+      deprecated: false
+      description: This API allows you to delete a single engagement.
+      operationId: delete-v3-engagements-id
+      parameters:
+      - description: Engagements ID(s) to delete
+        in: path
+        name: engagement_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json: {}
+          description: Success
+      summary: Delete a single engagement
+      tags:
+      - Conversations
+  /v3/upload:
+    post:
+      deprecated: false
+      description: 'Upload a conversation to Chorus. Support formats: 3GPP, AU, AVI, FLV, HLS, MKV, MP3, MP4, Ogg, WAV, WebM'
+      operationId: post-v3-upload
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                crm_account_id:
+                  description: CRM account ID to which to associate the recording
+                  type:
+                  - string
+                  - 'null'
+                crm_opportunity_id:
+                  description: CRM opportunity ID to associate recording to
+                  type:
+                  - string
+                  - 'null'
+                data:
+                  format: binary
+                  type: string
+                enforce_unique_meeting_id:
+                  default: true
+                  description: enforce unique meeting id for a call
+                  type:
+                  - boolean
+                  - 'null'
+                meeting_id:
+                  description: ID of a scheduled meeting
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  description: Name of recording
+                  type: string
+                user:
+                  description: Recording owner email
+                  type: string
+              required:
+              - data
+              - name
+              - user
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json: {}
+          description: Success
+      summary: Upload a conversation
+      tags:
+      - Conversations
+components:
+  schemas:
+    AnyValue:
+      description: Can be any value.
+    Task:
+      properties:
+        attributes:
+          properties:
+            status:
+              readOnly: true
+              type: string
+          required:
+          - status
+          type: object
+        id:
+          description: The unique ID of the task.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - task
+          example: task
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    Conversation:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            account:
+              properties:
+                ext_id:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: integer
+                name:
+                  type: string
+                type:
+                  type:
+                  - string
+                  - 'null'
+                zi_company_id:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              - name
+              type: object
+            action_items:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            company_name:
+              type:
+              - string
+              - 'null'
+            custom_questions:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            custom_summaries:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            deal:
+              properties:
+                close_date:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                current_stage:
+                  type:
+                  - string
+                  - 'null'
+                engaged:
+                  type:
+                  - string
+                  - 'null'
+                follow_up:
+                  properties:
+                    doc_type:
+                      type: string
+                    id:
+                      type: string
+                    start_time:
+                      example: '2021-01-01T00:00:00Z'
+                      type: string
+                    thread_id:
+                      $ref: '#/components/schemas/AnyValue'
+                  required:
+                  - doc_type
+                  - id
+                  - start_time
+                  type:
+                  - object
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                initial_amount:
+                  type:
+                  - number
+                  - 'null'
+                initial_stage:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                on_stage_since:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                size:
+                  type:
+                  - integer
+                  - 'null'
+                size_increased_amount:
+                  $ref: '#/components/schemas/AnyValue'
+                stage_advancement:
+                  type:
+                  - string
+                  - 'null'
+              type: object
+            disposition:
+              properties:
+                Task___CallDisposition:
+                  $ref: '#/components/schemas/AnyValue'
+                connected:
+                  $ref: '#/components/schemas/AnyValue'
+                gatekeeper:
+                  $ref: '#/components/schemas/AnyValue'
+                tree:
+                  $ref: '#/components/schemas/AnyValue'
+                voicemail:
+                  $ref: '#/components/schemas/AnyValue'
+              type:
+              - object
+              - 'null'
+            generated_subject:
+              type:
+              - string
+              - 'null'
+            language:
+              type:
+              - string
+              - 'null'
+            meeting:
+              properties:
+                calendar_id:
+                  type:
+                  - string
+                  - 'null'
+                ical_uid:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: string
+                meeting_url:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              type:
+              - object
+              - 'null'
+            meta:
+              properties:
+                offset:
+                  type: integer
+                viewed:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+              required:
+              - viewed
+              - offset
+              type:
+              - object
+              - 'null'
+            metrics:
+              items:
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: number
+                required:
+                - name
+                - value
+                type: object
+              type:
+              - array
+              - 'null'
+            name:
+              type:
+              - string
+              - 'null'
+            owner:
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - email
+              - name
+              - person_id
+              - user_id
+              type: object
+            participants:
+              items:
+                properties:
+                  company_name:
+                    type:
+                    - string
+                    - 'null'
+                  email:
+                    type:
+                    - string
+                    - 'null'
+                  is_my_team:
+                    type:
+                    - boolean
+                    - 'null'
+                  name:
+                    type: string
+                  person_id:
+                    type: integer
+                  picture:
+                    type:
+                    - string
+                    - 'null'
+                  title:
+                    type:
+                    - string
+                    - 'null'
+                  type:
+                    type: string
+                  user_id:
+                    type:
+                    - integer
+                    - 'null'
+                  zi_person_id:
+                    type:
+                    - integer
+                    - 'null'
+                required:
+                - name
+                - person_id
+                - type
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              type:
+              - boolean
+              - 'null'
+            recap:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            source:
+              type:
+              - string
+              - 'null'
+            status:
+              default: unknown
+              enum:
+              - done
+              - live
+              - no show
+              - processing
+              - unknown
+              - scheduled
+              example: done
+              type: string
+            summary:
+              type:
+              - string
+              - 'null'
+            summary_error:
+              type:
+              - string
+              - 'null'
+            tracker_match:
+              type:
+              - string
+              - 'null'
+            user_company_name:
+              type:
+              - string
+              - 'null'
+          required:
+          - account
+          - deal
+          - owner
+          - status
+          type: object
+        id:
+          description: The unique ID of the conversation.
+          example: 423295C52B954F5D09E23D7A014546F6
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - conversation
+          example: conversation
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    MeetingAutojoinDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/MeetingAutojoin'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    MeetingValidation:
+      properties:
+        details:
+          example: Please ensure your computer or mobile
+          type:
+          - string
+          - 'null'
+        id:
+          example: iakjvi1fjfff
+          type: string
+        link:
+          example: https://zoominfo.zoom.us/j/95944577110
+          type: string
+        location:
+          example: The Office
+          type:
+          - string
+          - 'null'
+        participants:
+          example:
+          - first@participant.com
+          - second@other.com
+          items:
+            type: string
+          type: array
+        start_time:
+          example: '2021-01-31T00:00:00Z'
+          type: string
+        subject:
+          example: Gameplan on extension
+          type: string
+      required:
+      - id
+      - subject
+      - participants
+      - link
+      - start_time
+      type: object
+    BulkProcessConversationsResponse:
+      properties:
+        create:
+          items:
+            properties:
+              attributes:
+                properties:
+                  status:
+                    readOnly: true
+                    type: string
+                required:
+                - status
+                type: object
+              id:
+                description: The unique ID of the task.
+                example: '123'
+                title: ID
+                type: string
+              type:
+                description: The type of resource.
+                enum:
+                - task
+                example: task
+                title: Type
+                type: string
+            required:
+            - attributes
+            - type
+            - id
+            type: object
+          type:
+          - array
+          - 'null'
+        delete:
+          items:
+            properties:
+              attributes:
+                properties:
+                  status:
+                    readOnly: true
+                    type: string
+                required:
+                - status
+                type: object
+              id:
+                description: The unique ID of the task.
+                example: '123'
+                title: ID
+                type: string
+              type:
+                description: The type of resource.
+                enum:
+                - task
+                example: task
+                title: Type
+                type: string
+            required:
+            - attributes
+            - type
+            - id
+            type: object
+          type:
+          - array
+          - 'null'
+      type: object
+    ConversationDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Conversation'
+      required:
+      - data
+      type: object
+    RecordingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Recording'
+      required:
+      - data
+      type: object
+    MeetingAutojoin:
+      properties:
+        attributes:
+          properties:
+            autojoin:
+              type: boolean
+            autojoin_reason:
+              type:
+              - string
+              - 'null'
+            recordable:
+              type: boolean
+          required:
+          - autojoin
+          - recordable
+          type: object
+        id:
+          description: The unique ID of the meeting autojoin.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - meeting_autojoin
+          example: meeting_autojoin
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    BulkProcessConversationsRequest:
+      properties:
+        create:
+          items:
+            properties:
+              attributes:
+                properties:
+                  activity_type:
+                    type:
+                    - string
+                    - 'null'
+                  content:
+                    type:
+                    - string
+                    - 'null'
+                  crm:
+                    properties:
+                      account_name:
+                        type: string
+                      ext_id:
+                        type:
+                        - string
+                        - 'null'
+                      ext_type:
+                        type:
+                        - string
+                        - 'null'
+                      match_reason:
+                        type:
+                        - string
+                        - 'null'
+                      opportunity_id:
+                        type:
+                        - string
+                        - 'null'
+                    required:
+                    - account_name
+                    type:
+                    - object
+                    - 'null'
+                  duration:
+                    type:
+                    - number
+                    - 'null'
+                  end_time:
+                    example: '2021-01-01T00:00:00Z'
+                    type:
+                    - string
+                    - 'null'
+                  external_id:
+                    type:
+                    - string
+                    - 'null'
+                  external_url:
+                    type:
+                    - string
+                    - 'null'
+                  named_tags:
+                    properties: {}
+                    type:
+                    - object
+                    - 'null'
+                  owner:
+                    properties:
+                      company:
+                        type:
+                        - string
+                        - 'null'
+                      company_domain:
+                        type:
+                        - string
+                        - 'null'
+                      email:
+                        type:
+                        - string
+                        - 'null'
+                      first_name:
+                        type:
+                        - string
+                        - 'null'
+                      force_auto_provision:
+                        type:
+                        - boolean
+                        - 'null'
+                      id:
+                        type:
+                        - integer
+                        - 'null'
+                      last_name:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      phone:
+                        type:
+                        - string
+                        - 'null'
+                      role:
+                        type:
+                        - string
+                        - 'null'
+                      title:
+                        type:
+                        - string
+                        - 'null'
+                      zi_company_id:
+                        type:
+                        - string
+                        - 'null'
+                      zi_person_id:
+                        type:
+                        - string
+                        - 'null'
+                    type:
+                    - object
+                    - 'null'
+                  participants:
+                    items:
+                      properties:
+                        company:
+                          type:
+                          - string
+                          - 'null'
+                        company_domain:
+                          type:
+                          - string
+                          - 'null'
+                        email:
+                          type:
+                          - string
+                          - 'null'
+                        first_name:
+                          type:
+                          - string
+                          - 'null'
+                        force_auto_provision:
+                          type:
+                          - boolean
+                          - 'null'
+                        id:
+                          type:
+                          - integer
+                          - 'null'
+                        last_name:
+                          type:
+                          - string
+                          - 'null'
+                        name:
+                          type:
+                          - string
+                          - 'null'
+                        phone:
+                          type:
+                          - string
+                          - 'null'
+                        role:
+                          type:
+                          - string
+                          - 'null'
+                        title:
+                          type:
+                          - string
+                          - 'null'
+                        zi_company_id:
+                          type:
+                          - string
+                          - 'null'
+                        zi_person_id:
+                          type:
+                          - string
+                          - 'null'
+                      type: object
+                    type:
+                    - array
+                    - 'null'
+                  related_conversation:
+                    type:
+                    - string
+                    - 'null'
+                  related_external_id:
+                    type:
+                    - string
+                    - 'null'
+                  related_meeting:
+                    type:
+                    - string
+                    - 'null'
+                  related_start_time:
+                    example: '2021-01-01T00:00:00Z'
+                    type:
+                    - string
+                    - 'null'
+                  source:
+                    type: string
+                  start_time:
+                    example: '2021-01-01T00:00:00Z'
+                    type: string
+                  status:
+                    type:
+                    - string
+                    - 'null'
+                  subject:
+                    type:
+                    - string
+                    - 'null'
+                  tags:
+                    items:
+                      type: string
+                    type:
+                    - array
+                    - 'null'
+                required:
+                - source
+                - start_time
+                type: object
+              type:
+                description: The type of resource.
+                enum:
+                - activity
+                - email
+                - form
+                - recording
+                example: activity
+                title: Type
+                type: string
+            required:
+            - attributes
+            - type
+            type: object
+          type:
+          - array
+          - 'null'
+        delete:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        meta:
+          properties:
+            force_delete:
+              type:
+              - boolean
+              - 'null'
+          type:
+          - object
+          - 'null'
+      type: object
+    Recording:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            account:
+              properties:
+                ext_id:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: integer
+                name:
+                  type: string
+                type:
+                  type:
+                  - string
+                  - 'null'
+                zi_company_id:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              - name
+              type: object
+            action_items:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            company_name:
+              type:
+              - string
+              - 'null'
+            custom_questions:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            custom_summaries:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            deal:
+              properties:
+                close_date:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                current_stage:
+                  type:
+                  - string
+                  - 'null'
+                engaged:
+                  type:
+                  - string
+                  - 'null'
+                follow_up:
+                  properties:
+                    doc_type:
+                      type: string
+                    id:
+                      type: string
+                    start_time:
+                      example: '2021-01-01T00:00:00Z'
+                      type: string
+                    thread_id:
+                      $ref: '#/components/schemas/AnyValue'
+                  required:
+                  - doc_type
+                  - id
+                  - start_time
+                  type:
+                  - object
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                initial_amount:
+                  type:
+                  - number
+                  - 'null'
+                initial_stage:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                on_stage_since:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                size:
+                  type:
+                  - integer
+                  - 'null'
+                size_increased_amount:
+                  $ref: '#/components/schemas/AnyValue'
+                stage_advancement:
+                  type:
+                  - string
+                  - 'null'
+              type: object
+            disposition:
+              properties:
+                Task___CallDisposition:
+                  $ref: '#/components/schemas/AnyValue'
+                connected:
+                  $ref: '#/components/schemas/AnyValue'
+                gatekeeper:
+                  $ref: '#/components/schemas/AnyValue'
+                tree:
+                  $ref: '#/components/schemas/AnyValue'
+                voicemail:
+                  $ref: '#/components/schemas/AnyValue'
+              type:
+              - object
+              - 'null'
+            generated_subject:
+              type:
+              - string
+              - 'null'
+            language:
+              type:
+              - string
+              - 'null'
+            meeting:
+              properties:
+                calendar_id:
+                  type:
+                  - string
+                  - 'null'
+                ical_uid:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: string
+                meeting_url:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              type:
+              - object
+              - 'null'
+            meta:
+              properties:
+                offset:
+                  type: integer
+                viewed:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+              required:
+              - viewed
+              - offset
+              type:
+              - object
+              - 'null'
+            metrics:
+              items:
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: number
+                required:
+                - name
+                - value
+                type: object
+              type:
+              - array
+              - 'null'
+            name:
+              type:
+              - string
+              - 'null'
+            owner:
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - email
+              - name
+              - person_id
+              - user_id
+              type: object
+            participants:
+              items:
+                properties:
+                  company_name:
+                    type:
+                    - string
+                    - 'null'
+                  email:
+                    type:
+                    - string
+                    - 'null'
+                  is_my_team:
+                    type:
+                    - boolean
+                    - 'null'
+                  name:
+                    type: string
+                  person_id:
+                    type: integer
+                  picture:
+                    type:
+                    - string
+                    - 'null'
+                  title:
+                    type:
+                    - string
+                    - 'null'
+                  type:
+                    type: string
+                  user_id:
+                    type:
+                    - integer
+                    - 'null'
+                  zi_person_id:
+                    type:
+                    - integer
+                    - 'null'
+                required:
+                - name
+                - person_id
+                - type
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              type:
+              - boolean
+              - 'null'
+            recap:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            recording:
+              properties:
+                audio_only:
+                  type: boolean
+                autojoin:
+                  type: boolean
+                autojoin_reason:
+                  type: string
+                clusters:
+                  items:
+                    properties:
+                      company_name:
+                        type:
+                        - string
+                        - 'null'
+                      display_name:
+                        type:
+                        - string
+                        - 'null'
+                      id:
+                        type: integer
+                      match_method:
+                        enum:
+                        - guess
+                        - user
+                        - video
+                        - voice
+                        - guessed_by_zoom
+                        example: guess
+                        type: string
+                      participant:
+                        type:
+                        - integer
+                        - 'null'
+                      ranges:
+                        items:
+                          properties:
+                            length:
+                              type: number
+                            start:
+                              type: number
+                            talk_time:
+                              type: number
+                          required:
+                          - length
+                          - start
+                          - talk_time
+                          type: object
+                        type: array
+                      speaker_name:
+                        type: string
+                      title:
+                        type:
+                        - string
+                        - 'null'
+                      type:
+                        enum:
+                        - cust
+                        - rep
+                        - unknown
+                        example: cust
+                        type: string
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                    required:
+                    - id
+                    - match_method
+                    - ranges
+                    - speaker_name
+                    - type
+                    type: object
+                  type: array
+                duration:
+                  type: number
+                end_reason:
+                  type: string
+                has_meeting_summary:
+                  type: boolean
+                recordable:
+                  type: boolean
+                schedule_end_time:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+                schedule_start_time:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+                start_time:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+                thumbnails:
+                  items:
+                    properties:
+                      duration:
+                        type:
+                        - integer
+                        - 'null'
+                      id:
+                        $ref: '#/components/schemas/AnyValue'
+                      keyframe_type:
+                        enum:
+                        - deck
+                        - demo
+                        example: deck
+                        type:
+                        - string
+                        - 'null'
+                      offset_end:
+                        type: integer
+                      offset_start:
+                        type: integer
+                      type:
+                        enum:
+                        - keyframe
+                        - thumbnail
+                        example: keyframe
+                        type: string
+                    required:
+                    - id
+                    - offset_end
+                    - offset_start
+                    - type
+                    type: object
+                  type: array
+                trackers:
+                  items:
+                    properties:
+                      count:
+                        default: 0
+                        type: integer
+                      id:
+                        type: string
+                      mentions:
+                        items:
+                          properties:
+                            offset:
+                              type: integer
+                            utterance:
+                              type: integer
+                          required:
+                          - offset
+                          - utterance
+                          type: object
+                        type: array
+                      name:
+                        type: string
+                      owner_id:
+                        type: integer
+                      source:
+                        type: string
+                      team_ids:
+                        items:
+                          type: integer
+                        type:
+                        - array
+                        - 'null'
+                      type:
+                        type: string
+                    required:
+                    - count
+                    - id
+                    - mentions
+                    - name
+                    - owner_id
+                    - source
+                    - type
+                    type: object
+                  type: array
+                unrecorded_reason:
+                  type: string
+                utterances:
+                  items:
+                    properties:
+                      date_time:
+                        example: '2021-01-01T00:00:00Z'
+                        type: string
+                      engaging:
+                        type: boolean
+                      expired:
+                        type: boolean
+                      id:
+                        type: string
+                      index:
+                        type: integer
+                      participant:
+                        type: integer
+                      snippet:
+                        type: string
+                      snippet_length:
+                        type: number
+                      snippet_time:
+                        type: number
+                      snippet_word_count:
+                        type: integer
+                      speaker_id:
+                        type:
+                        - integer
+                        - 'null'
+                      speaker_name:
+                        type:
+                        - string
+                        - 'null'
+                      speaker_type:
+                        type:
+                        - string
+                        - 'null'
+                    required:
+                    - date_time
+                    - engaging
+                    - expired
+                    - id
+                    - index
+                    - participant
+                    - snippet
+                    - snippet_length
+                    - snippet_time
+                    - snippet_word_count
+                    type: object
+                  type: array
+              required:
+              - audio_only
+              - autojoin
+              - autojoin_reason
+              - unrecorded_reason
+              - clusters
+              - duration
+              - end_reason
+              - has_meeting_summary
+              - recordable
+              - schedule_end_time
+              - schedule_start_time
+              - start_time
+              - thumbnails
+              - trackers
+              - utterances
+              type: object
+            source:
+              type:
+              - string
+              - 'null'
+            status:
+              default: unknown
+              enum:
+              - done
+              - live
+              - no show
+              - processing
+              - unknown
+              - scheduled
+              example: done
+              type: string
+            summary:
+              type:
+              - string
+              - 'null'
+            summary_error:
+              type:
+              - string
+              - 'null'
+            tracker_match:
+              type:
+              - string
+              - 'null'
+            user_company_name:
+              type:
+              - string
+              - 'null'
+          required:
+          - account
+          - deal
+          - owner
+          - status
+          - recording
+          type: object
+        id:
+          description: The unique ID of the recording.
+          example: 423295C52B954F5EA9023D7A014546F6
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - recording
+          example: recording
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    TaskDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
+      required:
+      - data
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

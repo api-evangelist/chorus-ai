@@ -1,0 +1,475 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Users API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Users
+paths:
+  /api/v1/users/me:
+    get:
+      deprecated: false
+      description: Fetch details about yourself.
+      operationId: get-api-v1-users-me
+      parameters:
+      - in: header
+        name: X-Timezone-Offset
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Get details about yourself
+      tags:
+      - Users
+  /api/v1/users/me/actions/deregister_token:
+    post:
+      deprecated: false
+      description: Deregister the user's calling device from receiving push notifications.
+      operationId: post-api-v1-users-me-actions-deregister_token
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenDeregistration'
+        required: true
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Deregister mobile device from push notifications service
+      tags:
+      - Users
+  /api/v1/users/me/actions/register_token:
+    post:
+      deprecated: false
+      description: Register the user's device into 'Zoominfo Notifications Center', so it will be able to receive push notifications.
+      operationId: post-api-v1-users-me-actions-register_token
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRegistration'
+        required: true
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Register mobile device to push notifications service
+      tags:
+      - Users
+  /api/v1/users/me/settings:
+    get:
+      deprecated: false
+      description: Get the current user's settings.
+      operationId: get-api-v1-users-me-settings
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserSettingsDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Get settings
+      tags:
+      - Users
+    put:
+      deprecated: false
+      description: Update the current user's settings.
+      operationId: put-api-v1-users-me-settings
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserSettingsDoc'
+        required: true
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Update settings
+      tags:
+      - Users
+  /v3/users:
+    get:
+      deprecated: false
+      description: This API returns all users.
+      operationId: get-v3-users
+      parameters:
+      - in: header
+        name: x-al-version
+        required: false
+        schema:
+          default: '2020-03-01'
+          type: string
+      responses:
+        '200':
+          content:
+            application/json: {}
+          description: Success
+      summary: Fetch users
+      tags:
+      - Users
+components:
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  schemas:
+    User:
+      properties:
+        attributes:
+          properties:
+            allowed_access:
+              type: integer
+            autojoin:
+              type: integer
+            biometric_policy:
+              type: boolean
+            created_on:
+              example: '2021-01-01T00:00:00Z'
+              type: string
+            default_meeting_link:
+              example: https://acme.zoom.us/j/123456789
+              type: string
+            domain:
+              type: string
+            email:
+              example: john.smith@email.com
+              type: string
+            fingerprint_state:
+              example: automatically_created
+              type: string
+            first_name:
+              example: John
+              type: string
+            internal:
+              type: boolean
+            invalidated:
+              type: boolean
+            is_email_linked:
+              type: boolean
+            language:
+              type: string
+            last_login_at:
+              example: '2021-01-01T00:00:00Z'
+              type: string
+            last_name:
+              example: Smith
+              type: string
+            license_type:
+              enum:
+              - LISTENER
+              - RECORDER
+              example: LISTENER
+              type: string
+            linkedin:
+              type: string
+            location:
+              type: string
+            manager_id:
+              type: integer
+            meta:
+              properties:
+                sf_record_id:
+                  type:
+                  - string
+                  - 'null'
+              type: object
+            name:
+              example: John Smith
+              type: string
+            onboarding_status:
+              enum:
+              - HIDE_ONBOARDING
+              - ONBOARDED
+              - REQUIRES_ONBOARDING
+              example: HIDE_ONBOARDING
+              type: string
+            permission_role_id:
+              type: integer
+            person_id:
+              type: integer
+            picture:
+              type: string
+            primary_team:
+              type: integer
+            privacy_policy:
+              type: boolean
+            provisioning_type:
+              example: manual
+              type: string
+            role:
+              type: string
+            seniority:
+              type: string
+            sub_role:
+              type: string
+            sync_calendar:
+              type: integer
+            team_ids:
+              items:
+                type: integer
+              type: array
+            terms_and_conditions:
+              type: boolean
+            terms_conditions:
+              type: integer
+            tier:
+              type: string
+            title:
+              type: string
+            type:
+              example: Sales Rep
+              type: string
+            utc_offset:
+              type: number
+          required:
+          - allowed_access
+          - autojoin
+          - biometric_policy
+          - created_on
+          - default_meeting_link
+          - domain
+          - email
+          - fingerprint_state
+          - first_name
+          - internal
+          - invalidated
+          - is_email_linked
+          - language
+          - last_login_at
+          - last_name
+          - license_type
+          - linkedin
+          - location
+          - manager_id
+          - meta
+          - name
+          - onboarding_status
+          - person_id
+          - permission_role_id
+          - picture
+          - privacy_policy
+          - provisioning_type
+          - role
+          - seniority
+          - sub_role
+          - sync_calendar
+          - team_ids
+          - primary_team
+          - terms_and_conditions
+          - terms_conditions
+          - tier
+          - title
+          - type
+          - utc_offset
+          type: object
+        id:
+          description: The unique ID of the user.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - user
+          example: user
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    TokenRegistration:
+      properties:
+        device_os:
+          type: string
+        device_type:
+          type: string
+        token:
+          type: string
+        type:
+          enum:
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
+          type: string
+      required:
+      - device_os
+      - device_type
+      - token
+      - type
+      type: object
+    UserSettingsDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/UserSettings'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    TokenDeregistration:
+      properties:
+        token:
+          type: string
+        type:
+          enum:
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
+          type: string
+      required:
+      - token
+      - type
+      type: object
+    UserSettings:
+      properties:
+        attributes:
+          properties:
+            mobile_push.comments:
+              type: boolean
+            mobile_push.mentions:
+              type: boolean
+          required:
+          - mobile_push.comments
+          - mobile_push.mentions
+          type: object
+        id:
+          description: The unique ID of the user settings.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - user_settings
+          example: user_settings
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    UserDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/User'
+      required:
+      - data
+      type: object
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

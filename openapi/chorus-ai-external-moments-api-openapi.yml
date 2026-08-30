@@ -1,0 +1,388 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus External Moments API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: External Moments
+paths:
+  /api/v1/moments:
+    get:
+      deprecated: false
+      description: This API fetches all moments.
+      operationId: get-api-v1-moments
+      parameters:
+      - description: A date range. Value must be two ISO 8601-formatted dates separated by a colon (e.g. `2021-01-01T00:00:00Z:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no minimum (e.g. `*:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no maximum (e.g. `2021-01-01T00:00:00Z:*`). The maximum range that may be specified is `365 days, 0:00:00`.
+        in: query
+        name: filter[shared_on]
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/MomentsDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Fetch moments
+      tags:
+      - External Moments
+  /api/v1/moments/{id}:
+    delete:
+      deprecated: false
+      description: This API deletes the moment with the given ID.
+      operationId: delete-api-v1-moments-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Delete a moment
+      tags:
+      - External Moments
+components:
+  schemas:
+    Moment:
+      properties:
+        attributes:
+          properties:
+            account:
+              properties:
+                id:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+              type:
+              - object
+              - 'null'
+            asr:
+              type:
+              - string
+              - 'null'
+            conversation:
+              type:
+              - string
+              - 'null'
+            creator:
+              properties:
+                company:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                picture:
+                  type:
+                  - string
+                  - 'null'
+              type:
+              - object
+              - 'null'
+            duration:
+              type:
+              - number
+              - 'null'
+            expiration_date:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            internal_only:
+              default: false
+              type:
+              - boolean
+              - 'null'
+            link:
+              type:
+              - string
+              - 'null'
+            logo:
+              type:
+              - string
+              - 'null'
+            logo_bg:
+              type:
+              - string
+              - 'null'
+            note:
+              type:
+              - string
+              - 'null'
+            opportunity:
+              properties:
+                amount:
+                  type:
+                  - number
+                  - 'null'
+                close_date:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                initial_amount:
+                  type:
+                  - number
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                on_stage_since:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                owner_name:
+                  type:
+                  - string
+                  - 'null'
+                stage:
+                  type:
+                  - string
+                  - 'null'
+              type:
+              - object
+              - 'null'
+            password:
+              type:
+              - string
+              - 'null'
+            read_receipts:
+              default: false
+              type:
+              - boolean
+              - 'null'
+            recording_duration:
+              type:
+              - number
+              - 'null'
+            share_email_address_required:
+              default: true
+              type:
+              - boolean
+              - 'null'
+            shared_on:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            speaker:
+              properties:
+                email:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                type:
+                  type:
+                  - string
+                  - 'null'
+              type:
+              - object
+              - 'null'
+            start:
+              type:
+              - number
+              - 'null'
+            start_time:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            subject:
+              type:
+              - string
+              - 'null'
+            thumbnail_link:
+              type:
+              - string
+              - 'null'
+            time:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            url_string:
+              type:
+              - string
+              - 'null'
+            user:
+              properties:
+                email:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                picture:
+                  type:
+                  - string
+                  - 'null'
+              type:
+              - object
+              - 'null'
+            video_link:
+              type:
+              - string
+              - 'null'
+            video_upload_time:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the moment.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - moment
+          example: moment
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    MomentsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Moment'
+          type: array
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

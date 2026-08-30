@@ -1,0 +1,115 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Webhook API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Webhook
+paths:
+  /v3/webhook:
+    delete:
+      deprecated: false
+      description: Delete an existing webhook by its URL.
+      operationId: delete-v3-webhook
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                hook_url:
+                  description: The URL of the webhook to delete
+                  type: string
+              required:
+              - hook_url
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json: {}
+          description: Success
+      summary: Delete a webhook
+      tags:
+      - Webhook
+    get:
+      deprecated: false
+      description: Retrieve all webhooks configured for the authenticated customer.
+      operationId: get-v3-webhook
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                webhooks:
+                - events:
+                  - event_name: recording_done
+                    filter_arguments:
+                      es_args:
+                        duration_min: 60
+                  id: 123
+                  url: https://example.com/webhook
+          description: Success
+      summary: Fetch webhooks
+      tags:
+      - Webhook
+    post:
+      deprecated: false
+      description: Register a new webhook that Chorus will post to when a specified event occurs. Webhooks can be filtered based on conversation criteria.
+      operationId: post-v3-webhook
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                event:
+                  description: The event type that triggers the webhook
+                  enum:
+                  - recording_done
+                  type: string
+                hook_url:
+                  description: The URL to post to when the event occurs
+                  type: string
+                type:
+                  description: Optional webhook type with predefined filters (e.g., 'zapier' for common Zapier use cases)
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - event
+              - hook_url
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json: {}
+          description: Success
+      summary: Register a webhook
+      tags:
+      - Webhook
+components:
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

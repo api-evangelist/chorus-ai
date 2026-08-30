@@ -1,0 +1,437 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Engagement filter API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Engagement filter
+paths:
+  /api/v1/filters:
+    get:
+      deprecated: false
+      description: Fetch all the customer's engagement_filter
+      operationId: get-api-v1-filters
+      parameters:
+      - in: query
+        name: filter[filter_name]
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: filter[filter_type]
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: filter[field_type]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EngagementFiltersDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Fetch all the customer's engagement_filter
+      tags:
+      - Engagement filter
+    post:
+      deprecated: false
+      description: This API is used to create new engagement filter.
+      operationId: post-api-v1-filters
+      parameters: []
+      requestBody:
+        content:
+          application/vnd.api+json:
+            example:
+              data:
+                attributes:
+                  field_type: picklist
+                  filter_name: test6
+                  filter_type: TrustRadius
+                  filter_values: '{"ZoomInfo SalesOS": "zi-sales", "Chorus": "chorus-ai"}'
+                type: engagement_filter
+            schema:
+              $ref: '#/components/schemas/EngagementFilterForCreateDoc'
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EngagementFilterDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Create engagement filter
+      tags:
+      - Engagement filter
+  /api/v1/filters/actions/replace:
+    post:
+      deprecated: false
+      description: Replace all engagement_filters.
+      operationId: post-api-v1-filters-actions-replace
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceAllEngagementFilters'
+        required: true
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Replace all engagement_filters
+      tags:
+      - Engagement filter
+  /api/v1/filters/{id}:
+    delete:
+      deprecated: false
+      description: Deletes an engagement filter permanently
+      operationId: delete-api-v1-filters-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Delete an engagement filter
+      tags:
+      - Engagement filter
+    get:
+      deprecated: false
+      description: Fetch one engagement_filter.
+      operationId: get-api-v1-filters-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EngagementFilterDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Fetch one engagement_filter
+      tags:
+      - Engagement filter
+    put:
+      deprecated: false
+      description: Update one engagement_filter.
+      operationId: put-api-v1-filters-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/EngagementFilterEditDoc'
+        required: true
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EngagementFilterEditDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Update one engagement_filter
+      tags:
+      - Engagement filter
+components:
+  schemas:
+    EngagementFilterForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementFilterForCreate'
+      required:
+      - data
+      type: object
+    EngagementFilterForCreate:
+      properties:
+        attributes:
+          properties:
+            field_type:
+              type: string
+            filter_name:
+              type: string
+            filter_type:
+              type: string
+            filter_values:
+              default: 'null'
+              type:
+              - string
+              - 'null'
+          required:
+          - filter_name
+          - filter_type
+          - field_type
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - engagement_filter
+          example: engagement_filter
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    EngagementFilter:
+      properties:
+        attributes:
+          properties:
+            field_type:
+              type: string
+            filter_name:
+              type: string
+            filter_type:
+              type: string
+            filter_values:
+              default: 'null'
+              type:
+              - string
+              - 'null'
+          required:
+          - filter_name
+          - filter_type
+          - field_type
+          type: object
+        id:
+          description: The unique ID of the engagement filter.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - engagement_filter
+          example: engagement_filter
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    EngagementFilterEditDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementFilterEdit'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    ReplaceAllEngagementFilters:
+      properties:
+        filter_type:
+          type: string
+        filters:
+          items:
+            properties:
+              field_type:
+                type: string
+              filter_name:
+                type: string
+              filter_values:
+                default: 'null'
+                type:
+                - string
+                - 'null'
+            required:
+            - filter_name
+            - field_type
+            type: object
+          type: array
+        type:
+          default: engagement_filter
+          type: string
+      required:
+      - filter_type
+      - filters
+      - type
+      type: object
+    EngagementFilterDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementFilter'
+      required:
+      - data
+      type: object
+    EngagementFilterEdit:
+      properties:
+        attributes:
+          properties:
+            field_type:
+              type:
+              - string
+              - 'null'
+            filter_name:
+              type:
+              - string
+              - 'null'
+            filter_type:
+              type:
+              - string
+              - 'null'
+            filter_values:
+              type:
+              - string
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the engagement filter edit.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - engagement_filter_edit
+          example: engagement_filter_edit
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    EngagementFiltersDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/EngagementFilter'
+          type: array
+      required:
+      - data
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

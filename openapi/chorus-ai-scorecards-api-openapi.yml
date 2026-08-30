@@ -1,0 +1,349 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Scorecards API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Scorecards
+paths:
+  /api/v1/scorecards:
+    get:
+      deprecated: false
+      description: This API fetches all scorecards.
+      operationId: get-api-v1-scorecards
+      parameters:
+      - description: Ids of the users who were scored. Value must be a comma-delimited list.
+        in: query
+        name: filter[recipients]
+        required: false
+        schema:
+          type: string
+      - description: Ids of the users who completed the scorecards. Value must be a comma-delimited list.
+        in: query
+        name: filter[reviewers]
+        required: false
+        schema:
+          type: string
+      - description: Id of the initiative that the scorecards were completed against.
+        in: query
+        name: filter[initiative]
+        required: false
+        schema:
+          type: integer
+      - description: The datetime that the scorecard was submitted by the reviewer. Value must be two ISO 8601-formatted dates separated by a colon (e.g. `2021-01-01T00:00:00Z:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no minimum (e.g. `*:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no maximum (e.g. `2021-01-01T00:00:00Z:*`).
+        in: query
+        name: filter[submitted]
+        required: false
+        schema:
+          type: string
+      - description: The number of resources to return per page. The minimum value that may be specified is `1`. The maximum value that may be specified is `100`.
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The page of resources to return. The minimum value that may be specified is `1`.
+        in: query
+        name: page[number]
+        required: false
+        schema:
+          default: 1
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ScorecardsDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Fetch scorecards
+      tags:
+      - Scorecards
+  /api/v1/scorecards:export:
+    post:
+      deprecated: false
+      description: 'Schedule a task to export the customer scorecards to csv file '
+      operationId: post-api-v1-scorecards:export
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportScorecardsBody'
+        required: true
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/TaskDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Export scorecards
+      tags:
+      - Scorecards
+components:
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+  schemas:
+    ExportScorecardsBody:
+      properties:
+        notify:
+          default: true
+          type: boolean
+      required:
+      - notify
+      type: object
+    Task:
+      properties:
+        attributes:
+          properties:
+            status:
+              readOnly: true
+              type: string
+          required:
+          - status
+          type: object
+        id:
+          description: The unique ID of the task.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - task
+          example: task
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    ScorecardsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Scorecard'
+          type: array
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    Scorecard:
+      properties:
+        attributes:
+          properties:
+            engagement:
+              type: string
+            initiative:
+              properties:
+                description:
+                  type: string
+                id:
+                  type: integer
+                name:
+                  type: string
+                url:
+                  type: string
+              required:
+              - description
+              - id
+              - name
+              - url
+              type: object
+            recipient:
+              properties:
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type: object
+            reviewer:
+              properties:
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type: object
+            scores:
+              items:
+                properties:
+                  comment:
+                    properties:
+                      text:
+                        type: string
+                      time:
+                        type: integer
+                    required:
+                    - text
+                    - time
+                    type: object
+                  question:
+                    properties:
+                      id:
+                        type: integer
+                      text:
+                        type: string
+                    required:
+                    - id
+                    - text
+                    type: object
+                  score:
+                    type: integer
+                required:
+                - comment
+                - question
+                - score
+                type: object
+              type: array
+            seen:
+              type: boolean
+            submitted:
+              example: '2021-01-01T00:00:00Z'
+              type: string
+            url:
+              type: string
+          required:
+          - engagement
+          - initiative
+          - seen
+          - scores
+          - url
+          - recipient
+          - reviewer
+          - submitted
+          type: object
+        id:
+          description: The unique ID of the scorecard.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - scorecard
+          example: scorecard
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    TaskDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
+      required:
+      - data
+      type: object
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

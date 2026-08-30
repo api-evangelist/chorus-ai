@@ -1,0 +1,676 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Emails API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Emails
+paths:
+  /api/v1/email_threads/{id}:
+    delete:
+      deprecated: false
+      description: Delete all emails in a thread.
+      operationId: delete-api-v1-email_threads-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EmailThreadDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Delete email thread
+      tags:
+      - Emails
+    get:
+      deprecated: false
+      description: Get details about an email thread.
+      operationId: get-api-v1-email_threads-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EmailThreadDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Get email thread
+      tags:
+      - Emails
+  /api/v1/emails:
+    get:
+      deprecated: false
+      description: Get emails matching the specified criteria.
+      operationId: get-api-v1-emails
+      parameters:
+      - description: The date range in which to search for e-mails that were sent. Value must be two ISO 8601-formatted dates separated by a colon (e.g. `2021-01-01T00:00:00Z:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no minimum (e.g. `*:2021-01-31T00:00:00Z`). An asterisk may be used as a placeholder to represent no maximum (e.g. `2021-01-01T00:00:00Z:*`).
+        in: query
+        name: filter[email.sent]
+        required: false
+        schema:
+          type: string
+      - description: A string used to perform an exact case-insensitive partial match against the e-mails' subjects
+        in: query
+        name: filter[name]
+        required: false
+        schema:
+          type: string
+      - description: The identifier of the e-mails belonging to the same e-mail thread
+        in: query
+        name: filter[thread]
+        required: false
+        schema:
+          type: string
+      - description: Select specific e-mails using e-mail identifiers. Value must be a comma-delimited list.
+        in: query
+        name: filter[ids]
+        required: false
+        schema:
+          type: string
+      - description: 'The case-insensitive name of the sender of an e-mail; examples: "Julius Caesar", "julius", and "CAESAR"'
+        in: query
+        name: filter[owner.name]
+        required: false
+        schema:
+          type: string
+      - description: 'The case-insensitive e-mail address of the sender of an e-mail; examples: "julius.caesar@rome.gov", "JULIUS.CAESAR", and "@rome.gov"'
+        in: query
+        name: filter[owner.email]
+        required: false
+        schema:
+          type: string
+      - description: The case-insensitive names of the participants of an e-mail; adding more participants will broaden the search. Value must be a comma-delimited list.
+        in: query
+        name: filter[participants.name]
+        required: false
+        schema:
+          type: string
+      - description: The case-insensitive e-mail addresses of the participants of an e-mail; adding more participants will broaden the search. Value must be a comma-delimited list.
+        in: query
+        name: filter[participants.email]
+        required: false
+        schema:
+          type: string
+      - description: The maximum number of e-mails to return per page; if the number of matching e-mails is greater than the page size, the number of results returned is not guaranteed to be equal to the page size. The minimum value that may be specified is `1`. The maximum value that may be specified is `100`.
+        in: query
+        name: page[size]
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+      - in: query
+        name: page[after]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                properties: {}
+                type: object
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Get emails
+      tags:
+      - Emails
+  /api/v1/emails/{id}:
+    get:
+      deprecated: false
+      description: Get an e-mail using the e-mail's identifier.
+      operationId: get-api-v1-emails-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/EmailDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      summary: Get email
+      tags:
+      - Emails
+components:
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+  schemas:
+    AnyValue:
+      description: Can be any value.
+    EmailDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Email'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    EmailThread:
+      properties:
+        attributes:
+          properties:
+            deleted:
+              default: false
+              type: boolean
+            deleted_at:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            deleted_by:
+              properties:
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            private:
+              default: false
+              type: boolean
+          required:
+          - private
+          - deleted
+          type: object
+        id:
+          description: The unique ID of the email thread.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - email_thread
+          example: email_thread
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    EmailThreadDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EmailThread'
+      required:
+      - data
+      type: object
+    Email:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            account:
+              properties:
+                ext_id:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: integer
+                name:
+                  type: string
+                type:
+                  type:
+                  - string
+                  - 'null'
+                zi_company_id:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              - name
+              type: object
+            action_items:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            company_name:
+              type:
+              - string
+              - 'null'
+            custom_questions:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            custom_summaries:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            deal:
+              properties:
+                close_date:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                current_stage:
+                  type:
+                  - string
+                  - 'null'
+                engaged:
+                  type:
+                  - string
+                  - 'null'
+                follow_up:
+                  properties:
+                    doc_type:
+                      type: string
+                    id:
+                      type: string
+                    start_time:
+                      example: '2021-01-01T00:00:00Z'
+                      type: string
+                    thread_id:
+                      $ref: '#/components/schemas/AnyValue'
+                  required:
+                  - doc_type
+                  - id
+                  - start_time
+                  type:
+                  - object
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                initial_amount:
+                  type:
+                  - number
+                  - 'null'
+                initial_stage:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                on_stage_since:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                size:
+                  type:
+                  - integer
+                  - 'null'
+                size_increased_amount:
+                  $ref: '#/components/schemas/AnyValue'
+                stage_advancement:
+                  type:
+                  - string
+                  - 'null'
+              type: object
+            disposition:
+              properties:
+                Task___CallDisposition:
+                  $ref: '#/components/schemas/AnyValue'
+                connected:
+                  $ref: '#/components/schemas/AnyValue'
+                gatekeeper:
+                  $ref: '#/components/schemas/AnyValue'
+                tree:
+                  $ref: '#/components/schemas/AnyValue'
+                voicemail:
+                  $ref: '#/components/schemas/AnyValue'
+              type:
+              - object
+              - 'null'
+            email:
+              properties:
+                body:
+                  type: string
+                initiator:
+                  properties:
+                    email:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                  - name
+                  - email
+                  type: object
+                sent_time:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+                thread:
+                  type: string
+              required:
+              - sent_time
+              - body
+              - initiator
+              - thread
+              type: object
+            generated_subject:
+              type:
+              - string
+              - 'null'
+            language:
+              type:
+              - string
+              - 'null'
+            meeting:
+              properties:
+                calendar_id:
+                  type:
+                  - string
+                  - 'null'
+                ical_uid:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: string
+                meeting_url:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              type:
+              - object
+              - 'null'
+            meta:
+              properties:
+                offset:
+                  type: integer
+                viewed:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+              required:
+              - viewed
+              - offset
+              type:
+              - object
+              - 'null'
+            metrics:
+              items:
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: number
+                required:
+                - name
+                - value
+                type: object
+              type:
+              - array
+              - 'null'
+            name:
+              type:
+              - string
+              - 'null'
+            owner:
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - email
+              - name
+              - person_id
+              - user_id
+              type: object
+            participants:
+              items:
+                properties:
+                  company_name:
+                    type:
+                    - string
+                    - 'null'
+                  email:
+                    type:
+                    - string
+                    - 'null'
+                  is_my_team:
+                    type:
+                    - boolean
+                    - 'null'
+                  name:
+                    type: string
+                  person_id:
+                    type: integer
+                  picture:
+                    type:
+                    - string
+                    - 'null'
+                  title:
+                    type:
+                    - string
+                    - 'null'
+                  type:
+                    type: string
+                  user_id:
+                    type:
+                    - integer
+                    - 'null'
+                  zi_person_id:
+                    type:
+                    - integer
+                    - 'null'
+                required:
+                - name
+                - person_id
+                - type
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              type:
+              - boolean
+              - 'null'
+            recap:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            source:
+              type:
+              - string
+              - 'null'
+            status:
+              default: unknown
+              enum:
+              - done
+              - live
+              - no show
+              - processing
+              - unknown
+              - scheduled
+              example: done
+              type: string
+            summary:
+              type:
+              - string
+              - 'null'
+            summary_error:
+              type:
+              - string
+              - 'null'
+            tracker_match:
+              type:
+              - string
+              - 'null'
+            user_company_name:
+              type:
+              - string
+              - 'null'
+          required:
+          - account
+          - deal
+          - owner
+          - status
+          - email
+          type: object
+        id:
+          description: The unique ID of the email.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - email
+          example: email
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey

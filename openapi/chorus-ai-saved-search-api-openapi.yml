@@ -1,0 +1,251 @@
+openapi: 3.2.0
+info:
+  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  termsOfService: https://www.chorus.ai/terms
+  title: Chorus Saved Search API
+  version: 26.33.08
+servers:
+- url: /
+- url: https://chorus.ai
+security:
+- basic: []
+- bearer-token: []
+- x-ziaccesstoken: []
+tags:
+- name: Saved Search
+paths:
+  /api/v1/saved_searches/default/actions/reset:
+    post:
+      deprecated: false
+      description: This API allows a user to reset their default search (view) for Recordings Views.
+      operationId: post-api-v1-saved_searches-default-actions-reset
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              type: filter
+            schema:
+              $ref: '#/components/schemas/ResetDefaultBody'
+        required: true
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Reset user default saved search
+      tags:
+      - Saved Search
+  /api/v1/saved_searches/{id}/actions/set_default:
+    post:
+      deprecated: false
+      description: This API allows a user to set a saved search as their default.
+      operationId: post-api-v1-saved_searches-id-actions-set_default
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties: {}
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SavedSearchDoc'
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      summary: Sets a user's saved search as their default
+      tags:
+      - Saved Search
+components:
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+  schemas:
+    SavedSearchDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SavedSearch'
+      required:
+      - data
+      type: object
+    ResetDefaultBody:
+      properties:
+        type:
+          default: FILTER
+          enum:
+          - FILTER
+          - PLAYLIST
+          - PIPELINE_VIEW
+          example: FILTER
+          type: string
+      required:
+      - type
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    SavedSearch:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            _created_by:
+              readOnly: true
+              type: integer
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            last_accessed_at:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            private:
+              type: boolean
+            run:
+              properties: {}
+              type: object
+            search_type:
+              type: string
+            show:
+              properties: {}
+              type: object
+            system_default:
+              type:
+              - boolean
+              - 'null'
+            tell:
+              properties: {}
+              type: object
+            user:
+              type: integer
+            user_default:
+              type:
+              - boolean
+              - 'null'
+          required:
+          - _created_at
+          - _created_by
+          - _modified_at
+          - name
+          - run
+          - show
+          - tell
+          - user
+          - private
+          - search_type
+          type: object
+        id:
+          description: The unique ID of the saved search.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - saved_search
+          example: saved_search
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+  securitySchemes:
+    basic:
+      description: HTTP basic authentication (for those APIs that support it).
+      scheme: basic
+      type: http
+    bearer-token:
+      description: A Chorus token or a signed JWT.
+      scheme: bearer
+      type: http
+    x-ziaccesstoken:
+      description: A ZoomInfo access token.
+      in: header
+      name: x-ziaccesstoken
+      type: apiKey
