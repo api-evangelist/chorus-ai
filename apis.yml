@@ -2,17 +2,15 @@ aid: chorus-ai
 url: https://raw.githubusercontent.com/api-evangelist/chorus-ai/refs/heads/main/apis.yml
 name: Chorus.ai
 kind: company
-description: >-
-  Chorus.ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold as
-  "Chorus by ZoomInfo", that records, transcribes and analyzes customer-facing calls, meetings
-  and emails to surface deal insights and coach sales reps. It publishes a single public REST
-  contract — the Chorus API, an OpenAPI 3.0.3 document with 81 operations served unauthenticated
-  at https://chorus.ai/api/openapi.json — covering engagement search, recording upload and media
-  retrieval, coaching moments and playlists, scorecards, AI sales-qualification analysis with CRM
-  writeback, and webhook registration. The API is JSON:API shaped on its /api/v1 surface with an
-  older flat /v3 surface alongside it. Notably, the chorus.ai marketing site has been retired to
-  a redirect shell pointing at zoominfo.com, but the API and both of its documentation surfaces
-  remain live on the original domain.
+description: Chorus.ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold
+  as "Chorus by ZoomInfo", that records, transcribes and analyzes customer-facing calls, meetings and
+  emails to surface deal insights and coach sales reps. It publishes a single public REST contract — the
+  Chorus API, an OpenAPI 3.0.3 document with 81 operations served unauthenticated at https://chorus.ai/api/openapi.json
+  — covering engagement search, recording upload and media retrieval, coaching moments and playlists,
+  scorecards, AI sales-qualification analysis with CRM writeback, and webhook registration. The API is
+  JSON:API shaped on its /api/v1 surface with an older flat /v3 surface alongside it. Notably, the chorus.ai
+  marketing site has been retired to a redirect shell pointing at zoominfo.com, but the API and both of
+  its documentation surfaces remain live on the original domain.
 deliveryModel:
   model: saas
   open_source: false
@@ -37,9 +35,8 @@ accessModel:
   - plans
   - openapi
   - pricing-page
-  note: >-
-    No public pricing and no self-serve signup. The published API documentation states that an
-    API token must be obtained through a Chorus customer success manager.
+  note: No public pricing and no self-serve signup. The published API documentation states that an API
+    token must be obtained through a Chorus customer success manager.
   generated: '2026-08-13'
   method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/chorus-ai.png
@@ -57,7 +54,7 @@ tags:
 - CRM
 - Coaching
 created: '2026-05-08'
-modified: '2026-08-13'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
 - aid: chorus-ai:chorus-ai-auth-api
@@ -350,8 +347,7 @@ apis:
     url: asyncapi/chorus-ai-webhooks.yml
 - aid: chorus-ai:chorus-ai-public-external-moments-api
   name: Chorus.ai Public External Moments API
-  description: >-
-    The Public External Moments API from Chorus.ai — 2 operation(s) for public external moments.
+  description: The Public External Moments API from Chorus.ai — 2 operation(s) for public external moments.
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
@@ -377,8 +373,7 @@ apis:
     url: asyncapi/chorus-ai-webhooks.yml
 - aid: chorus-ai:chorus-ai-public-playlist-moments-api
   name: Chorus.ai Public Playlist Moments API
-  description: >-
-    The Public Playlist Moments API from Chorus.ai — 2 operation(s) for public playlist moments.
+  description: The Public Playlist Moments API from Chorus.ai — 2 operation(s) for public playlist moments.
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
@@ -647,7 +642,9 @@ common:
   url: https://apis.io/providers/zoominfo/
   name: ZoomInfo
   x-relationship: acquired
-  x-evidence: "ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold as 'Chorus by ZoomInfo', that records, transcribes and analyzes customer-facing calls, meetings and emails to surface deal insights and coach sales reps."
+  x-evidence: ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold as 'Chorus
+    by ZoomInfo', that records, transcribes and analyzes customer-facing calls, meetings and emails to
+    surface deal insights and coach sales reps.
 - type: CapabilityMap
   url: capabilities/chorus-ai-capability-edges.yml
   name: Chorus.ai Business Capability Map
@@ -664,7 +661,7 @@ common:
 - type: FinOps
   url: finops/chorus-ai-finops.yml
 - type: OpenAPI
-  url: openapi/chorus-ai-openapi.yml
+  url: openapi/_original/chorus-ai-openapi.yml
 - type: Documentation
   url: https://chorus.ai/api-docs/index.html
 - type: APIReference
@@ -720,12 +717,11 @@ x-enrichment:
 x-coverage:
   state: covered
   reason: public-machine-readable-contract
-  detail: >-
-    A live public OpenAPI 3.0.3 with 81 operations was recovered from the API host root at
-    https://chorus.ai/api/openapi.json, discovered via the spec URL hardcoded in the self-hosted
-    Swagger UI at https://chorus.ai/api-docs, along with the provider's public Postman collection
-    at https://api-docs.chorus.ai/ — even though the chorus.ai marketing site is now a redirect
-    shell to zoominfo.com and the docs.chorus.ai host in the old profile fails its TLS handshake.
+  detail: A live public OpenAPI 3.0.3 with 81 operations was recovered from the API host root at https://chorus.ai/api/openapi.json,
+    discovered via the spec URL hardcoded in the self-hosted Swagger UI at https://chorus.ai/api-docs,
+    along with the provider's public Postman collection at https://api-docs.chorus.ai/ — even though the
+    chorus.ai marketing site is now a redirect shell to zoominfo.com and the docs.chorus.ai host in the
+    old profile fails its TLS handshake.
   evidence:
   - url: https://chorus.ai/api/openapi.json
     status: 200
