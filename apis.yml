@@ -43,6 +43,19 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/chorus-ai.
 tags:
 - Sales
 - Revenue Intelligence
+- Conversations
+- Analytics
+- ZoomInfo
+- Conversation Intelligence
+- Sales Enablement
+- Call Recording
+- Transcription
+- Speech Analytics
+- CRM
+- Coaching
+tags_raw:
+- Sales
+- Revenue Intelligence
 - Conversation
 - Analytics
 - ZoomInfo
@@ -117,6 +130,8 @@ apis:
   humanURL: https://chorus.ai/api-docs/index.html
   baseURL: https://chorus.ai/api/v1
   tags:
+  - Email
+  tags_raw:
   - Emails
   properties:
   - type: OpenAPI
