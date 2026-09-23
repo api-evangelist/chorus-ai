@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  description: The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus.
   termsOfService: https://www.chorus.ai/terms
   title: Chorus Playlists API
   version: 26.33.08
@@ -305,110 +305,6 @@ paths:
       - Playlists
 components:
   schemas:
-    AnyValue:
-      description: Can be any value.
-    Playlist:
-      properties:
-        attributes:
-          properties:
-            _created_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type: string
-            _modified_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type:
-              - string
-              - 'null'
-            _modified_by:
-              readOnly: true
-              type:
-              - integer
-              - 'null'
-            child_count:
-              readOnly: true
-              type: integer
-            description:
-              type:
-              - string
-              - 'null'
-            name:
-              type: string
-            owner:
-              properties:
-                name:
-                  readOnly: true
-                  type: string
-                person_id:
-                  readOnly: true
-                  type: integer
-                user_id:
-                  type: integer
-              required:
-              - name
-              - person_id
-              - user_id
-              type:
-              - object
-              - 'null'
-            parent:
-              type:
-              - integer
-              - 'null'
-            path:
-              items:
-                properties:
-                  id:
-                    readOnly: true
-                    type: string
-                  name:
-                    readOnly: true
-                    type: string
-                required:
-                - id
-                - name
-                type: object
-              type:
-              - array
-              - 'null'
-            private:
-              readOnly: true
-              type: boolean
-            size:
-              readOnly: true
-              type: integer
-          required:
-          - child_count
-          - _created_at
-          - name
-          - private
-          - size
-          type: object
-        id:
-          description: The unique ID of the playlist.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - playlist
-          example: playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    PlaylistForCreatingDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/PlaylistForCreating'
-      required:
-      - data
-      type: object
     PlaylistDoc:
       properties:
         data:
@@ -471,12 +367,26 @@ components:
       required:
       - errors
       type: object
-    PlaylistsDoc:
+    AnyValue:
+      description: Can be any value.
+    SmartPlaylistDoc:
       properties:
         data:
-          items:
-            $ref: '#/components/schemas/Playlist'
-          type: array
+          $ref: '#/components/schemas/SmartPlaylist'
+      required:
+      - data
+      type: object
+    SmartPlaylistForCreatingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylistForCreating'
+      required:
+      - data
+      type: object
+    PlaylistForCreatingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/PlaylistForCreating'
       required:
       - data
       type: object
@@ -686,32 +596,89 @@ components:
       - type
       - id
       type: object
-    SmartPlaylistForCreatingDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SmartPlaylistForCreating'
-      required:
-      - data
-      type: object
-    PlaylistForCreating:
+    Playlist:
       properties:
         attributes:
           properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_by:
+              readOnly: true
+              type:
+              - integer
+              - 'null'
+            child_count:
+              readOnly: true
+              type: integer
             description:
-              example: My first playlist description.
               type:
               - string
               - 'null'
             name:
-              example: My first playlist
               type: string
+            owner:
+              properties:
+                name:
+                  readOnly: true
+                  type: string
+                person_id:
+                  readOnly: true
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
             parent:
               type:
               - integer
               - 'null'
+            path:
+              items:
+                properties:
+                  id:
+                    readOnly: true
+                    type: string
+                  name:
+                    readOnly: true
+                    type: string
+                required:
+                - id
+                - name
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              readOnly: true
+              type: boolean
+            size:
+              readOnly: true
+              type: integer
           required:
+          - child_count
+          - _created_at
           - name
+          - private
+          - size
           type: object
+        id:
+          description: The unique ID of the playlist.
+          example: '123'
+          title: ID
+          type: string
         type:
           description: The type of resource.
           enum:
@@ -722,13 +689,7 @@ components:
       required:
       - attributes
       - type
-      type: object
-    SmartPlaylistDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SmartPlaylist'
-      required:
-      - data
+      - id
       type: object
     SmartPlaylistForCreating:
       properties:
@@ -871,6 +832,45 @@ components:
       - attributes
       - type
       type: object
+    PlaylistForCreating:
+      properties:
+        attributes:
+          properties:
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    PlaylistsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Playlist'
+          type: array
+      required:
+      - data
+      type: object
   responses:
     BadRequest:
       content:
@@ -878,18 +878,18 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
       description: Bad request
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
     NotFound:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

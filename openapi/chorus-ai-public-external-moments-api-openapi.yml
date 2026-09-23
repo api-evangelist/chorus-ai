@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  description: The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus.
   termsOfService: https://www.chorus.ai/terms
   title: Chorus Public External Moments API
   version: 26.33.08
@@ -88,36 +88,64 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-      summary: Updates a moment by ID.
+      summary: Updates a moment by ID
       tags:
       - Public External Moments
 components:
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
   schemas:
-    MomentDoc:
+    MomentEditRequest:
       properties:
-        data:
-          $ref: '#/components/schemas/Moment'
+        attributes:
+          properties:
+            expiration_date:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            moment_duration:
+              type:
+              - number
+              - 'null'
+            moment_time:
+              type:
+              - number
+              - 'null'
+            note:
+              default: ''
+              type:
+              - string
+              - 'null'
+            password:
+              type:
+              - string
+              - 'null'
+            subject:
+              default: ''
+              type:
+              - string
+              - 'null'
+            url_string:
+              default: ''
+              type:
+              - string
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the moment edit request.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - moment_edit_request
+          example: moment_edit_request
+          title: Type
+          type: string
       required:
-      - data
+      - attributes
+      - type
+      - id
       type: object
     Moment:
       properties:
@@ -352,67 +380,6 @@ components:
       - type
       - id
       type: object
-    MomentCreateRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/MomentCreateRequestForCreate'
-      required:
-      - data
-      type: object
-    MomentEditRequest:
-      properties:
-        attributes:
-          properties:
-            expiration_date:
-              example: '2021-01-01T00:00:00Z'
-              type:
-              - string
-              - 'null'
-            moment_duration:
-              type:
-              - number
-              - 'null'
-            moment_time:
-              type:
-              - number
-              - 'null'
-            note:
-              default: ''
-              type:
-              - string
-              - 'null'
-            password:
-              type:
-              - string
-              - 'null'
-            subject:
-              default: ''
-              type:
-              - string
-              - 'null'
-            url_string:
-              default: ''
-              type:
-              - string
-              - 'null'
-          type: object
-        id:
-          description: The unique ID of the moment edit request.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - moment_edit_request
-          example: moment_edit_request
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
     Error:
       properties:
         errors:
@@ -468,10 +435,10 @@ components:
       required:
       - errors
       type: object
-    MomentEditRequestDoc:
+    MomentCreateRequestForCreateDoc:
       properties:
         data:
-          $ref: '#/components/schemas/MomentEditRequest'
+          $ref: '#/components/schemas/MomentCreateRequestForCreate'
       required:
       - data
       type: object
@@ -525,6 +492,39 @@ components:
       - attributes
       - type
       type: object
+    MomentEditRequestDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/MomentEditRequest'
+      required:
+      - data
+      type: object
+    MomentDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Moment'
+      required:
+      - data
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

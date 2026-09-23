@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  description: "The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus. The Chorus API supports the following use cases:\n\n1. Retrieve data about your users in Chorus\n2. Retrieve data about your engagements (meetings and dialer calls)\n3. Upload new recordings into Chorus\n4. Delete recordings from Chorus\n\n# Authentication\nThe Chorus API uses API tokens to authenticate requests. API tokens can be generated for each Chorus user, and is managed via the Personal Settings page within the Chorus application. For users to be able to create API token(s), their role as defined in Chorus must be permitted access to the Chorus API via roles & permissions settings. \nAuthentication is performed using the Authorization header, as in the the following example:\n\n```\ncurl -H \"Authorization:abcdefghijklmnopqrstuvwxyz0123456789\" https://chorus.ai/v3/engagements\n```\n\nAn API token must be associated with a registered user in Chorus to ensure control over data access and permissions, and to ensure traceability. During the early access period, please contact your Chorus customer success manager to obtain your personal API token.\n\n# Privacy and Data Access Control\n\nThe following controls apply when retrieving data or performing an action via the Chorus API.\n\n1. Recordings marked as private are not returned in API response. \n2. If enabled, data access control settings configured for the access key user applies to access via API. This means that in order to retrieve data on all recordings within Chorus, the users associated with the API token must also have access to all recordings.\n3. Permissions on actions a user may perform within the Chorus application as specified in roles & permissions settings also apply to actions performed via API."
+  description: The Chorus API is a REST API that enables you to retrieve information from and perform actions in Chorus.
   termsOfService: https://www.chorus.ai/terms
   title: Chorus Emails API
   version: 26.33.08
@@ -173,29 +173,7 @@ paths:
       tags:
       - Emails
 components:
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
   schemas:
-    AnyValue:
-      description: Can be any value.
-    EmailDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Email'
-      required:
-      - data
-      type: object
     Error:
       properties:
         errors:
@@ -251,64 +229,8 @@ components:
       required:
       - errors
       type: object
-    EmailThread:
-      properties:
-        attributes:
-          properties:
-            deleted:
-              default: false
-              type: boolean
-            deleted_at:
-              example: '2021-01-01T00:00:00Z'
-              type:
-              - string
-              - 'null'
-            deleted_by:
-              properties:
-                name:
-                  type: string
-                person_id:
-                  type: integer
-                user_id:
-                  type: integer
-              required:
-              - name
-              - person_id
-              - user_id
-              type:
-              - object
-              - 'null'
-            private:
-              default: false
-              type: boolean
-          required:
-          - private
-          - deleted
-          type: object
-        id:
-          description: The unique ID of the email thread.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - email_thread
-          example: email_thread
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    EmailThreadDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/EmailThread'
-      required:
-      - data
-      type: object
+    AnyValue:
+      description: Can be any value.
     Email:
       properties:
         attributes:
@@ -660,6 +582,84 @@ components:
       - type
       - id
       type: object
+    EmailDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Email'
+      required:
+      - data
+      type: object
+    EmailThreadDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EmailThread'
+      required:
+      - data
+      type: object
+    EmailThread:
+      properties:
+        attributes:
+          properties:
+            deleted:
+              default: false
+              type: boolean
+            deleted_at:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            deleted_by:
+              properties:
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            private:
+              default: false
+              type: boolean
+          required:
+          - private
+          - deleted
+          type: object
+        id:
+          description: The unique ID of the email thread.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - email_thread
+          example: email_thread
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).
