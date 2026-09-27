@@ -144,13 +144,6 @@ paths:
       - Users
 components:
   schemas:
-    UserDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/User'
-      required:
-      - data
-      type: object
     Error:
       properties:
         errors:
@@ -206,34 +199,44 @@ components:
       required:
       - errors
       type: object
-    UserSettings:
+    TokenRegistration:
       properties:
-        attributes:
-          properties:
-            mobile_push.comments:
-              type: boolean
-            mobile_push.mentions:
-              type: boolean
-          required:
-          - mobile_push.comments
-          - mobile_push.mentions
-          type: object
-        id:
-          description: The unique ID of the user settings.
-          example: '123'
-          title: ID
+        device_os:
+          type: string
+        device_type:
+          type: string
+        token:
           type: string
         type:
-          description: The type of resource.
           enum:
-          - user_settings
-          example: user_settings
-          title: Type
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
           type: string
       required:
-      - attributes
+      - device_os
+      - device_type
+      - token
       - type
-      - id
+      type: object
+    UserSettingsDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/UserSettings'
+      required:
+      - data
+      type: object
+    TokenDeregistration:
+      properties:
+        token:
+          type: string
+        type:
+          enum:
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
+          type: string
+      required:
+      - token
+      - type
       type: object
     User:
       properties:
@@ -401,44 +404,41 @@ components:
       - type
       - id
       type: object
-    UserSettingsDoc:
+    UserDoc:
       properties:
         data:
-          $ref: '#/components/schemas/UserSettings'
+          $ref: '#/components/schemas/User'
       required:
       - data
       type: object
-    TokenRegistration:
+    UserSettings:
       properties:
-        device_os:
-          type: string
-        device_type:
-          type: string
-        token:
+        attributes:
+          properties:
+            mobile_push.comments:
+              type: boolean
+            mobile_push.mentions:
+              type: boolean
+          required:
+          - mobile_push.comments
+          - mobile_push.mentions
+          type: object
+        id:
+          description: The unique ID of the user settings.
+          example: '123'
+          title: ID
           type: string
         type:
+          description: The type of resource.
           enum:
-          - MOBILE_PUSH
-          example: MOBILE_PUSH
+          - user_settings
+          example: user_settings
+          title: Type
           type: string
       required:
-      - device_os
-      - device_type
-      - token
+      - attributes
       - type
-      type: object
-    TokenDeregistration:
-      properties:
-        token:
-          type: string
-        type:
-          enum:
-          - MOBILE_PUSH
-          example: MOBILE_PUSH
-          type: string
-      required:
-      - token
-      - type
+      - id
       type: object
   responses:
     BadRequest:

@@ -61,6 +61,19 @@ paths:
       tags:
       - Reports
 components:
+  responses:
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   schemas:
     Error:
       properties:
@@ -117,33 +130,6 @@ components:
       required:
       - errors
       type: object
-    Task:
-      properties:
-        attributes:
-          properties:
-            status:
-              readOnly: true
-              type: string
-          required:
-          - status
-          type: object
-        id:
-          description: The unique ID of the task.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - task
-          example: task
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
     ReportExportActionBody:
       properties:
         active_users_only:
@@ -180,19 +166,33 @@ components:
       required:
       - data
       type: object
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
+    Task:
+      properties:
+        attributes:
+          properties:
+            status:
+              readOnly: true
+              type: string
+          required:
+          - status
+          type: object
+        id:
+          description: The unique ID of the task.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - task
+          example: task
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

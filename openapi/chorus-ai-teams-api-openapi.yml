@@ -60,21 +60,60 @@ paths:
       - Teams
 components:
   schemas:
-    TeamDoc:
+    Team:
       properties:
-        data:
-          $ref: '#/components/schemas/Team'
+        attributes:
+          properties:
+            default:
+              type:
+              - boolean
+              - 'null'
+            description:
+              type:
+              - string
+              - 'null'
+            include_descendant_teams:
+              type:
+              - boolean
+              - 'null'
+            language:
+              type: string
+            manager:
+              type:
+              - integer
+              - 'null'
+            name:
+              type: string
+            parent_team:
+              readOnly: true
+              type:
+              - integer
+              - 'null'
+            users:
+              items:
+                type: integer
+              type: array
+          required:
+          - language
+          - name
+          - users
+          type: object
+        id:
+          description: The unique ID of the team.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - team
+          example: team
+          title: Type
+          type: string
       required:
-      - data
-      type: object
-    TeamsDoc:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Team'
-          type: array
-      required:
-      - data
+      - attributes
+      - type
+      - id
       type: object
     Error:
       properties:
@@ -131,60 +170,21 @@ components:
       required:
       - errors
       type: object
-    Team:
+    TeamDoc:
       properties:
-        attributes:
-          properties:
-            default:
-              type:
-              - boolean
-              - 'null'
-            description:
-              type:
-              - string
-              - 'null'
-            include_descendant_teams:
-              type:
-              - boolean
-              - 'null'
-            language:
-              type: string
-            manager:
-              type:
-              - integer
-              - 'null'
-            name:
-              type: string
-            parent_team:
-              readOnly: true
-              type:
-              - integer
-              - 'null'
-            users:
-              items:
-                type: integer
-              type: array
-          required:
-          - language
-          - name
-          - users
-          type: object
-        id:
-          description: The unique ID of the team.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - team
-          example: team
-          title: Type
-          type: string
+        data:
+          $ref: '#/components/schemas/Team'
       required:
-      - attributes
-      - type
-      - id
+      - data
+      type: object
+    TeamsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Team'
+          type: array
+      required:
+      - data
       type: object
   responses:
     BadRequest:

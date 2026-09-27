@@ -181,35 +181,33 @@ paths:
       - Engagement filter
 components:
   schemas:
-    EngagementFilterForCreate:
+    ReplaceAllEngagementFilters:
       properties:
-        attributes:
-          properties:
-            field_type:
-              type: string
-            filter_name:
-              type: string
-            filter_type:
-              type: string
-            filter_values:
-              default: 'null'
-              type:
-              - string
-              - 'null'
-          required:
-          - filter_name
-          - filter_type
-          - field_type
-          type: object
+        filter_type:
+          type: string
+        filters:
+          items:
+            properties:
+              field_type:
+                type: string
+              filter_name:
+                type: string
+              filter_values:
+                default: 'null'
+                type:
+                - string
+                - 'null'
+            required:
+            - filter_name
+            - field_type
+            type: object
+          type: array
         type:
-          description: The type of resource.
-          enum:
-          - engagement_filter
-          example: engagement_filter
-          title: Type
+          default: engagement_filter
           type: string
       required:
-      - attributes
+      - filter_type
+      - filters
       - type
       type: object
     Error:
@@ -267,41 +265,49 @@ components:
       required:
       - errors
       type: object
+    EngagementFilter:
+      properties:
+        attributes:
+          properties:
+            field_type:
+              type: string
+            filter_name:
+              type: string
+            filter_type:
+              type: string
+            filter_values:
+              default: 'null'
+              type:
+              - string
+              - 'null'
+          required:
+          - filter_name
+          - filter_type
+          - field_type
+          type: object
+        id:
+          description: The unique ID of the engagement filter.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - engagement_filter
+          example: engagement_filter
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
     EngagementFilterDoc:
       properties:
         data:
           $ref: '#/components/schemas/EngagementFilter'
       required:
       - data
-      type: object
-    ReplaceAllEngagementFilters:
-      properties:
-        filter_type:
-          type: string
-        filters:
-          items:
-            properties:
-              field_type:
-                type: string
-              filter_name:
-                type: string
-              filter_values:
-                default: 'null'
-                type:
-                - string
-                - 'null'
-            required:
-            - filter_name
-            - field_type
-            type: object
-          type: array
-        type:
-          default: engagement_filter
-          type: string
-      required:
-      - filter_type
-      - filters
-      - type
       type: object
     EngagementFilterForCreateDoc:
       properties:
@@ -310,12 +316,36 @@ components:
       required:
       - data
       type: object
-    EngagementFilterEditDoc:
+    EngagementFilterForCreate:
       properties:
-        data:
-          $ref: '#/components/schemas/EngagementFilterEdit'
+        attributes:
+          properties:
+            field_type:
+              type: string
+            filter_name:
+              type: string
+            filter_type:
+              type: string
+            filter_values:
+              default: 'null'
+              type:
+              - string
+              - 'null'
+          required:
+          - filter_name
+          - filter_type
+          - field_type
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - engagement_filter
+          example: engagement_filter
+          title: Type
+          type: string
       required:
-      - data
+      - attributes
+      - type
       type: object
     EngagementFilterEdit:
       properties:
@@ -355,42 +385,12 @@ components:
       - type
       - id
       type: object
-    EngagementFilter:
+    EngagementFilterEditDoc:
       properties:
-        attributes:
-          properties:
-            field_type:
-              type: string
-            filter_name:
-              type: string
-            filter_type:
-              type: string
-            filter_values:
-              default: 'null'
-              type:
-              - string
-              - 'null'
-          required:
-          - filter_name
-          - filter_type
-          - field_type
-          type: object
-        id:
-          description: The unique ID of the engagement filter.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - engagement_filter
-          example: engagement_filter
-          title: Type
-          type: string
+        data:
+          $ref: '#/components/schemas/EngagementFilterEdit'
       required:
-      - attributes
-      - type
-      - id
+      - data
       type: object
     EngagementFiltersDoc:
       properties:

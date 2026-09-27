@@ -103,7 +103,29 @@ paths:
       tags:
       - Integrations Calendar
 components:
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   schemas:
+    VerifyCalendarServiceAccount:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+      required:
+      - emails
+      type: object
     Error:
       properties:
         errors:
@@ -159,28 +181,6 @@ components:
       required:
       - errors
       type: object
-    VerifyCalendarServiceAccount:
-      properties:
-        emails:
-          items:
-            type: string
-          type: array
-      required:
-      - emails
-      type: object
-  responses:
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

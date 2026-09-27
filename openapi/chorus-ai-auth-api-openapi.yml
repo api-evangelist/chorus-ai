@@ -42,13 +42,6 @@ paths:
       - Auth
 components:
   schemas:
-    SignedRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SignedRequestForCreate'
-      required:
-      - data
-      type: object
     Error:
       properties:
         errors:
@@ -165,6 +158,13 @@ components:
       - attributes
       - type
       - id
+      type: object
+    SignedRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignedRequestForCreate'
+      required:
+      - data
       type: object
   responses:
     BadRequest:

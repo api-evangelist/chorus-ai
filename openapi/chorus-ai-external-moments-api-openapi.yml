@@ -295,15 +295,6 @@ components:
       - type
       - id
       type: object
-    MomentsDoc:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Moment'
-          type: array
-      required:
-      - data
-      type: object
     Error:
       properties:
         errors:
@@ -358,6 +349,15 @@ components:
           type: array
       required:
       - errors
+      type: object
+    MomentsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Moment'
+          type: array
+      required:
+      - data
       type: object
   responses:
     BadRequest:

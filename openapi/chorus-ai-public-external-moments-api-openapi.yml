@@ -93,60 +93,6 @@ paths:
       - Public External Moments
 components:
   schemas:
-    MomentEditRequest:
-      properties:
-        attributes:
-          properties:
-            expiration_date:
-              example: '2021-01-01T00:00:00Z'
-              type:
-              - string
-              - 'null'
-            moment_duration:
-              type:
-              - number
-              - 'null'
-            moment_time:
-              type:
-              - number
-              - 'null'
-            note:
-              default: ''
-              type:
-              - string
-              - 'null'
-            password:
-              type:
-              - string
-              - 'null'
-            subject:
-              default: ''
-              type:
-              - string
-              - 'null'
-            url_string:
-              default: ''
-              type:
-              - string
-              - 'null'
-          type: object
-        id:
-          description: The unique ID of the moment edit request.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - moment_edit_request
-          example: moment_edit_request
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
     Moment:
       properties:
         attributes:
@@ -380,6 +326,13 @@ components:
       - type
       - id
       type: object
+    MomentCreateRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/MomentCreateRequestForCreate'
+      required:
+      - data
+      type: object
     Error:
       properties:
         errors:
@@ -434,13 +387,6 @@ components:
           type: array
       required:
       - errors
-      type: object
-    MomentCreateRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/MomentCreateRequestForCreate'
-      required:
-      - data
       type: object
     MomentCreateRequestForCreate:
       properties:
@@ -505,6 +451,60 @@ components:
           $ref: '#/components/schemas/Moment'
       required:
       - data
+      type: object
+    MomentEditRequest:
+      properties:
+        attributes:
+          properties:
+            expiration_date:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            moment_duration:
+              type:
+              - number
+              - 'null'
+            moment_time:
+              type:
+              - number
+              - 'null'
+            note:
+              default: ''
+              type:
+              - string
+              - 'null'
+            password:
+              type:
+              - string
+              - 'null'
+            subject:
+              default: ''
+              type:
+              - string
+              - 'null'
+            url_string:
+              default: ''
+              type:
+              - string
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the moment edit request.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - moment_edit_request
+          example: moment_edit_request
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
       type: object
   responses:
     BadRequest:

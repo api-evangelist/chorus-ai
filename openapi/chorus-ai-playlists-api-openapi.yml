@@ -305,12 +305,35 @@ paths:
       - Playlists
 components:
   schemas:
-    PlaylistDoc:
+    PlaylistForCreating:
       properties:
-        data:
-          $ref: '#/components/schemas/Playlist'
+        attributes:
+          properties:
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
       required:
-      - data
+      - attributes
+      - type
       type: object
     Error:
       properties:
@@ -366,29 +389,6 @@ components:
           type: array
       required:
       - errors
-      type: object
-    AnyValue:
-      description: Can be any value.
-    SmartPlaylistDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SmartPlaylist'
-      required:
-      - data
-      type: object
-    SmartPlaylistForCreatingDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SmartPlaylistForCreating'
-      required:
-      - data
-      type: object
-    PlaylistForCreatingDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/PlaylistForCreating'
-      required:
-      - data
       type: object
     SmartPlaylist:
       properties:
@@ -691,6 +691,38 @@ components:
       - type
       - id
       type: object
+    PlaylistsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Playlist'
+          type: array
+      required:
+      - data
+      type: object
+    AnyValue:
+      description: Can be any value.
+    SmartPlaylistForCreatingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylistForCreating'
+      required:
+      - data
+      type: object
+    SmartPlaylistDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylist'
+      required:
+      - data
+      type: object
+    PlaylistDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Playlist'
+      required:
+      - data
+      type: object
     SmartPlaylistForCreating:
       properties:
         attributes:
@@ -832,42 +864,10 @@ components:
       - attributes
       - type
       type: object
-    PlaylistForCreating:
-      properties:
-        attributes:
-          properties:
-            description:
-              example: My first playlist description.
-              type:
-              - string
-              - 'null'
-            name:
-              example: My first playlist
-              type: string
-            parent:
-              type:
-              - integer
-              - 'null'
-          required:
-          - name
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - playlist
-          example: playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    PlaylistsDoc:
+    PlaylistForCreatingDoc:
       properties:
         data:
-          items:
-            $ref: '#/components/schemas/Playlist'
-          type: array
+          $ref: '#/components/schemas/PlaylistForCreating'
       required:
       - data
       type: object

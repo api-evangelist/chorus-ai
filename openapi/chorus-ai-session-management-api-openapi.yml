@@ -108,6 +108,25 @@ paths:
       tags:
       - Session Management
 components:
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   schemas:
     Error:
       properties:
@@ -164,13 +183,6 @@ components:
       required:
       - errors
       type: object
-    SessionDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Session'
-      required:
-      - data
-      type: object
     Session:
       properties:
         attributes:
@@ -212,25 +224,13 @@ components:
       - type
       - id
       type: object
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
+    SessionDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Session'
+      required:
+      - data
+      type: object
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).
