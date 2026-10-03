@@ -305,90 +305,30 @@ paths:
       - Playlists
 components:
   schemas:
-    PlaylistForCreating:
+    PlaylistsDoc:
       properties:
-        attributes:
-          properties:
-            description:
-              example: My first playlist description.
-              type:
-              - string
-              - 'null'
-            name:
-              example: My first playlist
-              type: string
-            parent:
-              type:
-              - integer
-              - 'null'
-          required:
-          - name
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - playlist
-          example: playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    Error:
-      properties:
-        errors:
+        data:
           items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
+            $ref: '#/components/schemas/Playlist'
           type: array
       required:
-      - errors
+      - data
+      type: object
+    SmartPlaylistDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylist'
+      required:
+      - data
+      type: object
+    AnyValue:
+      description: Can be any value.
+    SmartPlaylistForCreatingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SmartPlaylistForCreating'
+      required:
+      - data
       type: object
     SmartPlaylist:
       properties:
@@ -596,130 +536,10 @@ components:
       - type
       - id
       type: object
-    Playlist:
-      properties:
-        attributes:
-          properties:
-            _created_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type: string
-            _modified_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type:
-              - string
-              - 'null'
-            _modified_by:
-              readOnly: true
-              type:
-              - integer
-              - 'null'
-            child_count:
-              readOnly: true
-              type: integer
-            description:
-              type:
-              - string
-              - 'null'
-            name:
-              type: string
-            owner:
-              properties:
-                name:
-                  readOnly: true
-                  type: string
-                person_id:
-                  readOnly: true
-                  type: integer
-                user_id:
-                  type: integer
-              required:
-              - name
-              - person_id
-              - user_id
-              type:
-              - object
-              - 'null'
-            parent:
-              type:
-              - integer
-              - 'null'
-            path:
-              items:
-                properties:
-                  id:
-                    readOnly: true
-                    type: string
-                  name:
-                    readOnly: true
-                    type: string
-                required:
-                - id
-                - name
-                type: object
-              type:
-              - array
-              - 'null'
-            private:
-              readOnly: true
-              type: boolean
-            size:
-              readOnly: true
-              type: integer
-          required:
-          - child_count
-          - _created_at
-          - name
-          - private
-          - size
-          type: object
-        id:
-          description: The unique ID of the playlist.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - playlist
-          example: playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    PlaylistsDoc:
+    PlaylistForCreatingDoc:
       properties:
         data:
-          items:
-            $ref: '#/components/schemas/Playlist'
-          type: array
-      required:
-      - data
-      type: object
-    AnyValue:
-      description: Can be any value.
-    SmartPlaylistForCreatingDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SmartPlaylistForCreating'
-      required:
-      - data
-      type: object
-    SmartPlaylistDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SmartPlaylist'
-      required:
-      - data
-      type: object
-    PlaylistDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Playlist'
+          $ref: '#/components/schemas/PlaylistForCreating'
       required:
       - data
       type: object
@@ -864,26 +684,206 @@ components:
       - attributes
       - type
       type: object
-    PlaylistForCreatingDoc:
+    PlaylistForCreating:
+      properties:
+        attributes:
+          properties:
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    Playlist:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_by:
+              readOnly: true
+              type:
+              - integer
+              - 'null'
+            child_count:
+              readOnly: true
+              type: integer
+            description:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            owner:
+              properties:
+                name:
+                  readOnly: true
+                  type: string
+                person_id:
+                  readOnly: true
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            parent:
+              type:
+              - integer
+              - 'null'
+            path:
+              items:
+                properties:
+                  id:
+                    readOnly: true
+                    type: string
+                  name:
+                    readOnly: true
+                    type: string
+                required:
+                - id
+                - name
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              readOnly: true
+              type: boolean
+            size:
+              readOnly: true
+              type: integer
+          required:
+          - child_count
+          - _created_at
+          - name
+          - private
+          - size
+          type: object
+        id:
+          description: The unique ID of the playlist.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    PlaylistDoc:
       properties:
         data:
-          $ref: '#/components/schemas/PlaylistForCreating'
+          $ref: '#/components/schemas/Playlist'
       required:
       - data
       type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
   responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     NotFound:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
     Conflict:
       content:
         application/vnd.api+json:

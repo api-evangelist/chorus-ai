@@ -60,6 +60,22 @@ paths:
       - Teams
 components:
   schemas:
+    TeamsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Team'
+          type: array
+      required:
+      - data
+      type: object
+    TeamDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Team'
+      required:
+      - data
+      type: object
     Team:
       properties:
         attributes:
@@ -170,35 +186,19 @@ components:
       required:
       - errors
       type: object
-    TeamDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Team'
-      required:
-      - data
-      type: object
-    TeamsDoc:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Team'
-          type: array
-      required:
-      - data
-      type: object
   responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     NotFound:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

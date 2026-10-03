@@ -101,6 +101,13 @@ paths:
       - Scorecards
 components:
   schemas:
+    TaskDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
+      required:
+      - data
+      type: object
     Task:
       properties:
         attributes:
@@ -127,6 +134,14 @@ components:
       - attributes
       - type
       - id
+      type: object
+    ExportScorecardsBody:
+      properties:
+        notify:
+          default: true
+          type: boolean
+      required:
+      - notify
       type: object
     Scorecard:
       properties:
@@ -295,21 +310,6 @@ components:
           type: array
       required:
       - errors
-      type: object
-    TaskDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Task'
-      required:
-      - data
-      type: object
-    ExportScorecardsBody:
-      properties:
-        notify:
-          default: true
-          type: boolean
-      required:
-      - notify
       type: object
     ScorecardsDoc:
       properties:

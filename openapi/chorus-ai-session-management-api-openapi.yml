@@ -108,26 +108,55 @@ paths:
       tags:
       - Session Management
 components:
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
   schemas:
+    SessionDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Session'
+      required:
+      - data
+      type: object
+    Session:
+      properties:
+        attributes:
+          properties:
+            active:
+              type: boolean
+            customer_id:
+              type:
+              - integer
+              - 'null'
+            person_id:
+              type:
+              - integer
+              - 'null'
+            status:
+              type: string
+            user_id:
+              type:
+              - integer
+              - 'null'
+          required:
+          - active
+          - status
+          type: object
+        id:
+          description: The unique ID of the session.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - session
+          example: session
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
     Error:
       properties:
         errors:
@@ -183,54 +212,25 @@ components:
       required:
       - errors
       type: object
-    Session:
-      properties:
-        attributes:
-          properties:
-            active:
-              type: boolean
-            customer_id:
-              type:
-              - integer
-              - 'null'
-            person_id:
-              type:
-              - integer
-              - 'null'
-            status:
-              type: string
-            user_id:
-              type:
-              - integer
-              - 'null'
-          required:
-          - active
-          - status
-          type: object
-        id:
-          description: The unique ID of the session.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - session
-          example: session
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    SessionDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Session'
-      required:
-      - data
-      type: object
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

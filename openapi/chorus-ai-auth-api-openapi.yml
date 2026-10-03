@@ -42,6 +42,75 @@ paths:
       - Auth
 components:
   schemas:
+    SignedRequestResponseDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignedRequestResponse'
+      required:
+      - data
+      type: object
+    SignedRequestResponse:
+      properties:
+        attributes:
+          properties:
+            expiry:
+              type: integer
+            url:
+              type: string
+          required:
+          - url
+          - expiry
+          type: object
+        id:
+          description: The unique ID of the signed request response.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - signed_request_response
+          example: signed_request_response
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    SignedRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignedRequestForCreate'
+      required:
+      - data
+      type: object
+    SignedRequestForCreate:
+      properties:
+        attributes:
+          properties:
+            client_id:
+              type: string
+            redirect:
+              type: boolean
+            signed_request:
+              type: string
+          required:
+          - client_id
+          - signed_request
+          - redirect
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - signed_request
+          example: signed_request
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
     Error:
       properties:
         errors:
@@ -96,75 +165,6 @@ components:
           type: array
       required:
       - errors
-      type: object
-    SignedRequestResponseDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SignedRequestResponse'
-      required:
-      - data
-      type: object
-    SignedRequestForCreate:
-      properties:
-        attributes:
-          properties:
-            client_id:
-              type: string
-            redirect:
-              type: boolean
-            signed_request:
-              type: string
-          required:
-          - client_id
-          - signed_request
-          - redirect
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - signed_request
-          example: signed_request
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    SignedRequestResponse:
-      properties:
-        attributes:
-          properties:
-            expiry:
-              type: integer
-            url:
-              type: string
-          required:
-          - url
-          - expiry
-          type: object
-        id:
-          description: The unique ID of the signed request response.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - signed_request_response
-          example: signed_request_response
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    SignedRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SignedRequestForCreate'
-      required:
-      - data
       type: object
   responses:
     BadRequest:

@@ -89,88 +89,7 @@ paths:
       tags:
       - Public Playlist Moments
 components:
-  responses:
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
   schemas:
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
-      type: object
-    PlaylistMomentRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/PlaylistMomentRequestForCreate'
-      required:
-      - data
-      type: object
     PlaylistMoment:
       properties:
         attributes:
@@ -265,40 +184,10 @@ components:
       required:
       - data
       type: object
-    MomentForPatch:
-      properties:
-        attributes:
-          properties:
-            description:
-              type:
-              - string
-              - 'null'
-            playlist:
-              type:
-              - integer
-              - 'null'
-          type: object
-        id:
-          description: The unique ID of the playlist moment.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - playlist_moment
-          example: playlist_moment
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    PlaylistMomentDoc:
+    PlaylistMomentRequestForCreateDoc:
       properties:
         data:
-          $ref: '#/components/schemas/PlaylistMoment'
+          $ref: '#/components/schemas/PlaylistMomentRequestForCreate'
       required:
       - data
       type: object
@@ -336,6 +225,117 @@ components:
       - attributes
       - type
       type: object
+    PlaylistMomentDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/PlaylistMoment'
+      required:
+      - data
+      type: object
+    MomentForPatch:
+      properties:
+        attributes:
+          properties:
+            description:
+              type:
+              - string
+              - 'null'
+            playlist:
+              type:
+              - integer
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the playlist moment.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - playlist_moment
+          example: playlist_moment
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

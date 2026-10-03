@@ -143,81 +143,26 @@ paths:
       tags:
       - Users
 components:
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   schemas:
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
-      type: object
-    TokenRegistration:
-      properties:
-        device_os:
-          type: string
-        device_type:
-          type: string
-        token:
-          type: string
-        type:
-          enum:
-          - MOBILE_PUSH
-          example: MOBILE_PUSH
-          type: string
-      required:
-      - device_os
-      - device_type
-      - token
-      - type
-      type: object
     UserSettingsDoc:
       properties:
         data:
@@ -225,18 +170,34 @@ components:
       required:
       - data
       type: object
-    TokenDeregistration:
+    UserSettings:
       properties:
-        token:
+        attributes:
+          properties:
+            mobile_push.comments:
+              type: boolean
+            mobile_push.mentions:
+              type: boolean
+          required:
+          - mobile_push.comments
+          - mobile_push.mentions
+          type: object
+        id:
+          description: The unique ID of the user settings.
+          example: '123'
+          title: ID
           type: string
         type:
+          description: The type of resource.
           enum:
-          - MOBILE_PUSH
-          example: MOBILE_PUSH
+          - user_settings
+          example: user_settings
+          title: Type
           type: string
       required:
-      - token
+      - attributes
       - type
+      - id
       type: object
     User:
       properties:
@@ -404,6 +365,93 @@ components:
       - type
       - id
       type: object
+    TokenDeregistration:
+      properties:
+        token:
+          type: string
+        type:
+          enum:
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
+          type: string
+      required:
+      - token
+      - type
+      type: object
+    TokenRegistration:
+      properties:
+        device_os:
+          type: string
+        device_type:
+          type: string
+        token:
+          type: string
+        type:
+          enum:
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
+          type: string
+      required:
+      - device_os
+      - device_type
+      - token
+      - type
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
     UserDoc:
       properties:
         data:
@@ -411,54 +459,6 @@ components:
       required:
       - data
       type: object
-    UserSettings:
-      properties:
-        attributes:
-          properties:
-            mobile_push.comments:
-              type: boolean
-            mobile_push.mentions:
-              type: boolean
-          required:
-          - mobile_push.comments
-          - mobile_push.mentions
-          type: object
-        id:
-          description: The unique ID of the user settings.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - user_settings
-          example: user_settings
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

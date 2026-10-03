@@ -174,68 +174,66 @@ paths:
       - Emails
 components:
   schemas:
-    EmailThreadDoc:
+    EmailDoc:
       properties:
         data:
-          $ref: '#/components/schemas/EmailThread'
+          $ref: '#/components/schemas/Email'
       required:
       - data
       type: object
-    Error:
+    EmailThread:
       properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
+        attributes:
+          properties:
+            deleted:
+              default: false
+              type: boolean
+            deleted_at:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            deleted_by:
+              properties:
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            private:
+              default: false
+              type: boolean
+          required:
+          - private
+          - deleted
+          type: object
+        id:
+          description: The unique ID of the email thread.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - email_thread
+          example: email_thread
+          title: Type
+          type: string
       required:
-      - errors
+      - attributes
+      - type
+      - id
       type: object
+    AnyValue:
+      description: Can be any value.
     Email:
       properties:
         attributes:
@@ -587,79 +585,81 @@ components:
       - type
       - id
       type: object
-    AnyValue:
-      description: Can be any value.
-    EmailThread:
-      properties:
-        attributes:
-          properties:
-            deleted:
-              default: false
-              type: boolean
-            deleted_at:
-              example: '2021-01-01T00:00:00Z'
-              type:
-              - string
-              - 'null'
-            deleted_by:
-              properties:
-                name:
-                  type: string
-                person_id:
-                  type: integer
-                user_id:
-                  type: integer
-              required:
-              - name
-              - person_id
-              - user_id
-              type:
-              - object
-              - 'null'
-            private:
-              default: false
-              type: boolean
-          required:
-          - private
-          - deleted
-          type: object
-        id:
-          description: The unique ID of the email thread.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - email_thread
-          example: email_thread
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    EmailDoc:
+    EmailThreadDoc:
       properties:
         data:
-          $ref: '#/components/schemas/Email'
+          $ref: '#/components/schemas/EmailThread'
       required:
       - data
       type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
   responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     NotFound:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

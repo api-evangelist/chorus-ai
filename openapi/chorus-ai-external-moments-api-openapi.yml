@@ -61,7 +61,29 @@ paths:
       tags:
       - External Moments
 components:
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   schemas:
+    MomentsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Moment'
+          type: array
+      required:
+      - data
+      type: object
     Moment:
       properties:
         attributes:
@@ -350,28 +372,6 @@ components:
       required:
       - errors
       type: object
-    MomentsDoc:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Moment'
-          type: array
-      required:
-      - data
-      type: object
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

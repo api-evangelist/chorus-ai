@@ -659,357 +659,270 @@ paths:
       - Conversations
 components:
   schemas:
-    Task:
+    BulkProcessConversationsRequest:
       properties:
-        attributes:
-          properties:
-            status:
-              readOnly: true
-              type: string
-          required:
-          - status
-          type: object
-        id:
-          description: The unique ID of the task.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - task
-          example: task
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    Conversation:
-      properties:
-        attributes:
-          properties:
-            _created_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
+        create:
+          items:
+            properties:
+              attributes:
+                properties:
+                  activity_type:
+                    type:
+                    - string
+                    - 'null'
+                  content:
+                    type:
+                    - string
+                    - 'null'
+                  crm:
+                    properties:
+                      account_name:
+                        type: string
+                      ext_id:
+                        type:
+                        - string
+                        - 'null'
+                      ext_type:
+                        type:
+                        - string
+                        - 'null'
+                      match_reason:
+                        type:
+                        - string
+                        - 'null'
+                      opportunity_id:
+                        type:
+                        - string
+                        - 'null'
+                    required:
+                    - account_name
+                    type:
+                    - object
+                    - 'null'
+                  duration:
+                    type:
+                    - number
+                    - 'null'
+                  end_time:
+                    example: '2021-01-01T00:00:00Z'
+                    type:
+                    - string
+                    - 'null'
+                  external_id:
+                    type:
+                    - string
+                    - 'null'
+                  external_url:
+                    type:
+                    - string
+                    - 'null'
+                  named_tags:
+                    properties: {}
+                    type:
+                    - object
+                    - 'null'
+                  owner:
+                    properties:
+                      company:
+                        type:
+                        - string
+                        - 'null'
+                      company_domain:
+                        type:
+                        - string
+                        - 'null'
+                      email:
+                        type:
+                        - string
+                        - 'null'
+                      first_name:
+                        type:
+                        - string
+                        - 'null'
+                      force_auto_provision:
+                        type:
+                        - boolean
+                        - 'null'
+                      id:
+                        type:
+                        - integer
+                        - 'null'
+                      last_name:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      phone:
+                        type:
+                        - string
+                        - 'null'
+                      role:
+                        type:
+                        - string
+                        - 'null'
+                      title:
+                        type:
+                        - string
+                        - 'null'
+                      zi_company_id:
+                        type:
+                        - string
+                        - 'null'
+                      zi_person_id:
+                        type:
+                        - string
+                        - 'null'
+                    type:
+                    - object
+                    - 'null'
+                  participants:
+                    items:
+                      properties:
+                        company:
+                          type:
+                          - string
+                          - 'null'
+                        company_domain:
+                          type:
+                          - string
+                          - 'null'
+                        email:
+                          type:
+                          - string
+                          - 'null'
+                        first_name:
+                          type:
+                          - string
+                          - 'null'
+                        force_auto_provision:
+                          type:
+                          - boolean
+                          - 'null'
+                        id:
+                          type:
+                          - integer
+                          - 'null'
+                        last_name:
+                          type:
+                          - string
+                          - 'null'
+                        name:
+                          type:
+                          - string
+                          - 'null'
+                        phone:
+                          type:
+                          - string
+                          - 'null'
+                        role:
+                          type:
+                          - string
+                          - 'null'
+                        title:
+                          type:
+                          - string
+                          - 'null'
+                        zi_company_id:
+                          type:
+                          - string
+                          - 'null'
+                        zi_person_id:
+                          type:
+                          - string
+                          - 'null'
+                      type: object
+                    type:
+                    - array
+                    - 'null'
+                  related_conversation:
+                    type:
+                    - string
+                    - 'null'
+                  related_external_id:
+                    type:
+                    - string
+                    - 'null'
+                  related_meeting:
+                    type:
+                    - string
+                    - 'null'
+                  related_start_time:
+                    example: '2021-01-01T00:00:00Z'
+                    type:
+                    - string
+                    - 'null'
+                  source:
+                    type: string
+                  start_time:
+                    example: '2021-01-01T00:00:00Z'
+                    type: string
+                  status:
+                    type:
+                    - string
+                    - 'null'
+                  subject:
+                    type:
+                    - string
+                    - 'null'
+                  tags:
+                    items:
+                      type: string
+                    type:
+                    - array
+                    - 'null'
+                required:
+                - source
+                - start_time
+                type: object
               type:
-              - string
-              - 'null'
-            _modified_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type:
-              - string
-              - 'null'
-            account:
-              properties:
-                ext_id:
-                  type:
-                  - string
-                  - 'null'
-                id:
-                  type: integer
-                name:
-                  type: string
-                type:
-                  type:
-                  - string
-                  - 'null'
-                zi_company_id:
-                  type:
-                  - string
-                  - 'null'
-              required:
-              - id
-              - name
-              type: object
-            action_items:
-              items:
+                description: The type of resource.
+                enum:
+                - activity
+                - email
+                - form
+                - recording
+                example: activity
+                title: Type
                 type: string
-              type:
-              - array
-              - 'null'
-            company_name:
-              type:
-              - string
-              - 'null'
-            custom_questions:
-              items:
-                $ref: '#/components/schemas/AnyValue'
-              type:
-              - array
-              - 'null'
-            custom_summaries:
-              items:
-                $ref: '#/components/schemas/AnyValue'
-              type:
-              - array
-              - 'null'
-            deal:
-              properties:
-                close_date:
-                  example: '2021-01-01T00:00:00Z'
-                  type:
-                  - string
-                  - 'null'
-                current_stage:
-                  type:
-                  - string
-                  - 'null'
-                engaged:
-                  type:
-                  - string
-                  - 'null'
-                follow_up:
-                  properties:
-                    doc_type:
-                      type: string
-                    id:
-                      type: string
-                    start_time:
-                      example: '2021-01-01T00:00:00Z'
-                      type: string
-                    thread_id:
-                      $ref: '#/components/schemas/AnyValue'
-                  required:
-                  - doc_type
-                  - id
-                  - start_time
-                  type:
-                  - object
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                initial_amount:
-                  type:
-                  - number
-                  - 'null'
-                initial_stage:
-                  type:
-                  - string
-                  - 'null'
-                name:
-                  type:
-                  - string
-                  - 'null'
-                on_stage_since:
-                  example: '2021-01-01T00:00:00Z'
-                  type:
-                  - string
-                  - 'null'
-                size:
-                  type:
-                  - integer
-                  - 'null'
-                size_increased_amount:
-                  $ref: '#/components/schemas/AnyValue'
-                stage_advancement:
-                  type:
-                  - string
-                  - 'null'
-              type: object
-            disposition:
-              properties:
-                Task___CallDisposition:
-                  $ref: '#/components/schemas/AnyValue'
-                connected:
-                  $ref: '#/components/schemas/AnyValue'
-                gatekeeper:
-                  $ref: '#/components/schemas/AnyValue'
-                tree:
-                  $ref: '#/components/schemas/AnyValue'
-                voicemail:
-                  $ref: '#/components/schemas/AnyValue'
-              type:
-              - object
-              - 'null'
-            generated_subject:
-              type:
-              - string
-              - 'null'
-            language:
-              type:
-              - string
-              - 'null'
-            meeting:
-              properties:
-                calendar_id:
-                  type:
-                  - string
-                  - 'null'
-                ical_uid:
-                  type:
-                  - string
-                  - 'null'
-                id:
-                  type: string
-                meeting_url:
-                  type:
-                  - string
-                  - 'null'
-              required:
-              - id
-              type:
-              - object
-              - 'null'
-            meta:
-              properties:
-                offset:
-                  type: integer
-                viewed:
-                  example: '2021-01-01T00:00:00Z'
-                  type: string
-              required:
-              - viewed
-              - offset
-              type:
-              - object
-              - 'null'
-            metrics:
-              items:
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: number
-                required:
-                - name
-                - value
-                type: object
-              type:
-              - array
-              - 'null'
-            name:
-              type:
-              - string
-              - 'null'
-            owner:
-              properties:
-                email:
-                  type: string
-                name:
-                  type: string
-                person_id:
-                  type: integer
-                user_id:
-                  type: integer
-              required:
-              - email
-              - name
-              - person_id
-              - user_id
-              type: object
-            participants:
-              items:
-                properties:
-                  company_name:
-                    type:
-                    - string
-                    - 'null'
-                  email:
-                    type:
-                    - string
-                    - 'null'
-                  is_my_team:
-                    type:
-                    - boolean
-                    - 'null'
-                  name:
-                    type: string
-                  person_id:
-                    type: integer
-                  picture:
-                    type:
-                    - string
-                    - 'null'
-                  title:
-                    type:
-                    - string
-                    - 'null'
-                  type:
-                    type: string
-                  user_id:
-                    type:
-                    - integer
-                    - 'null'
-                  zi_person_id:
-                    type:
-                    - integer
-                    - 'null'
-                required:
-                - name
-                - person_id
-                - type
-                type: object
-              type:
-              - array
-              - 'null'
-            private:
+            required:
+            - attributes
+            - type
+            type: object
+          type:
+          - array
+          - 'null'
+        delete:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        meta:
+          properties:
+            force_delete:
               type:
               - boolean
               - 'null'
-            recap:
-              items:
-                type: string
-              type:
-              - array
-              - 'null'
-            source:
-              type:
-              - string
-              - 'null'
-            status:
-              default: unknown
-              enum:
-              - done
-              - live
-              - no show
-              - processing
-              - unknown
-              - scheduled
-              example: done
-              type: string
-            summary:
-              type:
-              - string
-              - 'null'
-            summary_error:
-              type:
-              - string
-              - 'null'
-            tracker_match:
-              type:
-              - string
-              - 'null'
-            user_company_name:
-              type:
-              - string
-              - 'null'
-          required:
-          - account
-          - deal
-          - owner
-          - status
-          type: object
-        id:
-          description: The unique ID of the conversation.
-          example: 423295C52B954F5D09E23D7A014546F6
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - conversation
-          example: conversation
-          title: Type
-          type: string
+          type:
+          - object
+          - 'null'
+      type: object
+    TaskDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
       required:
-      - attributes
-      - type
-      - id
+      - data
+      type: object
+    RecordingDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Recording'
+      required:
+      - data
       type: object
     Error:
       properties:
@@ -1066,51 +979,15 @@ components:
       required:
       - errors
       type: object
-    MeetingValidation:
-      properties:
-        details:
-          example: Please ensure your computer or mobile
-          type:
-          - string
-          - 'null'
-        id:
-          example: iakjvi1fjfff
-          type: string
-        link:
-          example: https://zoominfo.zoom.us/j/95944577110
-          type: string
-        location:
-          example: The Office
-          type:
-          - string
-          - 'null'
-        participants:
-          example:
-          - first@participant.com
-          - second@other.com
-          items:
-            type: string
-          type: array
-        start_time:
-          example: '2021-01-31T00:00:00Z'
-          type: string
-        subject:
-          example: Gameplan on extension
-          type: string
-      required:
-      - id
-      - subject
-      - participants
-      - link
-      - start_time
-      type: object
-    MeetingAutojoinDoc:
+    ConversationDoc:
       properties:
         data:
-          $ref: '#/components/schemas/MeetingAutojoin'
+          $ref: '#/components/schemas/Conversation'
       required:
       - data
       type: object
+    AnyValue:
+      description: Can be any value.
     Recording:
       properties:
         attributes:
@@ -1674,272 +1551,357 @@ components:
       - type
       - id
       type: object
-    BulkProcessConversationsRequest:
+    Task:
       properties:
-        create:
-          items:
-            properties:
-              attributes:
-                properties:
-                  activity_type:
-                    type:
-                    - string
-                    - 'null'
-                  content:
-                    type:
-                    - string
-                    - 'null'
-                  crm:
-                    properties:
-                      account_name:
-                        type: string
-                      ext_id:
-                        type:
-                        - string
-                        - 'null'
-                      ext_type:
-                        type:
-                        - string
-                        - 'null'
-                      match_reason:
-                        type:
-                        - string
-                        - 'null'
-                      opportunity_id:
-                        type:
-                        - string
-                        - 'null'
-                    required:
-                    - account_name
-                    type:
-                    - object
-                    - 'null'
-                  duration:
-                    type:
-                    - number
-                    - 'null'
-                  end_time:
-                    example: '2021-01-01T00:00:00Z'
-                    type:
-                    - string
-                    - 'null'
-                  external_id:
-                    type:
-                    - string
-                    - 'null'
-                  external_url:
-                    type:
-                    - string
-                    - 'null'
-                  named_tags:
-                    properties: {}
-                    type:
-                    - object
-                    - 'null'
-                  owner:
-                    properties:
-                      company:
-                        type:
-                        - string
-                        - 'null'
-                      company_domain:
-                        type:
-                        - string
-                        - 'null'
-                      email:
-                        type:
-                        - string
-                        - 'null'
-                      first_name:
-                        type:
-                        - string
-                        - 'null'
-                      force_auto_provision:
-                        type:
-                        - boolean
-                        - 'null'
-                      id:
-                        type:
-                        - integer
-                        - 'null'
-                      last_name:
-                        type:
-                        - string
-                        - 'null'
-                      name:
-                        type:
-                        - string
-                        - 'null'
-                      phone:
-                        type:
-                        - string
-                        - 'null'
-                      role:
-                        type:
-                        - string
-                        - 'null'
-                      title:
-                        type:
-                        - string
-                        - 'null'
-                      zi_company_id:
-                        type:
-                        - string
-                        - 'null'
-                      zi_person_id:
-                        type:
-                        - string
-                        - 'null'
-                    type:
-                    - object
-                    - 'null'
-                  participants:
-                    items:
-                      properties:
-                        company:
-                          type:
-                          - string
-                          - 'null'
-                        company_domain:
-                          type:
-                          - string
-                          - 'null'
-                        email:
-                          type:
-                          - string
-                          - 'null'
-                        first_name:
-                          type:
-                          - string
-                          - 'null'
-                        force_auto_provision:
-                          type:
-                          - boolean
-                          - 'null'
-                        id:
-                          type:
-                          - integer
-                          - 'null'
-                        last_name:
-                          type:
-                          - string
-                          - 'null'
-                        name:
-                          type:
-                          - string
-                          - 'null'
-                        phone:
-                          type:
-                          - string
-                          - 'null'
-                        role:
-                          type:
-                          - string
-                          - 'null'
-                        title:
-                          type:
-                          - string
-                          - 'null'
-                        zi_company_id:
-                          type:
-                          - string
-                          - 'null'
-                        zi_person_id:
-                          type:
-                          - string
-                          - 'null'
-                      type: object
-                    type:
-                    - array
-                    - 'null'
-                  related_conversation:
-                    type:
-                    - string
-                    - 'null'
-                  related_external_id:
-                    type:
-                    - string
-                    - 'null'
-                  related_meeting:
-                    type:
-                    - string
-                    - 'null'
-                  related_start_time:
-                    example: '2021-01-01T00:00:00Z'
-                    type:
-                    - string
-                    - 'null'
-                  source:
-                    type: string
-                  start_time:
-                    example: '2021-01-01T00:00:00Z'
-                    type: string
-                  status:
-                    type:
-                    - string
-                    - 'null'
-                  subject:
-                    type:
-                    - string
-                    - 'null'
-                  tags:
-                    items:
+        attributes:
+          properties:
+            status:
+              readOnly: true
+              type: string
+          required:
+          - status
+          type: object
+        id:
+          description: The unique ID of the task.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - task
+          example: task
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    Conversation:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            account:
+              properties:
+                ext_id:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: integer
+                name:
+                  type: string
+                type:
+                  type:
+                  - string
+                  - 'null'
+                zi_company_id:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              - name
+              type: object
+            action_items:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            company_name:
+              type:
+              - string
+              - 'null'
+            custom_questions:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            custom_summaries:
+              items:
+                $ref: '#/components/schemas/AnyValue'
+              type:
+              - array
+              - 'null'
+            deal:
+              properties:
+                close_date:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                current_stage:
+                  type:
+                  - string
+                  - 'null'
+                engaged:
+                  type:
+                  - string
+                  - 'null'
+                follow_up:
+                  properties:
+                    doc_type:
                       type: string
-                    type:
-                    - array
-                    - 'null'
+                    id:
+                      type: string
+                    start_time:
+                      example: '2021-01-01T00:00:00Z'
+                      type: string
+                    thread_id:
+                      $ref: '#/components/schemas/AnyValue'
+                  required:
+                  - doc_type
+                  - id
+                  - start_time
+                  type:
+                  - object
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                initial_amount:
+                  type:
+                  - number
+                  - 'null'
+                initial_stage:
+                  type:
+                  - string
+                  - 'null'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                on_stage_since:
+                  example: '2021-01-01T00:00:00Z'
+                  type:
+                  - string
+                  - 'null'
+                size:
+                  type:
+                  - integer
+                  - 'null'
+                size_increased_amount:
+                  $ref: '#/components/schemas/AnyValue'
+                stage_advancement:
+                  type:
+                  - string
+                  - 'null'
+              type: object
+            disposition:
+              properties:
+                Task___CallDisposition:
+                  $ref: '#/components/schemas/AnyValue'
+                connected:
+                  $ref: '#/components/schemas/AnyValue'
+                gatekeeper:
+                  $ref: '#/components/schemas/AnyValue'
+                tree:
+                  $ref: '#/components/schemas/AnyValue'
+                voicemail:
+                  $ref: '#/components/schemas/AnyValue'
+              type:
+              - object
+              - 'null'
+            generated_subject:
+              type:
+              - string
+              - 'null'
+            language:
+              type:
+              - string
+              - 'null'
+            meeting:
+              properties:
+                calendar_id:
+                  type:
+                  - string
+                  - 'null'
+                ical_uid:
+                  type:
+                  - string
+                  - 'null'
+                id:
+                  type: string
+                meeting_url:
+                  type:
+                  - string
+                  - 'null'
+              required:
+              - id
+              type:
+              - object
+              - 'null'
+            meta:
+              properties:
+                offset:
+                  type: integer
+                viewed:
+                  example: '2021-01-01T00:00:00Z'
+                  type: string
+              required:
+              - viewed
+              - offset
+              type:
+              - object
+              - 'null'
+            metrics:
+              items:
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: number
                 required:
-                - source
-                - start_time
+                - name
+                - value
                 type: object
               type:
-                description: The type of resource.
-                enum:
-                - activity
-                - email
-                - form
-                - recording
-                example: activity
-                title: Type
-                type: string
-            required:
-            - attributes
-            - type
-            type: object
-          type:
-          - array
-          - 'null'
-        delete:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        meta:
-          properties:
-            force_delete:
+              - array
+              - 'null'
+            name:
+              type:
+              - string
+              - 'null'
+            owner:
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                person_id:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - email
+              - name
+              - person_id
+              - user_id
+              type: object
+            participants:
+              items:
+                properties:
+                  company_name:
+                    type:
+                    - string
+                    - 'null'
+                  email:
+                    type:
+                    - string
+                    - 'null'
+                  is_my_team:
+                    type:
+                    - boolean
+                    - 'null'
+                  name:
+                    type: string
+                  person_id:
+                    type: integer
+                  picture:
+                    type:
+                    - string
+                    - 'null'
+                  title:
+                    type:
+                    - string
+                    - 'null'
+                  type:
+                    type: string
+                  user_id:
+                    type:
+                    - integer
+                    - 'null'
+                  zi_person_id:
+                    type:
+                    - integer
+                    - 'null'
+                required:
+                - name
+                - person_id
+                - type
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
               type:
               - boolean
               - 'null'
-          type:
-          - object
-          - 'null'
-      type: object
-    AnyValue:
-      description: Can be any value.
-    TaskDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Task'
+            recap:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            source:
+              type:
+              - string
+              - 'null'
+            status:
+              default: unknown
+              enum:
+              - done
+              - live
+              - no show
+              - processing
+              - unknown
+              - scheduled
+              example: done
+              type: string
+            summary:
+              type:
+              - string
+              - 'null'
+            summary_error:
+              type:
+              - string
+              - 'null'
+            tracker_match:
+              type:
+              - string
+              - 'null'
+            user_company_name:
+              type:
+              - string
+              - 'null'
+          required:
+          - account
+          - deal
+          - owner
+          - status
+          type: object
+        id:
+          description: The unique ID of the conversation.
+          example: 423295C52B954F5D09E23D7A014546F6
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - conversation
+          example: conversation
+          title: Type
+          type: string
       required:
-      - data
-      type: object
-    RecordingDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Recording'
-      required:
-      - data
+      - attributes
+      - type
+      - id
       type: object
     BulkProcessConversationsResponse:
       properties:
@@ -2006,12 +1968,50 @@ components:
           - array
           - 'null'
       type: object
-    ConversationDoc:
+    MeetingAutojoinDoc:
       properties:
         data:
-          $ref: '#/components/schemas/Conversation'
+          $ref: '#/components/schemas/MeetingAutojoin'
       required:
       - data
+      type: object
+    MeetingValidation:
+      properties:
+        details:
+          example: Please ensure your computer or mobile
+          type:
+          - string
+          - 'null'
+        id:
+          example: iakjvi1fjfff
+          type: string
+        link:
+          example: https://zoominfo.zoom.us/j/95944577110
+          type: string
+        location:
+          example: The Office
+          type:
+          - string
+          - 'null'
+        participants:
+          example:
+          - first@participant.com
+          - second@other.com
+          items:
+            type: string
+          type: array
+        start_time:
+          example: '2021-01-31T00:00:00Z'
+          type: string
+        subject:
+          example: Gameplan on extension
+          type: string
+      required:
+      - id
+      - subject
+      - participants
+      - link
+      - start_time
       type: object
     MeetingAutojoin:
       properties:
@@ -2047,18 +2047,18 @@ components:
       - id
       type: object
   responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     NotFound:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
     Conflict:
       content:
         application/vnd.api+json:

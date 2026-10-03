@@ -103,61 +103,74 @@ paths:
       tags:
       - Video Conferences
 components:
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   schemas:
-    Error:
+    VideoConferenceForPatchDoc:
       properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
+        data:
+          $ref: '#/components/schemas/VideoConferenceForPatch'
       required:
-      - errors
+      - data
+      type: object
+    VideoConferenceDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/VideoConference'
+      required:
+      - data
+      type: object
+    VideoConferenceForPatch:
+      properties:
+        attributes:
+          properties:
+            duration:
+              type: integer
+            start_time:
+              example: '2021-01-01T00:00:00+00:00'
+              format: date-time
+              type: string
+            subject:
+              type:
+              - string
+              - 'null'
+          required:
+          - duration
+          - start_time
+          type: object
+        id:
+          description: The unique ID of the video conference.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - video_conference
+          example: video_conference
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
       type: object
     VideoConference:
       properties:
@@ -226,74 +239,61 @@ components:
       required:
       - data
       type: object
-    VideoConferenceForPatch:
+    Error:
       properties:
-        attributes:
-          properties:
-            duration:
-              type: integer
-            start_time:
-              example: '2021-01-01T00:00:00+00:00'
-              format: date-time
-              type: string
-            subject:
-              type:
-              - string
-              - 'null'
-          required:
-          - duration
-          - start_time
-          type: object
-        id:
-          description: The unique ID of the video conference.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - video_conference
-          example: video_conference
-          title: Type
-          type: string
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
       required:
-      - attributes
-      - type
-      - id
+      - errors
       type: object
-    VideoConferenceForPatchDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/VideoConferenceForPatch'
-      required:
-      - data
-      type: object
-    VideoConferenceDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/VideoConference'
-      required:
-      - data
-      type: object
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

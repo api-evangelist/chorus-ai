@@ -136,60 +136,28 @@ paths:
       - Sales Qualifications
 components:
   schemas:
-    Error:
+    SalesQualificationAnalysisRequestForCreateDoc:
       properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
+        data:
+          $ref: '#/components/schemas/SalesQualificationAnalysisRequestForCreate'
       required:
-      - errors
+      - data
+      type: object
+    SalesQualificationCrmWriteBackRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/SalesQualificationCrmWriteBackRequestForCreate'
+      required:
+      - data
+      type: object
+    AnyValue:
+      description: Can be any value.
+    FrameworkConfigurationDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/FrameworkConfiguration'
+      required:
+      - data
       type: object
     SalesQualificationAnalysisDoc:
       properties:
@@ -197,6 +165,49 @@ components:
           $ref: '#/components/schemas/SalesQualificationAnalysis'
       required:
       - data
+      type: object
+    SalesQualificationCrmWriteBackRequestForCreate:
+      properties:
+        attributes:
+          properties:
+            crm_changes:
+              items:
+                properties:
+                  field_name:
+                    type: string
+                  new_value:
+                    $ref: '#/components/schemas/AnyValue'
+                  previous_value:
+                    $ref: '#/components/schemas/AnyValue'
+                required:
+                - field_name
+                type: object
+              type: array
+            meeting_id:
+              type: string
+            object_type:
+              default: Opportunity
+              type:
+              - string
+              - 'null'
+            opportunity_id:
+              type:
+              - string
+              - 'null'
+          required:
+          - meeting_id
+          - crm_changes
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - crm-field-update
+          example: crm-field-update
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
       type: object
     SalesQualificationAnalysisRequestForCreate:
       properties:
@@ -218,76 +229,15 @@ components:
       - attributes
       - type
       type: object
-    FrameworkConfiguration:
-      properties:
-        attributes:
-          properties:
-            fields:
-              items:
-                properties:
-                  display_name:
-                    type: string
-                  id:
-                    type: string
-                  mapping:
-                    type:
-                    - string
-                    - 'null'
-                  order:
-                    type: integer
-                  write_back:
-                    enum:
-                    - APPEND
-                    - OVERWRITE
-                    example: APPEND
-                    type:
-                    - string
-                    - 'null'
-                required:
-                - display_name
-                - id
-                - order
-                type: object
-              type: array
-            is_active:
-              type: boolean
-          required:
-          - is_active
-          - fields
-          type: object
-        id:
-          description: The unique ID of the sales qualification configuration.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - sales_qualification_configuration
-          example: sales_qualification_configuration
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    FrameworkConfigurationDoc:
+    FrameworkConfigurationsDoc:
       properties:
         data:
-          $ref: '#/components/schemas/FrameworkConfiguration'
+          items:
+            $ref: '#/components/schemas/FrameworkConfiguration'
+          type: array
       required:
       - data
       type: object
-    SalesQualificationCrmWriteBackRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SalesQualificationCrmWriteBackRequestForCreate'
-      required:
-      - data
-      type: object
-    AnyValue:
-      description: Can be any value.
     SalesQualificationAnalysis:
       properties:
         attributes:
@@ -439,78 +389,128 @@ components:
       - type
       - id
       type: object
-    SalesQualificationCrmWriteBackRequestForCreate:
+    FrameworkConfiguration:
       properties:
         attributes:
           properties:
-            crm_changes:
+            fields:
               items:
                 properties:
-                  field_name:
+                  display_name:
                     type: string
-                  new_value:
-                    $ref: '#/components/schemas/AnyValue'
-                  previous_value:
-                    $ref: '#/components/schemas/AnyValue'
+                  id:
+                    type: string
+                  mapping:
+                    type:
+                    - string
+                    - 'null'
+                  order:
+                    type: integer
+                  write_back:
+                    enum:
+                    - APPEND
+                    - OVERWRITE
+                    example: APPEND
+                    type:
+                    - string
+                    - 'null'
                 required:
-                - field_name
+                - display_name
+                - id
+                - order
                 type: object
               type: array
-            meeting_id:
-              type: string
-            object_type:
-              default: Opportunity
-              type:
-              - string
-              - 'null'
-            opportunity_id:
-              type:
-              - string
-              - 'null'
+            is_active:
+              type: boolean
           required:
-          - meeting_id
-          - crm_changes
+          - is_active
+          - fields
           type: object
+        id:
+          description: The unique ID of the sales qualification configuration.
+          example: '123'
+          title: ID
+          type: string
         type:
           description: The type of resource.
           enum:
-          - crm-field-update
-          example: crm-field-update
+          - sales_qualification_configuration
+          example: sales_qualification_configuration
           title: Type
           type: string
       required:
       - attributes
       - type
+      - id
       type: object
-    FrameworkConfigurationsDoc:
+    Error:
       properties:
-        data:
+        errors:
           items:
-            $ref: '#/components/schemas/FrameworkConfiguration'
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
           type: array
       required:
-      - data
-      type: object
-    SalesQualificationAnalysisRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/SalesQualificationAnalysisRequestForCreate'
-      required:
-      - data
+      - errors
       type: object
   responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     NotFound:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
     Conflict:
       content:
         application/vnd.api+json:
