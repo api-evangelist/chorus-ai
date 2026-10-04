@@ -143,62 +143,7 @@ paths:
       tags:
       - Users
 components:
-  responses:
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
   schemas:
-    UserSettingsDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/UserSettings'
-      required:
-      - data
-      type: object
-    UserSettings:
-      properties:
-        attributes:
-          properties:
-            mobile_push.comments:
-              type: boolean
-            mobile_push.mentions:
-              type: boolean
-          required:
-          - mobile_push.comments
-          - mobile_push.mentions
-          type: object
-        id:
-          description: The unique ID of the user settings.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - user_settings
-          example: user_settings
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
     User:
       properties:
         attributes:
@@ -365,6 +310,35 @@ components:
       - type
       - id
       type: object
+    UserSettings:
+      properties:
+        attributes:
+          properties:
+            mobile_push.comments:
+              type: boolean
+            mobile_push.mentions:
+              type: boolean
+          required:
+          - mobile_push.comments
+          - mobile_push.mentions
+          type: object
+        id:
+          description: The unique ID of the user settings.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - user_settings
+          example: user_settings
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
     TokenDeregistration:
       properties:
         token:
@@ -378,24 +352,12 @@ components:
       - token
       - type
       type: object
-    TokenRegistration:
+    UserSettingsDoc:
       properties:
-        device_os:
-          type: string
-        device_type:
-          type: string
-        token:
-          type: string
-        type:
-          enum:
-          - MOBILE_PUSH
-          example: MOBILE_PUSH
-          type: string
+        data:
+          $ref: '#/components/schemas/UserSettings'
       required:
-      - device_os
-      - device_type
-      - token
-      - type
+      - data
       type: object
     Error:
       properties:
@@ -459,6 +421,44 @@ components:
       required:
       - data
       type: object
+    TokenRegistration:
+      properties:
+        device_os:
+          type: string
+        device_type:
+          type: string
+        token:
+          type: string
+        type:
+          enum:
+          - MOBILE_PUSH
+          example: MOBILE_PUSH
+          type: string
+      required:
+      - device_os
+      - device_type
+      - token
+      - type
+      type: object
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

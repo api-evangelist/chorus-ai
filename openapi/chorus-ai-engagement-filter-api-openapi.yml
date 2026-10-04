@@ -181,57 +181,65 @@ paths:
       - Engagement filter
 components:
   schemas:
-    EngagementFilterEdit:
+    EngagementFilterForCreate:
       properties:
         attributes:
           properties:
             field_type:
-              type:
-              - string
-              - 'null'
+              type: string
             filter_name:
-              type:
-              - string
-              - 'null'
+              type: string
             filter_type:
-              type:
-              - string
-              - 'null'
+              type: string
             filter_values:
+              default: 'null'
               type:
               - string
               - 'null'
+          required:
+          - filter_name
+          - filter_type
+          - field_type
           type: object
-        id:
-          description: The unique ID of the engagement filter edit.
-          example: '123'
-          title: ID
-          type: string
         type:
           description: The type of resource.
           enum:
-          - engagement_filter_edit
-          example: engagement_filter_edit
+          - engagement_filter
+          example: engagement_filter
           title: Type
           type: string
       required:
       - attributes
       - type
-      - id
       type: object
-    EngagementFilterEditDoc:
+    ReplaceAllEngagementFilters:
       properties:
-        data:
-          $ref: '#/components/schemas/EngagementFilterEdit'
+        filter_type:
+          type: string
+        filters:
+          items:
+            properties:
+              field_type:
+                type: string
+              filter_name:
+                type: string
+              filter_values:
+                default: 'null'
+                type:
+                - string
+                - 'null'
+            required:
+            - filter_name
+            - field_type
+            type: object
+          type: array
+        type:
+          default: engagement_filter
+          type: string
       required:
-      - data
-      type: object
-    EngagementFilterDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/EngagementFilter'
-      required:
-      - data
+      - filter_type
+      - filters
+      - type
       type: object
     EngagementFilter:
       properties:
@@ -269,82 +277,6 @@ components:
       - attributes
       - type
       - id
-      type: object
-    ReplaceAllEngagementFilters:
-      properties:
-        filter_type:
-          type: string
-        filters:
-          items:
-            properties:
-              field_type:
-                type: string
-              filter_name:
-                type: string
-              filter_values:
-                default: 'null'
-                type:
-                - string
-                - 'null'
-            required:
-            - filter_name
-            - field_type
-            type: object
-          type: array
-        type:
-          default: engagement_filter
-          type: string
-      required:
-      - filter_type
-      - filters
-      - type
-      type: object
-    EngagementFilterForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/EngagementFilterForCreate'
-      required:
-      - data
-      type: object
-    EngagementFiltersDoc:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/EngagementFilter'
-          type: array
-      required:
-      - data
-      type: object
-    EngagementFilterForCreate:
-      properties:
-        attributes:
-          properties:
-            field_type:
-              type: string
-            filter_name:
-              type: string
-            filter_type:
-              type: string
-            filter_values:
-              default: 'null'
-              type:
-              - string
-              - 'null'
-          required:
-          - filter_name
-          - filter_type
-          - field_type
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - engagement_filter
-          example: engagement_filter
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
       type: object
     Error:
       properties:
@@ -401,6 +333,74 @@ components:
       required:
       - errors
       type: object
+    EngagementFilterDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementFilter'
+      required:
+      - data
+      type: object
+    EngagementFilterForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementFilterForCreate'
+      required:
+      - data
+      type: object
+    EngagementFilterEdit:
+      properties:
+        attributes:
+          properties:
+            field_type:
+              type:
+              - string
+              - 'null'
+            filter_name:
+              type:
+              - string
+              - 'null'
+            filter_type:
+              type:
+              - string
+              - 'null'
+            filter_values:
+              type:
+              - string
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the engagement filter edit.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - engagement_filter_edit
+          example: engagement_filter_edit
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    EngagementFiltersDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/EngagementFilter'
+          type: array
+      required:
+      - data
+      type: object
+    EngagementFilterEditDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EngagementFilterEdit'
+      required:
+      - data
+      type: object
   responses:
     NotFound:
       content:
@@ -408,18 +408,18 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     Conflict:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

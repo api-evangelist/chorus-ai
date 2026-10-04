@@ -103,75 +103,7 @@ paths:
       tags:
       - Video Conferences
 components:
-  responses:
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
   schemas:
-    VideoConferenceForPatchDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/VideoConferenceForPatch'
-      required:
-      - data
-      type: object
-    VideoConferenceDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/VideoConference'
-      required:
-      - data
-      type: object
-    VideoConferenceForPatch:
-      properties:
-        attributes:
-          properties:
-            duration:
-              type: integer
-            start_time:
-              example: '2021-01-01T00:00:00+00:00'
-              format: date-time
-              type: string
-            subject:
-              type:
-              - string
-              - 'null'
-          required:
-          - duration
-          - start_time
-          type: object
-        id:
-          description: The unique ID of the video conference.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - video_conference
-          example: video_conference
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
     VideoConference:
       properties:
         attributes:
@@ -204,40 +136,6 @@ components:
       - attributes
       - type
       - id
-      type: object
-    VideoConferenceForCreate:
-      properties:
-        attributes:
-          properties:
-            provider:
-              enum:
-              - 8X8
-              - GOOGLE_MEET
-              - MSTEAMS
-              - WEBEX
-              - ZOOM
-              example: 8X8
-              type: string
-          required:
-          - provider
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - video_conference
-          example: video_conference
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    VideoConferenceForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/VideoConferenceForCreate'
-      required:
-      - data
       type: object
     Error:
       properties:
@@ -294,6 +192,108 @@ components:
       required:
       - errors
       type: object
+    VideoConferenceForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/VideoConferenceForCreate'
+      required:
+      - data
+      type: object
+    VideoConferenceDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/VideoConference'
+      required:
+      - data
+      type: object
+    VideoConferenceForCreate:
+      properties:
+        attributes:
+          properties:
+            provider:
+              enum:
+              - 8X8
+              - GOOGLE_MEET
+              - MSTEAMS
+              - WEBEX
+              - ZOOM
+              example: 8X8
+              type: string
+          required:
+          - provider
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - video_conference
+          example: video_conference
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    VideoConferenceForPatchDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/VideoConferenceForPatch'
+      required:
+      - data
+      type: object
+    VideoConferenceForPatch:
+      properties:
+        attributes:
+          properties:
+            duration:
+              type: integer
+            start_time:
+              example: '2021-01-01T00:00:00+00:00'
+              format: date-time
+              type: string
+            subject:
+              type:
+              - string
+              - 'null'
+          required:
+          - duration
+          - start_time
+          type: object
+        id:
+          description: The unique ID of the video conference.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - video_conference
+          example: video_conference
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

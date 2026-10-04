@@ -173,6 +173,19 @@ paths:
       tags:
       - Emails
 components:
+  responses:
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   schemas:
     EmailDoc:
       properties:
@@ -180,6 +193,61 @@ components:
           $ref: '#/components/schemas/Email'
       required:
       - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
       type: object
     EmailThread:
       properties:
@@ -232,8 +300,13 @@ components:
       - type
       - id
       type: object
-    AnyValue:
-      description: Can be any value.
+    EmailThreadDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/EmailThread'
+      required:
+      - data
+      type: object
     Email:
       properties:
         attributes:
@@ -585,81 +658,8 @@ components:
       - type
       - id
       type: object
-    EmailThreadDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/EmailThread'
-      required:
-      - data
-      type: object
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
-      type: object
-  responses:
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
+    AnyValue:
+      description: Can be any value.
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

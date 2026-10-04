@@ -71,13 +71,6 @@ paths:
       tags:
       - Integrations Email
 components:
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
   schemas:
     Error:
       properties:
@@ -134,6 +127,13 @@ components:
       required:
       - errors
       type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

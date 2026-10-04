@@ -305,15 +305,6 @@ paths:
       - Playlists
 components:
   schemas:
-    PlaylistsDoc:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Playlist'
-          type: array
-      required:
-      - data
-      type: object
     SmartPlaylistDoc:
       properties:
         data:
@@ -321,14 +312,335 @@ components:
       required:
       - data
       type: object
-    AnyValue:
-      description: Can be any value.
-    SmartPlaylistForCreatingDoc:
+    PlaylistDoc:
       properties:
         data:
-          $ref: '#/components/schemas/SmartPlaylistForCreating'
+          $ref: '#/components/schemas/Playlist'
       required:
       - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    Playlist:
+      properties:
+        attributes:
+          properties:
+            _created_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type: string
+            _modified_at:
+              example: '2021-01-01T00:00:00Z'
+              readOnly: true
+              type:
+              - string
+              - 'null'
+            _modified_by:
+              readOnly: true
+              type:
+              - integer
+              - 'null'
+            child_count:
+              readOnly: true
+              type: integer
+            description:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            owner:
+              properties:
+                name:
+                  readOnly: true
+                  type: string
+                person_id:
+                  readOnly: true
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - name
+              - person_id
+              - user_id
+              type:
+              - object
+              - 'null'
+            parent:
+              type:
+              - integer
+              - 'null'
+            path:
+              items:
+                properties:
+                  id:
+                    readOnly: true
+                    type: string
+                  name:
+                    readOnly: true
+                    type: string
+                required:
+                - id
+                - name
+                type: object
+              type:
+              - array
+              - 'null'
+            private:
+              readOnly: true
+              type: boolean
+            size:
+              readOnly: true
+              type: integer
+          required:
+          - child_count
+          - _created_at
+          - name
+          - private
+          - size
+          type: object
+        id:
+          description: The unique ID of the playlist.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
+    SmartPlaylistForCreating:
+      properties:
+        attributes:
+          properties:
+            custom_search:
+              properties:
+                run:
+                  properties:
+                    filters:
+                      properties:
+                        account_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                        extra_data.StageName:
+                          items:
+                            type: string
+                          type:
+                          - array
+                          - 'null'
+                        extra_data.initial_StageName:
+                          items:
+                            type: string
+                          type:
+                          - array
+                          - 'null'
+                        team_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                        user_ids:
+                          items:
+                            type: integer
+                          type:
+                          - array
+                          - 'null'
+                      type: object
+                    searches:
+                      items:
+                        properties:
+                          type:
+                            enum:
+                            - blueprint
+                            - competitor
+                            - text
+                            - topics
+                            - autotopics
+                            - competitors
+                            - facade
+                            example: blueprint
+                            type: string
+                          value:
+                            type: string
+                        required:
+                        - type
+                        - value
+                        type: object
+                      type:
+                      - array
+                      - 'null'
+                    tracker_operation:
+                      enum:
+                      - and
+                      - or
+                      example: and
+                      type: string
+                  required:
+                  - filters
+                  - tracker_operation
+                  type: object
+                show:
+                  items:
+                    properties:
+                      account_id:
+                        type:
+                        - integer
+                        - 'null'
+                      company:
+                        $ref: '#/components/schemas/AnyValue'
+                      disabled:
+                        type:
+                        - boolean
+                        - 'null'
+                      exists:
+                        type:
+                        - boolean
+                        - 'null'
+                      id:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      type:
+                        type:
+                        - string
+                        - 'null'
+                      url:
+                        type:
+                        - string
+                        - 'null'
+                    type: object
+                  type:
+                  - array
+                  - 'null'
+              required:
+              - run
+              type: object
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          - custom_search
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - smart_playlist
+          example: smart_playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    AnyValue:
+      description: Can be any value.
+    PlaylistForCreating:
+      properties:
+        attributes:
+          properties:
+            description:
+              example: My first playlist description.
+              type:
+              - string
+              - 'null'
+            name:
+              example: My first playlist
+              type: string
+            parent:
+              type:
+              - integer
+              - 'null'
+          required:
+          - name
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - playlist
+          example: playlist
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
       type: object
     SmartPlaylist:
       properties:
@@ -536,6 +848,15 @@ components:
       - type
       - id
       type: object
+    PlaylistsDoc:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Playlist'
+          type: array
+      required:
+      - data
+      type: object
     PlaylistForCreatingDoc:
       properties:
         data:
@@ -543,333 +864,12 @@ components:
       required:
       - data
       type: object
-    SmartPlaylistForCreating:
-      properties:
-        attributes:
-          properties:
-            custom_search:
-              properties:
-                run:
-                  properties:
-                    filters:
-                      properties:
-                        account_ids:
-                          items:
-                            type: integer
-                          type:
-                          - array
-                          - 'null'
-                        extra_data.StageName:
-                          items:
-                            type: string
-                          type:
-                          - array
-                          - 'null'
-                        extra_data.initial_StageName:
-                          items:
-                            type: string
-                          type:
-                          - array
-                          - 'null'
-                        team_ids:
-                          items:
-                            type: integer
-                          type:
-                          - array
-                          - 'null'
-                        user_ids:
-                          items:
-                            type: integer
-                          type:
-                          - array
-                          - 'null'
-                      type: object
-                    searches:
-                      items:
-                        properties:
-                          type:
-                            enum:
-                            - blueprint
-                            - competitor
-                            - text
-                            - topics
-                            - autotopics
-                            - competitors
-                            - facade
-                            example: blueprint
-                            type: string
-                          value:
-                            type: string
-                        required:
-                        - type
-                        - value
-                        type: object
-                      type:
-                      - array
-                      - 'null'
-                    tracker_operation:
-                      enum:
-                      - and
-                      - or
-                      example: and
-                      type: string
-                  required:
-                  - filters
-                  - tracker_operation
-                  type: object
-                show:
-                  items:
-                    properties:
-                      account_id:
-                        type:
-                        - integer
-                        - 'null'
-                      company:
-                        $ref: '#/components/schemas/AnyValue'
-                      disabled:
-                        type:
-                        - boolean
-                        - 'null'
-                      exists:
-                        type:
-                        - boolean
-                        - 'null'
-                      id:
-                        type:
-                        - string
-                        - 'null'
-                      name:
-                        type:
-                        - string
-                        - 'null'
-                      type:
-                        type:
-                        - string
-                        - 'null'
-                      url:
-                        type:
-                        - string
-                        - 'null'
-                    type: object
-                  type:
-                  - array
-                  - 'null'
-              required:
-              - run
-              type: object
-            description:
-              example: My first playlist description.
-              type:
-              - string
-              - 'null'
-            name:
-              example: My first playlist
-              type: string
-            parent:
-              type:
-              - integer
-              - 'null'
-          required:
-          - name
-          - custom_search
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - smart_playlist
-          example: smart_playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    PlaylistForCreating:
-      properties:
-        attributes:
-          properties:
-            description:
-              example: My first playlist description.
-              type:
-              - string
-              - 'null'
-            name:
-              example: My first playlist
-              type: string
-            parent:
-              type:
-              - integer
-              - 'null'
-          required:
-          - name
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - playlist
-          example: playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    Playlist:
-      properties:
-        attributes:
-          properties:
-            _created_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type: string
-            _modified_at:
-              example: '2021-01-01T00:00:00Z'
-              readOnly: true
-              type:
-              - string
-              - 'null'
-            _modified_by:
-              readOnly: true
-              type:
-              - integer
-              - 'null'
-            child_count:
-              readOnly: true
-              type: integer
-            description:
-              type:
-              - string
-              - 'null'
-            name:
-              type: string
-            owner:
-              properties:
-                name:
-                  readOnly: true
-                  type: string
-                person_id:
-                  readOnly: true
-                  type: integer
-                user_id:
-                  type: integer
-              required:
-              - name
-              - person_id
-              - user_id
-              type:
-              - object
-              - 'null'
-            parent:
-              type:
-              - integer
-              - 'null'
-            path:
-              items:
-                properties:
-                  id:
-                    readOnly: true
-                    type: string
-                  name:
-                    readOnly: true
-                    type: string
-                required:
-                - id
-                - name
-                type: object
-              type:
-              - array
-              - 'null'
-            private:
-              readOnly: true
-              type: boolean
-            size:
-              readOnly: true
-              type: integer
-          required:
-          - child_count
-          - _created_at
-          - name
-          - private
-          - size
-          type: object
-        id:
-          description: The unique ID of the playlist.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - playlist
-          example: playlist
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    PlaylistDoc:
+    SmartPlaylistForCreatingDoc:
       properties:
         data:
-          $ref: '#/components/schemas/Playlist'
+          $ref: '#/components/schemas/SmartPlaylistForCreating'
       required:
       - data
-      type: object
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
       type: object
   responses:
     NotFound:
@@ -878,18 +878,18 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     Conflict:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

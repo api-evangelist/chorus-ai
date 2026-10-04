@@ -90,6 +90,139 @@ paths:
       - Public Playlist Moments
 components:
   schemas:
+    PlaylistMomentRequestForCreate:
+      properties:
+        attributes:
+          properties:
+            callid:
+              type: string
+            description:
+              type:
+              - string
+              - 'null'
+            moment_duration:
+              type: number
+            moment_time:
+              type:
+              - number
+              - 'null'
+            playlist:
+              type: integer
+          required:
+          - callid
+          - moment_duration
+          - playlist
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - playlist_moment_request
+          example: playlist_moment_request
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    PlaylistMomentDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/PlaylistMoment'
+      required:
+      - data
+      type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+    PlaylistMomentRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/PlaylistMomentRequestForCreate'
+      required:
+      - data
+      type: object
+    MomentForPatch:
+      properties:
+        attributes:
+          properties:
+            description:
+              type:
+              - string
+              - 'null'
+            playlist:
+              type:
+              - integer
+              - 'null'
+          type: object
+        id:
+          description: The unique ID of the playlist moment.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - playlist_moment
+          example: playlist_moment
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
     PlaylistMoment:
       properties:
         attributes:
@@ -184,139 +317,6 @@ components:
       required:
       - data
       type: object
-    PlaylistMomentRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/PlaylistMomentRequestForCreate'
-      required:
-      - data
-      type: object
-    PlaylistMomentRequestForCreate:
-      properties:
-        attributes:
-          properties:
-            callid:
-              type: string
-            description:
-              type:
-              - string
-              - 'null'
-            moment_duration:
-              type: number
-            moment_time:
-              type:
-              - number
-              - 'null'
-            playlist:
-              type: integer
-          required:
-          - callid
-          - moment_duration
-          - playlist
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - playlist_moment_request
-          example: playlist_moment_request
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
-    PlaylistMomentDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/PlaylistMoment'
-      required:
-      - data
-      type: object
-    MomentForPatch:
-      properties:
-        attributes:
-          properties:
-            description:
-              type:
-              - string
-              - 'null'
-            playlist:
-              type:
-              - integer
-              - 'null'
-          type: object
-        id:
-          description: The unique ID of the playlist moment.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - playlist_moment
-          example: playlist_moment
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
-      type: object
   responses:
     NotFound:
       content:
@@ -324,18 +324,18 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
       description: Not found
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
     Conflict:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

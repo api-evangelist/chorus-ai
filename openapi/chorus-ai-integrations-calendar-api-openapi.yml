@@ -104,15 +104,6 @@ paths:
       - Integrations Calendar
 components:
   schemas:
-    VerifyCalendarServiceAccount:
-      properties:
-        emails:
-          items:
-            type: string
-          type: array
-      required:
-      - emails
-      type: object
     Error:
       properties:
         errors:
@@ -167,6 +158,15 @@ components:
           type: array
       required:
       - errors
+      type: object
+    VerifyCalendarServiceAccount:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+      required:
+      - emails
       type: object
   responses:
     BadRequest:

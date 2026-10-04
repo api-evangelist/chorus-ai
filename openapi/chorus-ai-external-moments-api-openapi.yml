@@ -84,6 +84,61 @@ components:
       required:
       - data
       type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
     Moment:
       properties:
         attributes:
@@ -316,61 +371,6 @@ components:
       - attributes
       - type
       - id
-      type: object
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
       type: object
   securitySchemes:
     basic:
