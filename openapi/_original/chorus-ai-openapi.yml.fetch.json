@@ -1,0 +1,12 @@
+{
+ "url": "https://chorus.ai/api/openapi.json",
+ "requested_url": "https://chorus.ai/api/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 271624,
+ "sha256": "474df314fcd73092fa62b9a659dd190019866ac36010219240cd3f16fce4af21",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.976), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
