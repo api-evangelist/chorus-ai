@@ -109,6 +109,47 @@ paths:
       - Session Management
 components:
   schemas:
+    Session:
+      properties:
+        attributes:
+          properties:
+            active:
+              type: boolean
+            customer_id:
+              type:
+              - integer
+              - 'null'
+            person_id:
+              type:
+              - integer
+              - 'null'
+            status:
+              type: string
+            user_id:
+              type:
+              - integer
+              - 'null'
+          required:
+          - active
+          - status
+          type: object
+        id:
+          description: The unique ID of the session.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - session
+          example: session
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
     SessionDoc:
       properties:
         data:
@@ -171,66 +212,25 @@ components:
       required:
       - errors
       type: object
-    Session:
-      properties:
-        attributes:
-          properties:
-            active:
-              type: boolean
-            customer_id:
-              type:
-              - integer
-              - 'null'
-            person_id:
-              type:
-              - integer
-              - 'null'
-            status:
-              type: string
-            user_id:
-              type:
-              - integer
-              - 'null'
-          required:
-          - active
-          - status
-          type: object
-        id:
-          description: The unique ID of the session.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - session
-          example: session
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
   responses:
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
     BadRequest:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

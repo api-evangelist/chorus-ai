@@ -103,6 +103,19 @@ paths:
       tags:
       - Integrations Calendar
 components:
+  responses:
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
   schemas:
     Error:
       properties:
@@ -168,19 +181,6 @@ components:
       required:
       - emails
       type: object
-  responses:
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

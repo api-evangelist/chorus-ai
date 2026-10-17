@@ -62,6 +62,33 @@ paths:
       - Reports
 components:
   schemas:
+    Task:
+      properties:
+        attributes:
+          properties:
+            status:
+              readOnly: true
+              type: string
+          required:
+          - status
+          type: object
+        id:
+          description: The unique ID of the task.
+          example: '123'
+          title: ID
+          type: string
+        type:
+          description: The type of resource.
+          enum:
+          - task
+          example: task
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      - id
+      type: object
     ReportExportActionBody:
       properties:
         active_users_only:
@@ -90,6 +117,13 @@ components:
           type:
           - array
           - 'null'
+      type: object
+    TaskDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/Task'
+      required:
+      - data
       type: object
     Error:
       properties:
@@ -146,53 +180,19 @@ components:
       required:
       - errors
       type: object
-    TaskDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/Task'
-      required:
-      - data
-      type: object
-    Task:
-      properties:
-        attributes:
-          properties:
-            status:
-              readOnly: true
-              type: string
-          required:
-          - status
-          type: object
-        id:
-          description: The unique ID of the task.
-          example: '123'
-          title: ID
-          type: string
-        type:
-          description: The type of resource.
-          enum:
-          - task
-          example: task
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      - id
-      type: object
   responses:
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
     BadRequest:
       content:
         application/vnd.api+json:
           schema:
             $ref: '#/components/schemas/Error'
       description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).

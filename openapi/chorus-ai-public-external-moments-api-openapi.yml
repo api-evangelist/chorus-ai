@@ -92,145 +92,7 @@ paths:
       tags:
       - Public External Moments
 components:
-  responses:
-    NotFound:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not found
-    Conflict:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Conflict
-    BadRequest:
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Bad request
   schemas:
-    MomentCreateRequestForCreateDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/MomentCreateRequestForCreate'
-      required:
-      - data
-      type: object
-    Error:
-      properties:
-        errors:
-          items:
-            properties:
-              code:
-                type:
-                - string
-                - 'null'
-              detail:
-                type:
-                - string
-                - 'null'
-              id:
-                type:
-                - string
-                - 'null'
-              source:
-                properties:
-                  cookie:
-                    type:
-                    - string
-                    - 'null'
-                  header:
-                    type:
-                    - string
-                    - 'null'
-                  parameter:
-                    type:
-                    - string
-                    - 'null'
-                  path:
-                    type:
-                    - string
-                    - 'null'
-                  pointer:
-                    type:
-                    - string
-                    - 'null'
-                type:
-                - object
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-            type: object
-          type: array
-      required:
-      - errors
-      type: object
-    MomentEditRequestDoc:
-      properties:
-        data:
-          $ref: '#/components/schemas/MomentEditRequest'
-      required:
-      - data
-      type: object
-    MomentCreateRequestForCreate:
-      properties:
-        attributes:
-          properties:
-            callid:
-              type: string
-            expiration_date:
-              example: '2021-01-01T00:00:00Z'
-              type:
-              - string
-              - 'null'
-            moment_duration:
-              type: number
-            moment_time:
-              type: number
-            note:
-              default: ''
-              type:
-              - string
-              - 'null'
-            password:
-              type:
-              - string
-              - 'null'
-            subject:
-              default: ''
-              type:
-              - string
-              - 'null'
-            url_string:
-              default: ''
-              type:
-              - string
-              - 'null'
-          required:
-          - callid
-          - moment_time
-          - moment_duration
-          type: object
-        type:
-          description: The type of resource.
-          enum:
-          - moment_create_request
-          example: moment_create_request
-          title: Type
-          type: string
-      required:
-      - attributes
-      - type
-      type: object
     MomentEditRequest:
       properties:
         attributes:
@@ -284,6 +146,70 @@ components:
       - attributes
       - type
       - id
+      type: object
+    MomentCreateRequestForCreate:
+      properties:
+        attributes:
+          properties:
+            callid:
+              type: string
+            expiration_date:
+              example: '2021-01-01T00:00:00Z'
+              type:
+              - string
+              - 'null'
+            moment_duration:
+              type: number
+            moment_time:
+              type: number
+            note:
+              default: ''
+              type:
+              - string
+              - 'null'
+            password:
+              type:
+              - string
+              - 'null'
+            subject:
+              default: ''
+              type:
+              - string
+              - 'null'
+            url_string:
+              default: ''
+              type:
+              - string
+              - 'null'
+          required:
+          - callid
+          - moment_time
+          - moment_duration
+          type: object
+        type:
+          description: The type of resource.
+          enum:
+          - moment_create_request
+          example: moment_create_request
+          title: Type
+          type: string
+      required:
+      - attributes
+      - type
+      type: object
+    MomentCreateRequestForCreateDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/MomentCreateRequestForCreate'
+      required:
+      - data
+      type: object
+    MomentEditRequestDoc:
+      properties:
+        data:
+          $ref: '#/components/schemas/MomentEditRequest'
+      required:
+      - data
       type: object
     Moment:
       properties:
@@ -525,6 +451,80 @@ components:
       required:
       - data
       type: object
+    Error:
+      properties:
+        errors:
+          items:
+            properties:
+              code:
+                type:
+                - string
+                - 'null'
+              detail:
+                type:
+                - string
+                - 'null'
+              id:
+                type:
+                - string
+                - 'null'
+              source:
+                properties:
+                  cookie:
+                    type:
+                    - string
+                    - 'null'
+                  header:
+                    type:
+                    - string
+                    - 'null'
+                  parameter:
+                    type:
+                    - string
+                    - 'null'
+                  path:
+                    type:
+                    - string
+                    - 'null'
+                  pointer:
+                    type:
+                    - string
+                    - 'null'
+                type:
+                - object
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+              title:
+                type:
+                - string
+                - 'null'
+            type: object
+          type: array
+      required:
+      - errors
+      type: object
+  responses:
+    BadRequest:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Conflict:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Conflict
+    NotFound:
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not found
   securitySchemes:
     basic:
       description: HTTP basic authentication (for those APIs that support it).
