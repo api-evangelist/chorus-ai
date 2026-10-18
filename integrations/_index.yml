@@ -40,7 +40,7 @@
     - connectors/applications/chorus
     vendor_link: https://www.chorus.ai/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: chorus-ai-meltano
   label: Meltano
@@ -69,7 +69,7 @@
     quality:
     - silver
     builder: 'community (Meltano Hub variant maintainers: andyoneal)'
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: chorus-ai-google-workspace-own
   label: Google Workspace (own)
