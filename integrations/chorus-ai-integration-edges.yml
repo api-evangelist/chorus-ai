@@ -9,6 +9,9 @@ source:
 - https://monid.ai/tools/chorus-ai
 checked:
 - https://composio.dev/toolkits/chorus-ai
+- https://fivetran.com/docs-sitemap.xml
+- https://fivetran.com/docs/connectors/partner-built-program
+- https://github.com/meltano/hub
 - https://monid.ai/tools/chorus-ai
 - https://n8n.io/integrations/chorus-ai/
 - https://n8n.io/integrations/chorus/
@@ -42,4 +45,59 @@ edges:
   - DEACTIVATE
   - SAML
   - UPDATE
+- partner_name: Fivetran
+  partner: fivetran
+  partner_match: aggregator
+  type: marketplace
+  marketplace: fivetran-connectors
+  channel: elt-connector
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://fivetran.com/docs/connectors/applications/chorus
+  category: null
+  contract_reference:
+    register: Fivetran connectors (fivetran.com/docs/connectors, docs-sitemap.xml + Partner-Built program)
+    spec_file: null
+    role: elt-connector:fivetran
+    registered_name: Chorus
+    matched_domain: chorus.ai
+    matched_by: domain
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    connector_paths:
+    - connectors/applications/chorus
+    vendor_link: https://www.chorus.ai/
+    builder: Fivetran
+  detected_by: sweep-data-integration.py
+  first_seen: '2026-10-18'
+- partner_name: Meltano
+  partner: meltano
+  partner_match: aggregator
+  type: marketplace
+  marketplace: meltano-hub
+  channel: elt-connector
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://hub.meltano.com/extractors/tap-chorusai--andyoneal
+  category: null
+  contract_reference:
+    register: Meltano Hub (github.com/meltano/hub _data/meltano extractors + loaders)
+    spec_file: null
+    role: elt-connector:meltano-hub
+    registered_name: Chorusai
+    matched_domain: chorus.ai
+    matched_by: domain
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    plugins:
+    - tap-chorusai--andyoneal
+    maintenance_status:
+    - active
+    quality:
+    - silver
+    builder: 'community (Meltano Hub variant maintainers: andyoneal)'
+  detected_by: sweep-data-integration.py
+  first_seen: '2026-10-18'
 templates: []
