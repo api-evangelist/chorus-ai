@@ -47,6 +47,40 @@ edges:
   - DEACTIVATE
   - SAML
   - UPDATE
+- partner_name: Google Workspace (own)
+  partner: google-workspace
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://workspace.google.com/marketplace/app/chorus_scheduler/903225597070
+  mirror_of: google-workspace/integrations/google-workspace-integration-edges.yml
+  apps:
+  - Chorus Scheduler
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Google Workspace app
+- partner_name: Zoom (own)
+  partner: zoom
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.zoom.us/apps/LEHzFWaSSvy5ubCUV-Mkow
+  mirror_of: zoom/integrations/zoom-integration-edges.yml
+  apps:
+  - Chorus.ai
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Zoom app
 - partner_name: Fivetran
   partner: fivetran
   partner_match: aggregator
@@ -102,38 +136,4 @@ edges:
     builder: 'community (Meltano Hub variant maintainers: andyoneal)'
   detected_by: sweep-data-integration.py
   first_seen: '2026-10-18'
-- partner_name: Google Workspace (own)
-  partner: google-workspace
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://workspace.google.com/marketplace/app/chorus_scheduler/903225597070
-  mirror_of: google-workspace/integrations/google-workspace-integration-edges.yml
-  apps:
-  - Chorus Scheduler
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: Google Workspace app
-- partner_name: Zoom (own)
-  partner: zoom
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.zoom.us/apps/LEHzFWaSSvy5ubCUV-Mkow
-  mirror_of: zoom/integrations/zoom-integration-edges.yml
-  apps:
-  - Chorus.ai
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: Zoom app
 templates: []
