@@ -1,4 +1,4 @@
-# Chorus.ai (chorus-ai)
+# Chorus.ai
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,38 +64,158 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Chorus.ai (now part of ZoomInfo) is a conversation intelligence platform that captures and analyzes sales calls, meetings and emails.
+Chorus.ai is a conversation intelligence platform, acquired by ZoomInfo in 2021 and sold as "Chorus by ZoomInfo", that records, transcribes and analyzes customer-facing calls, meetings and emails to surface deal insights and coach sales reps. It publishes a single public REST contract — the Chorus API, an OpenAPI 3.0.3 document with 81 operations served unauthenticated at https://chorus.ai/api/openapi.json — covering engagement search, recording upload and media retrieval, coaching moments and playlists, scorecards, AI sales-qualification analysis with CRM writeback, and webhook registration. The API is JSON:API shaped on its /api/v1 surface with an older flat /v3 surface alongside it. Notably, the chorus.ai marketing site has been retired to a redirect shell pointing at zoominfo.com, but the API and both of its documentation surfaces remain live on the original domain.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/chorus-ai/refs/heads/main/apis.yml)
+**Areas:** Sales · Revenue Intelligence · Conversations · Analytics · ZoomInfo · Conversation Intelligence · Sales Enablement · Call Recording · Transcription · Speech Analytics · CRM · Coaching
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=chorus-ai-api-evangelist&utm_content=repo)
+## Chorus.ai on APIs.io
 
-## Type
-- **x-type:** company
+Everything profiled for Chorus.ai is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/chorus-ai/](https://apis.io/providers/chorus-ai/)** — or go straight to one of the APIs or properties below.
 
-## Tags
-- Conversation Intelligence, Sales, Revenue Intelligence
+### APIs (22)
 
-## Timestamps
-- **Created:** 2026-05-08
-- **Modified:** 2026-05-08
+- [Chorus.ai Auth API](https://apis.io/apis/chorus-ai/chorus-ai-auth-api/) — The Auth API from Chorus.ai — 1 operation(s) for auth.
+- [Chorus.ai Conversations API](https://apis.io/apis/chorus-ai/chorus-ai-conversations-api/) — The Conversations API from Chorus.ai — 11 operation(s) for conversations.
+- [Chorus.ai Emails API](https://apis.io/apis/chorus-ai/chorus-ai-emails-api/) — The Emails API from Chorus.ai — 3 operation(s) for emails.
+- [Chorus.ai Engagement filter API](https://apis.io/apis/chorus-ai/chorus-ai-engagement-filter-api/) — The Engagement filter API from Chorus.ai — 3 operation(s) for engagement filter.
+- [Chorus.ai Event API](https://apis.io/apis/chorus-ai/chorus-ai-event-api/) — The Event API from Chorus.ai — 1 operation(s) for event.
+- [Chorus.ai External Moments API](https://apis.io/apis/chorus-ai/chorus-ai-external-moments-api/) — The External Moments API from Chorus.ai — 2 operation(s) for external moments.
+- [Chorus.ai Integrations Calendar API](https://apis.io/apis/chorus-ai/chorus-ai-integrations-calendar-api/) — The Integrations Calendar API from Chorus.ai — 4 operation(s) for integrations calendar.
+- [Chorus.ai Integrations CRM API](https://apis.io/apis/chorus-ai/chorus-ai-integrations-crm-api/) — The Integrations CRM API from Chorus.ai — 1 operation(s) for integrations crm.
+- [Chorus.ai Integrations Email API](https://apis.io/apis/chorus-ai/chorus-ai-integrations-email-api/) — The Integrations Email API from Chorus.ai — 4 operation(s) for integrations email.
+- [Chorus.ai Integrations Meet API](https://apis.io/apis/chorus-ai/chorus-ai-integrations-meet-api/) — The Integrations Meet API from Chorus.ai — 6 operation(s) for integrations meet.
+- [Chorus.ai Playlists API](https://apis.io/apis/chorus-ai/chorus-ai-playlists-api/) — The Playlists API from Chorus.ai — 4 operation(s) for playlists.
+- [Chorus.ai Public External Moments API](https://apis.io/apis/chorus-ai/chorus-ai-public-external-moments-api/) — The Public External Moments API from Chorus.ai — 2 operation(s) for public external moments.
+- [Chorus.ai Public Playlist Moments API](https://apis.io/apis/chorus-ai/chorus-ai-public-playlist-moments-api/) — The Public Playlist Moments API from Chorus.ai — 2 operation(s) for public playlist moments.
+- [Chorus.ai Reports API](https://apis.io/apis/chorus-ai/chorus-ai-reports-api/) — The Reports API from Chorus.ai — 1 operation(s) for reports.
+- [Chorus.ai Sales Qualifications API](https://apis.io/apis/chorus-ai/chorus-ai-sales-qualifications-api/) — The Sales Qualifications API from Chorus.ai — 5 operation(s) for sales qualifications.
+- [Chorus.ai Saved Search API](https://apis.io/apis/chorus-ai/chorus-ai-saved-search-api/) — The Saved Search API from Chorus.ai — 2 operation(s) for saved search.
+- [Chorus.ai Scorecards API](https://apis.io/apis/chorus-ai/chorus-ai-scorecards-api/) — The Scorecards API from Chorus.ai — 2 operation(s) for scorecards.
+- [Chorus.ai Session management API](https://apis.io/apis/chorus-ai/chorus-ai-session-management-api/) — The Session management API from Chorus.ai — 3 operation(s) for session management.
+- [Chorus.ai Teams API](https://apis.io/apis/chorus-ai/chorus-ai-teams-api/) — The Teams API from Chorus.ai — 2 operation(s) for teams.
+- [Chorus.ai Users API](https://apis.io/apis/chorus-ai/chorus-ai-users-api/) — The Users API from Chorus.ai — 5 operation(s) for users.
+- [Chorus.ai Video Conferences API](https://apis.io/apis/chorus-ai/chorus-ai-video-conferences-api/) — The Video Conferences API from Chorus.ai — 2 operation(s) for video conferences.
+- [Chorus.ai Webhook API](https://apis.io/apis/chorus-ai/chorus-ai-webhook-api/) — The Webhook API from Chorus.ai — 1 operation(s) for webhook.
 
-## APIs
-- **Chorus Engagements API** — Read calls, meetings, emails and engagement metadata.
-- **Chorus Recordings & Transcripts API** — Retrieve recordings, transcripts and AI-generated insights.
-- **Chorus CRM Sync API** — Push and pull contacts, accounts and opportunities for CRM enrichment.
+### Published properties
 
-## Common Properties
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Chorus Ai Webhooks](https://apis.io/asyncapis/chorus-ai/chorus-ai-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [chorus-ai-mcp.yml](https://apis.io/servers/chorus-ai/chorus-ai-mcp-yml/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [Chorus API](https://apis.io/collections/chorus-ai/open-chorus-ai/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Chorus Ai Openapi Overlay](https://apis.io/overlays/chorus-ai/chorus-ai-openapi-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Chorus Ai Authentication](https://apis.io/security/chorus-ai/chorus-ai-authentication/)
+- [Chorus Ai Domain Security](https://apis.io/security/chorus-ai/chorus-ai-domain-security/)
+- [Chorus Ai Trust Center](https://apis.io/security/chorus-ai/chorus-ai-trust-center/)
+- [Chorus Ai Vulnerability Disclosure](https://apis.io/security/chorus-ai/chorus-ai-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Chorus Ai Plans Pricing](https://apis.io/plans/chorus-ai/chorus-ai-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Chorus Ai Rate Limits](https://apis.io/rate-limits/chorus-ai/chorus-ai-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Chorus Ai Finops](https://apis.io/finops/chorus-ai/chorus-ai-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.chorus.ai/)
-- [Plans](plans/chorus-ai-plans-pricing.yml) — placeholder, pipeline reconciles later
-- [RateLimits](rate-limits/chorus-ai-rate-limits.yml) — placeholder
-- [FinOps](finops/chorus-ai-finops.yml) — FOCUS-aligned placeholder
+- [Documentation](https://chorus.ai/api-docs/index.html)
+- [API reference](https://api-docs.chorus.ai/)
+- [Pricing](https://www.zoominfo.com/products/chorus/pricing)
+- [Support](https://www.zoominfo.com/about/help-center)
+- [Terms of service](https://www.zoominfo.com/legal/terms-of-use)
+- [Privacy policy](https://www.zoominfo.com/legal/privacy-policy)
+- [Status](https://status.zoominfo.com/)
 
-## Documentation
-- [Developer Docs](https://docs.chorus.ai/)
-- [API Reference](https://docs.chorus.ai/reference)
+## API Evangelist rating
 
-## Maintainers
-**FN:** Kin Lane
+**Kin Score 53.1** — developing · rubric 0.25.0 · scored 2026-10-23
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 58.3 |
+| Contract governance | 18.2 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 33.9 |
+| Access clarity | 47.4 |
+
+**Agent readiness 23.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | mostly |
+
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/chorus-ai/](https://apis.io/providers/chorus-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Chorus.ai: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/chorus-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
